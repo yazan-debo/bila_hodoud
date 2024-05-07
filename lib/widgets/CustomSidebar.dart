@@ -10,7 +10,7 @@ class CustomSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.2, // Adjust the width as needed
-      color: Colors.grey[200],
+      color: const Color.fromRGBO(48, 55, 123, 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomNavbar extends StatelessWidget {
+
+  const CustomNavbar({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      color: Colors.grey[200],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(width: 16),
-          FlutterLogo(size: 40),
           SizedBox(width: 16),
           GestureDetector(
             onTap: () {
