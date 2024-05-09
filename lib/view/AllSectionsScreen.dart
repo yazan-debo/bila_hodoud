@@ -3,10 +3,47 @@ import 'package:flutter/material.dart';
 import '../widgets/CustomCard.dart';
 import '../widgets/CustomDropdown.dart';
 import '../widgets/CustomNavbar.dart';
+import '../widgets/CustomSidebar.dart';
 
 class AllSectionsScreen extends StatelessWidget {
+  final List<CustomDropdown> dropdowns = [
+    CustomDropdown(
+      name: 'إدارة الطلبات',
+      choices: [
+        'طلبات الجملة',
+        'طلبات تم إلغاؤها',
+        'طلبات في طريقها للزبون',
+        'طلبات في الانتظار'
+      ],
+    ),
+    CustomDropdown(
+      name: 'إدارة الأقسام',
+      choices: ['المنتجات', 'الأقسام'],
+    ),
+    CustomDropdown(
+      name: 'إدارة العروض',
+      choices: ['إنشاء عرض جديد', 'العروض الحاليّة'],
+    ),
+    CustomDropdown(
+      name: 'الإدارة المالية',
+      choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
+    ),
+    CustomDropdown(
+      name: 'إدارة الإشعارات',
+      choices: ['إشعارات النظام', 'إشعارات المستخدمين'],
+    ),
+    CustomDropdown(
+      name: 'إدارة الصلاحيات',
+      choices: [
+        'صلاحيّات الأدوار',
+        'أدوار المستخدمين',
+        'حسابات المستخدمين',
+        'أدوار النظام'
+      ],
+    ),
+  ];
 
-  const AllSectionsScreen({Key? key}) : super(key: key);
+  AllSectionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,45 +54,7 @@ class AllSectionsScreen extends StatelessWidget {
         ),*/
         body: Row(
           children: [
-            Expanded(
-              child: Container(
-                color: Color(0xFF30377B),
-                padding: const EdgeInsets.all(20),
-                child: const Column(
-                  children: [
-                    CustomDropdown(
-                      name: 'إدارة الطلبات',
-                      choices: ['طلبات الجملة','طلبات تم إلغاؤها', 'طلبات في طريقها للزبون', 'طلبات في الانتظار'],
-                    ),
-                    SizedBox(height: 10),
-                    CustomDropdown(
-                      name: 'إدارة الأقسام',
-                      choices: ['المنتجات', 'الأقسام'],
-                    ),
-                    SizedBox(height: 10),
-                    CustomDropdown(
-                      name: 'إدارة العروض',
-                      choices: ['إنشاء عرض جديد', 'العروض الحاليّة'],
-                    ),
-                    SizedBox(height: 10),
-                    CustomDropdown(
-                      name: 'الإدارة المالية',
-                      choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
-                    ),
-                    SizedBox(height: 10),
-                    CustomDropdown(
-                      name: 'إدارة الإشعارات',
-                      choices: ['إشعارات النظام', 'إشعارات المستخدمين'],
-                    ),
-                    SizedBox(height: 10),
-                    CustomDropdown(
-                      name: 'إدارة الصلاحيات',
-                      choices: ['صلاحيّات الأدوار','أدوار المستخدمين','حسابات المستخدمين', 'أدوار النظام'],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            CustomSidebar(dropdowns: dropdowns, loggedInUser: 'John Doe'),
             Expanded(
               flex: 2,
               child: Container(
@@ -63,8 +62,7 @@ class AllSectionsScreen extends StatelessWidget {
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomNavbar (),
-
+                    CustomNavbar(),
                     Text(
                       'الأقسام الموجودة حالياً',
                       style: TextStyle(
