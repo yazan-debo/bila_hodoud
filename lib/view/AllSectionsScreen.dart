@@ -43,7 +43,7 @@ class AllSectionsScreen extends StatelessWidget {
     ),
   ];
 
-  AllSectionsScreen({super.key});
+  AllSectionsScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +54,19 @@ class AllSectionsScreen extends StatelessWidget {
         ),*/
         body: Row(
           children: [
-            CustomSidebar(dropdowns: dropdowns, loggedInUser: 'John Doe'),
+            Flexible(
+              flex: 1,
+              child: CustomSidebar(dropdowns: dropdowns, loggedInUser: 'John Doe'),
+            ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 padding: const EdgeInsets.all(20),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomNavbar(),
-                    Text(
+                    const Text(
                       'الأقسام الموجودة حالياً',
                       style: TextStyle(
                         fontSize: 20,
@@ -71,24 +74,30 @@ class AllSectionsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    CustomCard(
-                      sectionName: 'القسم 1',
-                      sectionStatus: 'الحالة 1',
-                    ),
-                    SizedBox(height: 10),
-                    CustomCard(
-                      sectionName: 'القسم 2',
-                      sectionStatus: 'الحالة 2',
-                    ),
-                    SizedBox(height: 10),
-                    CustomCard(
-                      sectionName: 'القسم 3',
-                      sectionStatus: 'الحالة 3',
-                    ),
-                    SizedBox(height: 10),
-                    CustomCard(
-                      sectionName: 'القسم 4',
-                      sectionStatus: 'الحالة 4',
+                    Expanded(
+                      child: ListView(
+                        children: const [
+                          CustomCard(
+                            sectionName: 'القسم 1',
+                            sectionStatus: 'الحالة 1',
+                          ),
+                          SizedBox(height: 10),
+                          CustomCard(
+                            sectionName: 'القسم 2',
+                            sectionStatus: 'الحالة 2',
+                          ),
+                          SizedBox(height: 10),
+                          CustomCard(
+                            sectionName: 'القسم 3',
+                            sectionStatus: 'الحالة 3',
+                          ),
+                          SizedBox(height: 10),
+                          CustomCard(
+                            sectionName: 'القسم 4',
+                            sectionStatus: 'الحالة 4',
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
