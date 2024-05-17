@@ -1,62 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controllers/AllSectionsController.dart';
 import '../widgets/CustomCard.dart';
-import '../widgets/CustomDropdown.dart';
 import '../widgets/CustomNavbar.dart';
 import '../widgets/CustomSidebar.dart';
+import '../widgets/MostUsedButton.dart';
+
 
 class AllSectionsScreen extends StatelessWidget {
-  final List<CustomDropdown> dropdowns = [
-    CustomDropdown(
-      name: 'إدارة الطلبات',
-      choices: [
-        'طلبات الجملة',
-        'طلبات تم إلغاؤها',
-        'طلبات في طريقها للزبون',
-        'طلبات في الانتظار'
-      ],
-    ),
-    CustomDropdown(
-      name: 'إدارة الأقسام',
-      choices: ['المنتجات', 'الأقسام'],
-    ),
-    CustomDropdown(
-      name: 'إدارة العروض',
-      choices: ['إنشاء عرض جديد', 'العروض الحاليّة'],
-    ),
-    CustomDropdown(
-      name: 'الإدارة المالية',
-      choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
-    ),
-    CustomDropdown(
-      name: 'إدارة الإشعارات',
-      choices: ['إشعارات النظام', 'إشعارات المستخدمين'],
-    ),
-    CustomDropdown(
-      name: 'إدارة الصلاحيات',
-      choices: [
-        'صلاحيّات الأدوار',
-        'أدوار المستخدمين',
-        'حسابات المستخدمين',
-        'أدوار النظام'
-      ],
-    ),
-  ];
+  final AllSectionsController controller = Get.put(AllSectionsController());
 
   AllSectionsScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        /*appBar: AppBar(
-        ),*/
         body: Row(
           children: [
             Flexible(
               flex: 1,
-              child: CustomSidebar(dropdowns: dropdowns, loggedInUser: 'John Doe'),
+              child: CustomSidebar(
+                dropdowns: controller.dropdowns,
+                loggedInUser: 'John Doe',
+              ),
             ),
             Expanded(
               flex: 3,
@@ -66,38 +36,45 @@ class AllSectionsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomNavbar(),
-                    const Text(
-                      'الأقسام الموجودة حالياً',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        'الأقسام الموجودة حالياً',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.02,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF394D96),
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),
                     Expanded(
-                      child: ListView(
-                        children: const [
-                          CustomCard(
-                            sectionName: 'القسم 1',
-                            sectionStatus: 'الحالة 1',
+                      child: Obx(
+                            () => GridView.builder(
+                          padding: EdgeInsets.all(controller.screenSpace),
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 1.5,
                           ),
-                          SizedBox(height: 10),
-                          CustomCard(
-                            sectionName: 'القسم 2',
-                            sectionStatus: 'الحالة 2',
-                          ),
-                          SizedBox(height: 10),
-                          CustomCard(
-                            sectionName: 'القسم 3',
-                            sectionStatus: 'الحالة 3',
-                          ),
-                          SizedBox(height: 10),
-                          CustomCard(
-                            sectionName: 'القسم 4',
-                            sectionStatus: 'الحالة 4',
-                          ),
-                        ],
+                          itemCount: controller.cards.length,
+                          itemBuilder: (context, index) {
+                            final product = controller.cards[index];
+                            return CustomCard(
+                              sectionName: product.sectionName,
+                              sectionStatus: product.sectionStatus,
+                            );
+                          },
+                        ),
                       ),
+                    ),
+                    const SizedBox(height: 10),
+                    MostUsedButton(
+                      buttonText: 'أضف قسما جديدا',
+                      buttonIcon: Icons.add_circle_outline,
+                      route: 'settings',
                     ),
                   ],
                 ),
