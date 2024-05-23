@@ -1,17 +1,13 @@
 import 'package:get/get.dart';
-import '../widgets/CustomCard.dart';
-import '../widgets/CustomDropdown.dart';
+import '../widgets/custom_card.dart';
+import '../widgets/custom_dropdown.dart';
 
 class AllSectionsController extends GetxController {
   // Reactive properties
   RxList<CustomCard> cards = <CustomCard>[].obs;
   RxList<CustomDropdown> dropdowns = <CustomDropdown>[].obs;
 
-  // Computed property
-  double get screenSpace {
-    final double screenWidth = Get.mediaQuery.size.width;
-    return screenWidth <= 653000 ? 10 : 100;
-  }
+
   // Fetch data and initialize properties
   @override
   void onInit() {

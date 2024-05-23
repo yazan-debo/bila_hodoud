@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../style/constraint_style_features.dart';
+import '../style/text_style_features.dart';
 
-class CustomNavbar extends StatefulWidget {
-  const CustomNavbar({Key? key});
+class CustomAppBar extends StatefulWidget {
+  const CustomAppBar({Key? key});
 
   @override
-  _CustomNavbarState createState() => _CustomNavbarState();
+  _CustomAppBarState createState() => _CustomAppBarState();
 }
 
-class _CustomNavbarState extends State<CustomNavbar> {
+class _CustomAppBarState extends State<CustomAppBar> {
   bool isHovered1 = false;
   bool isHovered2 = false;
   bool isHovered3 = false;
-
+  double availableWidth = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 100,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final double fontSize = constraints.maxWidth * 0.03; // Calculate the font size based on available width
-          final double logoSize = constraints.maxWidth * 0.15; // Calculate the logo size based on available width
-          final double paddingValue = constraints.maxWidth * 0.05; // Calculate the padding value based on available width
-
+          availableWidth = constraints.maxWidth;
+         /* final double logoSize = constraints.maxWidth * 0.15;
+*/
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: paddingValue),
+              SizedBox(width: ConstraintStyleFeatures.appBarPaddingValue(availableWidth)),
               Expanded(
                 child: buildNavItem(
                   'الرئيسية',
@@ -34,7 +35,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                   isHovered1,
                       () => setState(() => isHovered1 = true),
                       () => setState(() => isHovered1 = false),
-                  fontSize,
+                  ConstraintStyleFeatures.appBarFontSize(availableWidth)
                 ),
               ),
               Expanded(
@@ -44,7 +45,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                   isHovered2,
                       () => setState(() => isHovered2 = true),
                       () => setState(() => isHovered2 = false),
-                  fontSize,
+                    ConstraintStyleFeatures.appBarFontSize(availableWidth)
                 ),
               ),
               Expanded(
@@ -54,25 +55,22 @@ class _CustomNavbarState extends State<CustomNavbar> {
                   isHovered3,
                       () => setState(() => isHovered3 = true),
                       () => setState(() => isHovered3 = false),
-                  fontSize / 1.02,
+                  ConstraintStyleFeatures.appBarFontSize(availableWidth) / 1.02,
                 ),
               ),
               Spacer(),
-              SizedBox(width: paddingValue),
+              SizedBox(width: ConstraintStyleFeatures.appBarPaddingValue(availableWidth)),
               Container(
-                width: logoSize,
-                height: logoSize,
+                width: ConstraintStyleFeatures.appBarLogoSize(availableWidth),
+                height: ConstraintStyleFeatures.appBarLogoSize(availableWidth),
                 child: GestureDetector(
                   onTap: () {
                     // Handle logo tap
                   },
-                  child: Image.asset(
-                    'web/icons/logo.jfif',
-                    fit: BoxFit.contain,
-                  ),
+                  child: LogoImage(),
                 ),
               ),
-              SizedBox(width: paddingValue),
+              SizedBox(width: ConstraintStyleFeatures.appBarPaddingValue(availableWidth)),
             ],
           );
         },
@@ -98,14 +96,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
         },
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
-            decorationColor: isHovered ? Colors.amber : Colors.transparent,
-            decorationThickness: 0.5, // Increase the decoration thickness for more spacing
-            color: isHovered ? Colors.amber : Colors.black,
-          ),
+          style: TextStyleFeatures.appBarTextStyle(availableWidth , isHovered),
         ),
       ),
     );

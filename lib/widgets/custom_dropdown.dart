@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../style/color_style_features.dart';
+import '../style/text_style_features.dart';
+
 class CustomDropdown extends GetxController {
   final String name;
   final List<String> choices;
@@ -34,6 +37,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
   bool isExpanded = false;
   int hoveredIndex = -1;
   String selectedChoice = '';
+  TextStyleFeatures textStyleFeatures = TextStyleFeatures();
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +61,12 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                 Expanded(
                   child: Text(
                     widget.dropdown.name,
-                    style: TextStyle(
-                      color: isExpanded ? Colors.amber : Colors.white,
-                    ),
+                    style: textStyleFeatures.dropdownNameTextStyle(isExpanded),
                   ),
                 ),
                 Icon(
                   isExpanded ? Icons.expand_less : Icons.expand_more,
-                  color: isExpanded ? Colors.amber : Colors.white,
+                  color: isExpanded ? ColorStyleFeatures.onHoverColor : ColorStyleFeatures.dropdownChoiceTextColor,
                 ),
               ],
             ),
@@ -73,10 +75,10 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
         if (isExpanded)
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF55579B), // Set the background color for choices list
+              color:  ColorStyleFeatures.dropdownChoicesBackgroundColor, // Set the background color for choices list
               borderRadius: BorderRadius.circular(10),
             ),
-            constraints: const BoxConstraints(maxHeight: 200),
+            constraints: const BoxConstraints(maxHeight: 300),
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: widget.dropdown.choices.length,
@@ -109,15 +111,13 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: isHovered
-                            ? const Color(0xFFA2A3D0)
-                            : Colors.transparent,
+                            ?  ColorStyleFeatures.dropdownChoiceHoverColor
+                            : ColorStyleFeatures.dropdownChoiceNonHoverColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         choice,
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: TextStyleFeatures.sideBarTextStyle,
                       ),
                     ),
                   ),

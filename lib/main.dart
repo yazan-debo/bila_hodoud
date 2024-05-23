@@ -1,8 +1,10 @@
-import 'package:bila_hodoud/view/AllSectionsScreen.dart';
-import 'package:bila_hodoud/view/HomeScreen.dart';
-import 'package:bila_hodoud/view/LoginScreen.dart';
-import 'package:bila_hodoud/view/SectionDetailsScreen.dart';
-import 'package:bila_hodoud/view/SettingsScreen.dart';
+import 'package:bila_hodoud/style/color_style_features.dart';
+import 'package:bila_hodoud/view/all_sections_screen.dart';
+import 'package:bila_hodoud/view/home_screen.dart';
+import 'package:bila_hodoud/view/login_screen.dart';
+import 'package:bila_hodoud/view/section_details_screen.dart';
+import 'package:bila_hodoud/view/settings_screen.dart';
+import 'package:bila_hodoud/style/text_style_features.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,8 +13,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+  TextStyleFeatures textStyleFeatures = TextStyleFeatures();
+
   @override
   Widget build(BuildContext context) {
+    final double availableWidth = MediaQuery.of(context).size.width;
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Your App',
@@ -23,17 +29,14 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/logout', page: () => LoginScreen()),
         GetPage(name: '/section-details', page: () => SectionDetailsScreen()),
         GetPage(name: '/all-sections', page: () => AllSectionsScreen()),
-
-
-
       ],
       theme: ThemeData(
-        // Your app theme
+        cardColor: ColorStyleFeatures.cardColor, // Apply the card color from style features
+        textTheme: TextTheme(
+          titleLarge: textStyleFeatures.cardTitleTextStyle(availableWidth, true),
+          titleMedium: textStyleFeatures.cardTitleTextStyle(availableWidth, false),
+        ),
       ),
     );
   }
 }
-
-
-
-

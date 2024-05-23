@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../controllers/AllSectionsController.dart';
-import '../widgets/CustomCard.dart';
-import '../widgets/CustomNavbar.dart';
-import '../widgets/CustomSidebar.dart';
-import '../widgets/MostUsedButton.dart';
+import '../controllers/all_sections_controller.dart';
+import '../style/constraint_style_features.dart';
+import '../style/text_style_features.dart';
+import '../widgets/custom_card.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_side_bar.dart';
+import '../widgets/most_used_button.dart';
 
 
 class AllSectionsScreen extends StatelessWidget {
   final AllSectionsController controller = Get.put(AllSectionsController());
 
-  AllSectionsScreen({Key? key});
+  AllSectionsScreen({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +36,19 @@ class AllSectionsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomNavbar(),
-                    SizedBox(height: 20),
+                    const CustomAppBar(),
+                    const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
                     Center(
                       child: Text(
                         'الأقسام الموجودة حالياً',
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.02,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF394D96),
-                        ),
+                        style: TextStyleFeatures.generalTextStyle,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
                     Expanded(
                       child: Obx(
                             () => GridView.builder(
-                          padding: EdgeInsets.all(controller.screenSpace),
+                          padding: EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -70,7 +67,7 @@ class AllSectionsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
                     MostUsedButton(
                       buttonText: 'أضف قسما جديدا',
                       buttonIcon: Icons.add_circle_outline,
