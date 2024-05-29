@@ -1,12 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/custom_dropdown.dart';
 
-class AllSectionsController extends GetxController {
+class GlobalInterfaceController extends GetxController {
   // Reactive properties
   RxList<CustomCard> cards = <CustomCard>[].obs;
   RxList<CustomDropdown> dropdowns = <CustomDropdown>[].obs;
-
+  final RxList<Widget> extraWidgets = <Widget>[].obs;
 
   // Fetch data and initialize properties
   @override
@@ -88,5 +89,13 @@ class AllSectionsController extends GetxController {
 
 
     dropdowns.value = fetchedDropdowns;
+  }
+
+  void addExtraWidget(Widget widget) {
+    extraWidgets.add(widget);
+  }
+
+  void removeExtraWidget(Widget widget) {
+    extraWidgets.remove(widget);
   }
 }
