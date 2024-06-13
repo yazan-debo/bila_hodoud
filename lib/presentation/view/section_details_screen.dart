@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SectionDetailsScreen extends StatelessWidget {
+  const SectionDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> sectionData = Get.arguments as Map<String, dynamic>;
@@ -10,14 +12,14 @@ class SectionDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Section Details'),
+        title: const Text('Section Details'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Section Name: $sectionName'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Section Status: $sectionStatus'),
           ],
         ),

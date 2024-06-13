@@ -5,7 +5,6 @@ class ConstraintStyleFeatures {
   static const double cardTitleFontSizeRatio = 0.06;
   static const double cardSmallTitleFontSizeRatio = 0.09;
   static const double cardSubtitleFontSizeRatio = 0.06;
-  static const double cardSmallSubtitleFontSizeRatio = 0.09;
   static const double cardVerticalSpacingRatio = 0.02;
   static const double spaceBetweenElements = 20;
 

@@ -8,13 +8,10 @@ import '../widgets/most_used_button.dart';
 import 'global_interface.dart';
 
 class AllSectionsScreen extends StatelessWidget {
-  final GlobalInterfaceController globalInterfaceController =
-  Get.put(GlobalInterfaceController());
-
-   AllSectionsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final GlobalInterfaceController globalInterfaceController = Get.put(GlobalInterfaceController());
+globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
@@ -23,9 +20,11 @@ class AllSectionsScreen extends StatelessWidget {
         ),
       ),
     );
+
     globalInterfaceController.addExtraWidget(
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
     );
+
     globalInterfaceController.addExtraWidget(
       Expanded(
         child: Obx(

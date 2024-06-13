@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../controllers/dropdown_list_controller.dart';
 import '../style/constraint_style_features.dart';
 import '../style/text_style_features.dart';
 import 'custom_dropdown.dart';
@@ -6,10 +7,9 @@ import 'custom_dropdown.dart';
 
 class CustomSidebar extends StatelessWidget {
   final String loggedInUser;
-  final List<CustomDropdown> dropdowns;
+  final List<DropdownListController> dropdowns;
 
-  const CustomSidebar({
-    Key? key,
+  const CustomSidebar({super.key,
     required this.dropdowns,
     required this.loggedInUser,
   });
@@ -57,12 +57,12 @@ class CustomSidebar extends StatelessWidget {
                   if (index < dropdowns.length - 1) {
                     return Column(
                       children: [
-                        CustomDropdownWidget(dropdown: dropdowns[index]),
+                        CustomDropdownWidget(dropdownController: dropdowns[index]),
                         const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
                       ],
                     );
                   } else {
-                    return CustomDropdownWidget(dropdown: dropdowns[index]);
+                    return CustomDropdownWidget(dropdownController: dropdowns[index]);
                   }
                 },
               ),

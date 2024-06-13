@@ -35,6 +35,7 @@ import '../style/text_style_features.dart';
               final double cardPadding = availableWidth * ConstraintStyleFeatures.cardPaddingRatio; // Use the extracted constraint constant
 
               return Container(
+
                 padding: EdgeInsets.all(cardPadding),
 
                 child: Column(

@@ -1,44 +1,21 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:get/get_core/src/get_main.dart';
+import '../controllers/dropdown_list_controller.dart';
 import '../style/color_style_features.dart';
 import '../style/text_style_features.dart';
 
-class CustomDropdown extends GetxController {
-  final String name;
-  final List<String> choices;
-  RxString selectedChoice = RxString('');
-
-  CustomDropdown({required this.name, required this.choices});
-
-  void setSelectedChoice(String? choice) {
-    selectedChoice.value = choice ?? "  ";
-    printSelectedChoice();
-  }
-
-  void printSelectedChoice() {
-    if (kDebugMode) {
-      print(selectedChoice.value);
-    }
-  }
-}
 
 class CustomDropdownWidget extends StatefulWidget {
-  final CustomDropdown dropdown;
+  final DropdownListController dropdownController;
 
-  const CustomDropdownWidget({super.key, required this.dropdown});
+  const CustomDropdownWidget({super.key, required this.dropdownController});
 
   @override
   State<CustomDropdownWidget> createState() => _CustomDropdownWidgetState();
 }
 
 class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
-  bool isExpanded = false;
-  int hoveredIndex = -1;
-  String selectedChoice = '';
-  TextStyleFeatures textStyleFeatures = TextStyleFeatures();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +23,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
         GestureDetector(
           onTap: () {
             setState(() {
-              isExpanded = !isExpanded;
+              widget.dropdownController.isExpanded.value = !widget.dropdownController.isExpanded.value;
             });
           },
           child: Container(
@@ -60,58 +37,61 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
               children: [
                 Expanded(
                   child: Text(
-                    widget.dropdown.name,
-                    style: textStyleFeatures.dropdownNameTextStyle(isExpanded),
+                    widget.dropdownController.name,
+                    style: widget.dropdownController.textStyleFeatures.dropdownNameTextStyle(widget.dropdownController.isExpanded.value),
                   ),
                 ),
                 Icon(
-                  isExpanded ? Icons.expand_less : Icons.expand_more,
-                  color: isExpanded ? ColorStyleFeatures.onHoverColor : ColorStyleFeatures.dropdownChoiceTextColor,
+                  widget.dropdownController.isExpanded.value ? Icons.expand_less : Icons.expand_more,
+                  color: widget.dropdownController.isExpanded.value
+                      ? ColorStyleFeatures.onHoverColor
+                      : ColorStyleFeatures.dropdownChoiceTextColor,
                 ),
               ],
             ),
           ),
         ),
-        if (isExpanded)
+        if (widget.dropdownController.isExpanded.value)
           Container(
             decoration: BoxDecoration(
-              color:  ColorStyleFeatures.dropdownChoicesBackgroundColor, // Set the background color for choices list
+              color: ColorStyleFeatures.dropdownChoicesBackgroundColor,
               borderRadius: BorderRadius.circular(10),
             ),
             constraints: const BoxConstraints(maxHeight: 300),
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: widget.dropdown.choices.length,
+              itemCount: widget.dropdownController.choices.length,
               itemBuilder: (context, index) {
-                final choice = widget.dropdown.choices[index];
-                final isHovered = index == hoveredIndex;
+                final choice = widget.dropdownController.choices[index];
+                final isHovered = index == widget.dropdownController.hoveredIndex.value;
 
                 return MouseRegion(
                   cursor: SystemMouseCursors.click,
                   onEnter: (_) {
                     setState(() {
-                      hoveredIndex = index;
+                      widget.dropdownController.hoveredIndex.value = index;
                     });
                   },
                   onExit: (_) {
                     setState(() {
-                      hoveredIndex = -1;
+                      widget.dropdownController.hoveredIndex.value = -1;
                     });
                   },
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        isExpanded = false;
-                        selectedChoice = choice;
-                        hoveredIndex = -1;
+                        widget.dropdownController.isExpanded.value = false;
+                        widget.dropdownController.selectedChoice.value = choice;
+                        widget.dropdownController.hoveredIndex.value = -1;
                       });
-                      printSelectedChoice();
+                      widget.dropdownController.printSelectedChoice();
+                       Get.offNamed(widget.dropdownController.searchInsideBarRoutes(choice));
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: isHovered
-                            ?  ColorStyleFeatures.dropdownChoiceHoverColor
+                            ? ColorStyleFeatures.dropdownChoiceHoverColor
                             : ColorStyleFeatures.dropdownChoiceNonHoverColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -127,11 +107,5 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
           ),
       ],
     );
-  }
-
-  void printSelectedChoice() {
-    if (kDebugMode) {
-      print(selectedChoice);
-    }
   }
 }

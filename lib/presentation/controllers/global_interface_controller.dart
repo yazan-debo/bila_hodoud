@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/custom_dropdown.dart';
+import 'dropdown_list_controller.dart';
 
 class GlobalInterfaceController extends GetxController {
   // Reactive properties
   RxList<CustomCard> cards = <CustomCard>[].obs;
-  RxList<CustomDropdown> dropdowns = <CustomDropdown>[].obs;
+  RxList<DropdownListController> dropdowns = <DropdownListController>[].obs;
   final RxList<Widget> extraWidgets = <Widget>[].obs;
 
   // Fetch data and initialize properties
@@ -50,8 +51,8 @@ class GlobalInterfaceController extends GetxController {
   // Simulate fetching dropdowns from an API or database
   void fetchDropdowns() {
     // Replace this with your actual API or database call
-    final List<CustomDropdown> fetchedDropdowns = [
-      CustomDropdown(
+    final List<DropdownListController> fetchedDropdowns = [
+      DropdownListController(
         name: 'إدارة الطلبات',
         choices: [
           'طلبات الجملة',
@@ -60,23 +61,23 @@ class GlobalInterfaceController extends GetxController {
           'طلبات في الانتظار'
         ],
       ),
-      CustomDropdown(
+      DropdownListController(
         name: 'إدارة الأقسام',
         choices: ['المنتجات', 'الأقسام'],
       ),
-      CustomDropdown(
+      DropdownListController(
         name: 'إدارة العروض',
         choices: ['إنشاء عرض جديد', 'العروض الحاليّة'],
       ),
-      CustomDropdown(
+      DropdownListController(
         name: 'الإدارة المالية',
         choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
       ),
-      CustomDropdown(
+      DropdownListController(
         name: 'إدارة الإشعارات',
         choices: ['إشعارات النظام', 'إشعارات المستخدمين'],
       ),
-      CustomDropdown(
+      DropdownListController(
         name: 'إدارة الصلاحيات',
         choices: [
           'صلاحيّات الأدوار',
@@ -92,10 +93,12 @@ class GlobalInterfaceController extends GetxController {
   }
 
   void addExtraWidget(Widget widget) {
-    extraWidgets.add(widget);
+    if (!extraWidgets.contains(widget)) {
+      extraWidgets.add(widget);
+    }
   }
 
-  void removeExtraWidget(Widget widget) {
-    extraWidgets.remove(widget);
+  void removeExtraWidgets() {
+    extraWidgets.clear();
   }
 }
