@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.1 # Check for the latest version on pub.dev
+  http: ^0.13.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,9 +39,10 @@ dependencies:
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
+  test: any
   flutter_test:
     sdk: flutter
-
+  mockito: ^5.0.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

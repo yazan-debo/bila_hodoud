@@ -21,7 +21,7 @@ class ResponsiveTable extends StatelessWidget {
         _buildTableRow(
           'حالة الدور',
           'اسم الدور',
-          'تعديل الدور' as Widget,
+          'تعديل الدور'  ,
           isHeader: true,
         ),
         ...data.entries.map((entry) {
@@ -30,14 +30,14 @@ class ResponsiveTable extends StatelessWidget {
           return _buildTableRow(
             status ? 'فعال' : 'غير فعال',
             roleName,
-            const EditButton(),
+            const EditButton() as String,
           );
         }).toList(),
       ],
     );
   }
 
-  TableRow _buildTableRow(String cell1Text, String cell2Text, Widget cell3Widget,
+  TableRow _buildTableRow(String cell1Text, String cell2Text, String cell3Widget,
       {bool isHeader = false}) {
     final textStyle = TextStyle(
       fontFamily: 'Arabic',
@@ -60,7 +60,7 @@ class ResponsiveTable extends StatelessWidget {
         ),
         TableCell(
           child: Center(
-            child: cell3Widget,
+            child: Text(cell3Widget),
           ),
         ),
       ],

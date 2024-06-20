@@ -8,6 +8,8 @@ import '../widgets/most_used_button.dart';
 import 'global_interface.dart';
 
 class AllSectionsScreen extends StatelessWidget {
+  const AllSectionsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController = Get.put(GlobalInterfaceController());
@@ -58,7 +60,7 @@ globalInterfaceController.removeExtraWidgets();
       MostUsedButton(
         buttonText: 'أضف قسما جديدا',
         buttonIcon: Icons.add_circle_outline,
-        route: 'settings',
+        route: 'addSection',
       ),
     );
 

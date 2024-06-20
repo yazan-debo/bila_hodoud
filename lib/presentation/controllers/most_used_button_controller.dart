@@ -5,7 +5,6 @@ class MostUsedButtonController extends GetxController {
   MostUsedButtonController ({required this.route});
 
   void navigateToAddSection() {
-    print(route);
     Get.toNamed('/$route');
   }
 }

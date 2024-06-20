@@ -1,5 +1,6 @@
 import 'package:bila_hodoud/presentation/style/color_style_features.dart';
 import 'package:bila_hodoud/presentation/style/text_style_features.dart';
+import 'package:bila_hodoud/presentation/view/add_new_section.dart';
 import 'package:bila_hodoud/presentation/view/all_sections_interface.dart';
 import 'package:bila_hodoud/presentation/view/home_screen.dart';
 import 'package:bila_hodoud/presentation/view/login_screen.dart';
@@ -25,12 +26,13 @@ class MyApp extends StatelessWidget {
       title: 'Your App',
       initialRoute: '/all-sections',
       getPages: [
-        GetPage(name: '/home', page: () => HomeScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
         GetPage(name: '/settings', page: () => SettingsScreen()),
         GetPage(name: '/logout', page: () => LoginScreen()),
-        GetPage(name: '/section-details', page: () => SectionDetailsScreen()),
-        GetPage(name: '/all-sections', page: () => AllSectionsScreen()),
+        GetPage(name: '/section-details', page: () => const SectionDetailsScreen()),
+        GetPage(name: '/all-sections', page: () => const AllSectionsScreen()),
         GetPage(name: '/sys_roles', page: () => const SysRolesInterface()),
+        GetPage(name: '/addSection', page: () => const AddNewSection()),
 
       ],
       theme: ThemeData(
