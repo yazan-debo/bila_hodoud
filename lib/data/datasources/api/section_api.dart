@@ -8,6 +8,24 @@ import '../../models/section_model.dart';
 import 'api_config.dart';
 
 class SectionApi {
+  Future<List<SectionModel>> getAllSections() async{
+    const url = '${ApiConfig.baseUrl}section';
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var responseData = jsonDecode(response.body);
+      List<SectionModel> sections = [];
+
+      for (var sectionData in responseData) {
+        var section = SectionModel.fromJson(sectionData);
+        sections.add(section);
+      }
+
+      return sections;
+    } else {
+      throw Exception('Failed to fetch sections');
+    }
+  }
   Future<void> createSection(SectionModel sectionModel) async{
     const url = '${ApiConfig.baseUrl}section';
 

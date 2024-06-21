@@ -8,9 +8,16 @@ class TextStyleFeatures {
 
   static TextStyle generalTextStyle = TextStyle(
     fontFamily: fontFamily,
+    fontSize: Get.mediaQuery.size.width * 0.02,
+   fontWeight: FontWeight.bold,
+    color: ColorStyleFeatures.generalTextColor,
+  );
+
+  static TextStyle headLinesTextStyle = TextStyle(
+    fontFamily: fontFamily,
     fontSize: Get.mediaQuery.size.width * 0.03,
     fontWeight: FontWeight.bold,
-    color: ColorStyleFeatures.generalTextColor,
+    color: ColorStyleFeatures.headLinesTextColor,
   );
 
   static TextStyle mostUsedButtonTextStyle(double screenSpace) {

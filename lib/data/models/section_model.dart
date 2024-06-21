@@ -1,6 +1,7 @@
 import '../../domain/entities/section.dart';
 
 class SectionModel {
+  int? id;
   final String name;
   final int priority;
   final bool isVisible;
@@ -21,6 +22,7 @@ class SectionModel {
       description: json['description'],
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

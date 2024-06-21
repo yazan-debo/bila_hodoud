@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ColorStyleFeatures {
-  static const Color generalTextColor = Color(0xFF394D96);
+  static const Color headLinesTextColor = Color(0xFF394D96);
+  static const Color generalTextColor = Color(0xFF030303);
+
   static const Color cardColor = Color(0xFFE9ECF8);
   static const Color onHoverColor = Colors.amber;
   static const Color dropdownChoicesBackgroundColor = Color(0xFF55579B);

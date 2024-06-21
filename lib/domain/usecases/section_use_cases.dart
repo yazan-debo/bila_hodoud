@@ -12,4 +12,7 @@ class SectionUseCases {
 
   Future<void> editSection(Section section, int id) async {
     await sectionRepository.editSection(section , id);}
+  Future<List<Section>> getAllSections() {
+    return sectionRepository.getAllSections();
+  }
 }

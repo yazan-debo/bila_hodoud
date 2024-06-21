@@ -1,5 +1,9 @@
+import 'package:bila_hodoud/domain/repositories/section_repository.dart';
+import 'package:bila_hodoud/domain/usecases/section_use_cases.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../data/datasources/api/section_api.dart';
+import '../../data/repositories/section_repository_impl.dart';
 import '../controllers/global_interface_controller.dart';
 import '../style/constraint_style_features.dart';
 import '../style/text_style_features.dart';
@@ -12,13 +16,18 @@ class AllSectionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SectionApi sectionApi = SectionApi();
+    final SectionRepository sectionRepository = SectionRepositoryImpl(sectionApi);
+    final SectionUseCases sectionUseCases = SectionUseCases(sectionRepository);
+    sectionUseCases.getAllSections();
+
     final GlobalInterfaceController globalInterfaceController = Get.put(GlobalInterfaceController());
 globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
           'الأقسام الموجودة حالياً',
-          style: TextStyleFeatures.generalTextStyle,
+          style: TextStyleFeatures.headLinesTextStyle,
         ),
       ),
     );

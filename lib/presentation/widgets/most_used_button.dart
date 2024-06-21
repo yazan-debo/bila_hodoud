@@ -28,9 +28,7 @@ class MostUsedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ConstraintStyleFeatures constraintStyleFeatures = ConstraintStyleFeatures();
 
-    SectionApi sectionApi = SectionApi();
-    final SectionRepository sectionRepository = SectionRepositoryImpl(sectionApi);
-    final SectionUseCases createNewSection = SectionUseCases(sectionRepository);
+
     Section section = Section(
         sectionName: "test2",
         sectionDescription: "test",

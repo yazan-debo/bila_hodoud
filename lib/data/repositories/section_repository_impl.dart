@@ -31,6 +31,21 @@ class SectionRepositoryImpl implements SectionRepository{
 
     await sectionApi.editSection(sectionModel , id);
   }
+
+  @override
+  Future<List<Section>> getAllSections() async {
+    var sectionModels = await sectionApi.getAllSections();
+
+    var sections = sectionModels.map((sectionModel) => Section(
+      id: sectionModel.id,
+      sectionName: sectionModel.name,
+      sectionDescription: sectionModel.description,
+      sectionStatus: sectionModel.isVisible,
+      sectionOrder: sectionModel.priority,
+    )).toList();
+
+    return sections;
+  }
   
   
 }
