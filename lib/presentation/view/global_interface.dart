@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../core/components/custom_side_bar.dart';
+import '../../core/constants/style/constraint_style_features.dart';
 import '../controllers/global_interface_controller.dart';
-import '../style/constraint_style_features.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/custom_side_bar.dart';
+
+import '../../core/components/custom_app_bar.dart';
 
 class GlobalInterface extends StatelessWidget {
   const GlobalInterface({super.key});
@@ -30,7 +32,8 @@ class GlobalInterface extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomAppBar(),
-                    const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
+                    const SizedBox(
+                        height: ConstraintStyleFeatures.spaceBetweenElements),
                     ...Get.put(GlobalInterfaceController()).extraWidgets,
                   ],
                 ),

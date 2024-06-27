@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
-import '../style/text_style_features.dart';
+import '../../core/constants/style/text_style_features.dart';
 
 class DropdownListController extends GetxController {
   Map<String, String> sideBarRoutesMap = {
     "طلبات الجملة": "",
     "طلبات تم إلغاؤها": "",
     "طلبات في طريقها للزبون": "",
-    "طلبات في الانتظار": "",
+    "طلبات في الانتظار": "/pending-orders",
     "إدارة الأقسام": "",
     "المنتجات": "",
     "الأقسام": "/all-sections",
@@ -26,6 +26,7 @@ class DropdownListController extends GetxController {
     "أدوار المستخدمين": "",
     "حسابات المستخدمين": "",
     "أدوار النظام": "/sys_roles",
+    "المكتبات": "/libraries_screen",
   };
   final String name;
   final List<String> choices;
@@ -40,6 +41,7 @@ class DropdownListController extends GetxController {
     selectedChoice.value = choice ?? ' ';
     printSelectedChoice();
   }
+
   String searchInsideBarRoutes(String choice) {
     for (var entry in sideBarRoutesMap.entries) {
       if (entry.key == choice) {

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../widgets/custom_card.dart';
-import '../widgets/custom_dropdown.dart';
+import '../../core/components/custom_dropdown.dart';
 import 'dropdown_list_controller.dart';
 
 class GlobalInterfaceController extends GetxController {
   // Reactive properties
-  RxList<CustomCard> cards = <CustomCard>[].obs;
+
   RxList<DropdownListController> dropdowns = <DropdownListController>[].obs;
   final RxList<Widget> extraWidgets = <Widget>[].obs;
 
@@ -14,38 +13,8 @@ class GlobalInterfaceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchCards();
+
     fetchDropdowns();
-  }
-
-  // Simulate fetching cards from an API or database
-
-  void fetchCards() {
-    // Replace this with your actual API or database call
-    List<CustomCard> fetchedCards = [
-      CustomCard(
-        sectionName: 'القسم 1',
-        sectionStatus: 'الحالة 1',
-      ),
-      CustomCard(
-        sectionName: 'القسم 2',
-        sectionStatus: 'الحالة 2',
-      ),
-      CustomCard(
-        sectionName: 'القسم 3',
-        sectionStatus: 'الحالة 3',
-      ),
-      CustomCard(
-        sectionName: 'القسم 4',
-        sectionStatus: 'الحالة 4',
-      ),
-      CustomCard(
-        sectionName: 'القسم 4',
-        sectionStatus: 'الحالة 4',
-      ),
-    ];
-
-    cards.value = fetchedCards;
   }
 
   // Simulate fetching dropdowns from an API or database
@@ -63,7 +32,10 @@ class GlobalInterfaceController extends GetxController {
       ),
       DropdownListController(
         name: 'إدارة الأقسام',
-        choices: ['المنتجات', 'الأقسام'],
+        choices: [
+          'الأقسام',
+          'المكتبات',
+        ],
       ),
       DropdownListController(
         name: 'إدارة العروض',
@@ -87,7 +59,6 @@ class GlobalInterfaceController extends GetxController {
         ],
       ),
     ];
-
 
     dropdowns.value = fetchedDropdowns;
   }
