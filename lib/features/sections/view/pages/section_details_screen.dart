@@ -1,3 +1,4 @@
+import 'package:bila_hodoud/features/products/view/pages/modify_product/modify_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -8,7 +9,7 @@ import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../core/components/most_used_button.dart';
 import '../../../orders/view/widgets/paid_by_transfer_section.dart';
-import '../../../permissions/view/widgets/sys_roles_table.dart';
+
 import '../../../../presentation/view/global_interface.dart';
 import '../../../products/view/widgets/products_section.dart';
 import '../../../subsections/view/pages/modify_subsection_screen.dart';
@@ -135,7 +136,9 @@ class _SectionDetailsScreenState extends State<SectionDetailsScreen> {
                   setState(() => _selectedIndex = index);
                 },
                 children: <Widget>[
-                  ProductsSection(),
+                  ProductsSection(
+                    sectionId: widget.sectionId ?? 0,
+                  ),
                   SubsectionsSection(
                     sectionId: widget.sectionId ?? 0,
                   )
@@ -157,6 +160,26 @@ class _SectionDetailsScreenState extends State<SectionDetailsScreen> {
         buttonIcon: Icons.add_circle_outline,
         onTap: () {
           if (_selectedIndex == 0) {
+            switch (widget.sectionId) {
+              case 1:
+                print("1");
+                break;
+              case 2:
+                print("1");
+                break;
+              case 3:
+                print("1");
+                break;
+
+              case 4:
+                print("1");
+                break;
+              default:
+                Get.to(() => ModifyProductScreen(
+                      sectionId: widget.sectionId,
+                    ));
+                break;
+            }
           } else {
             Get.to(() => ModifySubsectionScreen(
                   sectionId: widget.sectionId,

@@ -1,9 +1,8 @@
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
-import 'package:bila_hodoud/features/subsections/controller/subsection_controller.dart';
-import 'package:bila_hodoud/features/subsections/model/models/subsection_model.dart';
-import 'package:bila_hodoud/features/subsections/model/params/subsection_params.dart';
+import 'package:bila_hodoud/features/permissions/model/models/role_model.dart';
+import 'package:bila_hodoud/features/permissions/model/params/role_params.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -18,29 +17,30 @@ import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
+import '../../controller/roles_controller.dart';
 
-class ModifySubsectionScreen extends StatefulWidget {
-  final int? sectionId;
-  final SubsectionModel? subsection;
+class ModifyRoleScreen extends StatefulWidget {
+  final RoleModel? role;
 
-  const ModifySubsectionScreen({super.key, this.subsection, this.sectionId});
+  const ModifyRoleScreen({super.key, this.role});
 
   @override
-  State<ModifySubsectionScreen> createState() => _ModifySubsectionScreenState();
+  State<ModifyRoleScreen> createState() => _ModifyRoleScreenState();
 }
 
-class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
-  final SubsectionsController? subsectionsController =
-      Get.find<SubsectionsController>();
-  final _subsectionsFormKey = GlobalKey<FormState>();
-  SubsectionParams params = SubsectionParams();
+class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
+  final RolesController? rolesController = Get.find<RolesController>();
+  final _roleFormKey = GlobalKey<FormState>();
+  RoleParams params = RoleParams();
   TextEditingController name = TextEditingController();
+  TextEditingController description = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
-    if (widget.subsection != null) {
-      name.text = widget.subsection?.name ?? "";
+    if (widget.role != null) {
+      name.text = widget.role?.name ?? "";
+      description.text = widget.role?.description ?? "";
     }
 
     super.initState();
@@ -54,7 +54,7 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
-          widget.subsection != null ? 'تعديل قسم فرعي' : 'إضافة قسم فرعي',
+          widget.role != null ? 'تعديل دور' : 'إضافة دور جديد',
           style: TextStyleFeatures.headLinesTextStyle,
         ),
       ),
@@ -63,17 +63,25 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
     );
     globalInterfaceController.addExtraWidget(Form(
-      key: _subsectionsFormKey,
+      key: _roleFormKey,
       child: Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UsedFilled(
-              label: 'اسم القسم الفرعي',
+              label: 'اسم الدور',
               controller: name,
               isMandatory: true,
               onSaved: (value) {
                 params.name = value;
+              },
+            ),
+            UsedFilled(
+              label: 'وصف الدور',
+              controller: description,
+              isMandatory: true,
+              onSaved: (value) {
+                params.description = value;
               },
             ),
           ],
@@ -90,15 +98,13 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () {
-          if (_subsectionsFormKey.currentState!.validate()) {
-            _subsectionsFormKey.currentState?.save();
+          if (_roleFormKey.currentState!.validate()) {
+            _roleFormKey.currentState?.save();
 
-            if (widget.subsection != null) {
-              subsectionsController?.updateSubsection(
-                  widget.sectionId ?? 0, widget.subsection?.id ?? 0, params);
+            if (widget.role != null) {
+              rolesController?.updateRole(widget.role?.id ?? 0, params);
             } else {
-              subsectionsController?.addSubsection(
-                  widget.sectionId ?? 0, params);
+              rolesController?.addRole(params);
             }
           }
         },

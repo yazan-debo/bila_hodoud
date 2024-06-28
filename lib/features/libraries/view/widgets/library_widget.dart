@@ -54,6 +54,22 @@ class _LibraryWidgetState extends State<LibraryWidget> {
 
             return Stack(
               children: [
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.all(cardPadding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.library.name ?? "",
+                          style: textStyleFeatures.cardTitleTextStyle(
+                              availableWidth, true),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -84,22 +100,6 @@ class _LibraryWidgetState extends State<LibraryWidget> {
                         },
                       ),
                     ],
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.all(cardPadding),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.library.name ?? "",
-                          style: textStyleFeatures.cardTitleTextStyle(
-                              availableWidth, true),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ],

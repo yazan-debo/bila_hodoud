@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
-class EditButton extends StatelessWidget {
-  const EditButton({super.key});
+class CellButton extends StatelessWidget {
+  final Function onTap;
+  final IconData icon;
+  final String label;
+
+  const CellButton(
+      {super.key,
+      required this.onTap,
+      required this.icon,
+      required this.label});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        // Handle button press event
+        onTap();
       },
-      icon: const Icon(Icons.edit),
-      label: const Text(
-        'تعديل',
+      icon: Icon(icon),
+      label: Text(
+        label,
         style: TextStyle(
           fontFamily: 'Arabic',
           fontSize: 16,

@@ -1,21 +1,31 @@
 import 'dart:convert';
 
+import 'package:bila_hodoud/features/products/model/models/quran_model.dart';
+import 'package:bila_hodoud/features/products/model/models/stationery_model.dart';
+
+import 'book_model.dart';
+import 'game_model.dart';
+
 class ProductModel {
   int? id;
-  String? barcode;
   String? name;
+  String? barcode;
   String? description;
   int? price;
   int? quantity;
   int? minimumQuantity;
-  List<String>? images;
+  String? images;
   int? sectionId;
   dynamic subSectionsId;
+  BookModel? book;
+  GameModel? game;
+  QuranModel? quran;
+  StationeryModel? stationery;
 
   ProductModel({
     this.id,
-    this.barcode,
     this.name,
+    this.barcode,
     this.description,
     this.price,
     this.quantity,
@@ -23,6 +33,10 @@ class ProductModel {
     this.images,
     this.sectionId,
     this.subSectionsId,
+    this.book,
+    this.game,
+    this.quran,
+    this.stationery,
   });
 
   factory ProductModel.fromRawJson(String str) =>
@@ -32,30 +46,37 @@ class ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json["id"],
-        barcode: json["barcode"],
         name: json["name"],
+        barcode: json["barcode"],
         description: json["description"],
         price: json["price"],
         quantity: json["quantity"],
         minimumQuantity: json["minimumQuantity"],
-        images: json["images"] == null
-            ? []
-            : List<String>.from(json["images"]!.map((x) => x)),
+        images: json["images"],
         sectionId: json["section_id"],
         subSectionsId: json["subSections_id"],
+        book: json["book"] == null ? null : BookModel.fromJson(json["book"]),
+        game: json["game"] == null ? null : GameModel.fromJson(json["book"]),
+        quran: json["quran"] == null ? null : QuranModel.fromJson(json["book"]),
+        stationery: json["stationery"] == null
+            ? null
+            : StationeryModel.fromJson(json["book"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "barcode": barcode,
         "name": name,
+        "barcode": barcode,
         "description": description,
         "price": price,
         "quantity": quantity,
         "minimumQuantity": minimumQuantity,
-        "images":
-            images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+        "images": images,
         "section_id": sectionId,
         "subSections_id": subSectionsId,
+        "book": book?.toJson(),
+        "game": game?.toJson(),
+        "quran": quran?.toJson(),
+        "stationery": stationery?.toJson(),
       };
 }
