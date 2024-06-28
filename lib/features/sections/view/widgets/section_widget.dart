@@ -63,6 +63,33 @@ class _SectionWidgetState extends State<SectionWidget> {
 
             return Stack(
               children: [
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.all(cardPadding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.section.name ?? "",
+                          style: textStyleFeatures.cardTitleTextStyle(
+                              availableWidth, true),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                            height: availableHeight *
+                                ConstraintStyleFeatures
+                                    .cardVerticalSpacingRatio),
+                        // Use the extracted constraint constant
+                        Text(
+                          widget.section.description ?? "",
+                          style: textStyleFeatures.cardTitleTextStyle(
+                              availableWidth, false),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -101,33 +128,6 @@ class _SectionWidgetState extends State<SectionWidget> {
                         },
                       )
                     ],
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.all(cardPadding),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.section.name ?? "",
-                          style: textStyleFeatures.cardTitleTextStyle(
-                              availableWidth, true),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                            height: availableHeight *
-                                ConstraintStyleFeatures
-                                    .cardVerticalSpacingRatio),
-                        // Use the extracted constraint constant
-                        Text(
-                          widget.section.description ?? "",
-                          style: textStyleFeatures.cardTitleTextStyle(
-                              availableWidth, false),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ],

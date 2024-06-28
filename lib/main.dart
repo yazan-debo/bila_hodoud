@@ -1,4 +1,5 @@
 import 'package:bila_hodoud/features/libraries/view/pages/libraries_screen.dart';
+import 'package:bila_hodoud/features/offers/view/pages/offers_screen.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
 import 'package:bila_hodoud/presentation/view/home_screen.dart';
 import 'package:bila_hodoud/features/authentication/view/pages/login_screen.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
               page: () => const PendingOrderDetailsScreen()),
           GetPage(
               name: '/libraries_screen', page: () => const LibrariesScreen()),
+          GetPage(name: '/offers_screen', page: () => const OffersScreen()),
         ],
         theme: ThemeData(
           cardColor: ColorStyleFeatures.cardColor,

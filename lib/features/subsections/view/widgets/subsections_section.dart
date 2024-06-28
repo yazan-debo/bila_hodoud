@@ -1,6 +1,6 @@
 import 'package:bila_hodoud/features/products/view/widgets/product_widget.dart';
 import 'package:bila_hodoud/features/subsections/controller/subsection_controller.dart';
-import 'package:bila_hodoud/features/subsections/view/widgets/sub_section_widget.dart';
+import 'package:bila_hodoud/features/subsections/view/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -45,6 +45,7 @@ class _SubsectionsSectionState extends State<SubsectionsSection> {
             itemBuilder: (context, index) {
               return SubSectionWidget(
                 subsection: state![index],
+                sectionId: widget.sectionId,
                 onDelete: () {
                   subsectionsController?.getSubsections(
                       widget.sectionId, false);

@@ -1,9 +1,9 @@
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
-import 'package:bila_hodoud/features/subsections/controller/subsection_controller.dart';
-import 'package:bila_hodoud/features/subsections/model/models/subsection_model.dart';
-import 'package:bila_hodoud/features/subsections/model/params/subsection_params.dart';
+import 'package:bila_hodoud/features/offers/controller/offers_controller.dart';
+import 'package:bila_hodoud/features/offers/model/models/offer_model.dart';
+import 'package:bila_hodoud/features/offers/model/params/offer_params.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -19,28 +19,26 @@ import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
 
-class ModifySubsectionScreen extends StatefulWidget {
-  final int? sectionId;
-  final SubsectionModel? subsection;
+class ModifyOfferScreen extends StatefulWidget {
+  final OfferModel? offer;
 
-  const ModifySubsectionScreen({super.key, this.subsection, this.sectionId});
+  const ModifyOfferScreen({super.key, this.offer});
 
   @override
-  State<ModifySubsectionScreen> createState() => _ModifySubsectionScreenState();
+  State<ModifyOfferScreen> createState() => _ModifyOfferScreenState();
 }
 
-class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
-  final SubsectionsController? subsectionsController =
-      Get.find<SubsectionsController>();
-  final _subsectionsFormKey = GlobalKey<FormState>();
-  SubsectionParams params = SubsectionParams();
+class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
+  final OffersController? offersController = Get.find<OffersController>();
+  final _offerFormKey = GlobalKey<FormState>();
+  OfferParams params = OfferParams();
   TextEditingController name = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
-    if (widget.subsection != null) {
-      name.text = widget.subsection?.name ?? "";
+    if (widget.offer != null) {
+      name.text = widget.offer?.name ?? "";
     }
 
     super.initState();
@@ -54,7 +52,7 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
-          widget.subsection != null ? 'تعديل قسم فرعي' : 'إضافة قسم فرعي',
+          widget.offer != null ? 'تعديل عرض' : 'إضافة عرض جديد',
           style: TextStyleFeatures.headLinesTextStyle,
         ),
       ),
@@ -63,13 +61,13 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
     );
     globalInterfaceController.addExtraWidget(Form(
-      key: _subsectionsFormKey,
+      key: _offerFormKey,
       child: Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UsedFilled(
-              label: 'اسم القسم الفرعي',
+              label: 'اسم العرض',
               controller: name,
               isMandatory: true,
               onSaved: (value) {
@@ -90,15 +88,13 @@ class _ModifySubsectionScreenState extends State<ModifySubsectionScreen> {
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () {
-          if (_subsectionsFormKey.currentState!.validate()) {
-            _subsectionsFormKey.currentState?.save();
+          if (_offerFormKey.currentState!.validate()) {
+            _offerFormKey.currentState?.save();
 
-            if (widget.subsection != null) {
-              subsectionsController?.updateSubsection(
-                  widget.sectionId ?? 0, widget.subsection?.id ?? 0, params);
+            if (widget.offer != null) {
+              offersController?.updateOffer(widget.offer?.id ?? 0, params);
             } else {
-              subsectionsController?.addSubsection(
-                  widget.sectionId ?? 0, params);
+              offersController?.addOffer(params);
             }
           }
         },

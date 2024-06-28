@@ -13,10 +13,14 @@ import '../../../../core/constants/style/text_style_features.dart';
 
 class SubSectionWidget extends StatefulWidget {
   final SubsectionModel subsection;
+  final int sectionId;
   final Function onDelete;
 
   SubSectionWidget(
-      {super.key, required this.subsection, required this.onDelete});
+      {super.key,
+      required this.subsection,
+      required this.onDelete,
+      required this.sectionId});
 
   @override
   State<SubSectionWidget> createState() => _SubSectionWidgetState();
@@ -47,6 +51,21 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
 
             return Stack(
               children: [
+                Center(
+                    child: Container(
+                  padding: EdgeInsets.all(cardPadding),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.subsection.name ?? "",
+                        style: textStyleFeatures.cardTitleTextStyle(
+                            availableWidth, true),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -59,6 +78,7 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
                         onTap: () {
                           Get.to(() => ModifySubsectionScreen(
                                 subsection: widget.subsection,
+                                sectionId: widget.sectionId,
                               ));
                         },
                       ),
@@ -79,21 +99,6 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
                     ],
                   ),
                 ),
-                Center(
-                    child: Container(
-                  padding: EdgeInsets.all(cardPadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "اسم القسم",
-                        style: textStyleFeatures.cardTitleTextStyle(
-                            availableWidth, true),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                )),
               ],
             );
           },
