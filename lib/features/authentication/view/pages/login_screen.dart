@@ -1,7 +1,6 @@
 import 'package:bila_hodoud/features/authentication/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/constants/style/color_style_features.dart';
