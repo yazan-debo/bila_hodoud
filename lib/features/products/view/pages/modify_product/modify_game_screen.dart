@@ -22,6 +22,7 @@ import '../../../../../core/components/most_used_button.dart';
 import '../../../../../core/components/used_filled.dart';
 import '../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../core/constants/style/text_style_features.dart';
+import '../../../../../core/constants/urls.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
 import '../../../controller/file_upload_controller.dart';
@@ -40,7 +41,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
   final ProductsController? productsController = Get.find<ProductsController>();
 
   final FileUploadController fileUploadController =
-  Get.put(FileUploadController());
+      Get.put(FileUploadController());
   final _gameFormKey = GlobalKey<FormState>();
   ProductParams params = ProductParams();
   TextEditingController name = TextEditingController();
@@ -90,7 +91,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
-    Get.put(GlobalInterfaceController());
+        Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
@@ -190,7 +191,6 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                   params.game?.numOfPlayers = value;
                 },
               ),
-
               UsedFilled(
                 label: 'الأعمار المستهدفة',
                 controller: targetAge,
@@ -214,48 +214,71 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                       width: 15.w,
                       height: 12.w,
                       decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)),
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
                       child: Center(
                           child: GestureDetector(
-                            onTap: () {
-                              _selectFile();
-                            },
-                            child: SizedBox(
-                              width: 13.w,
-                              height: 10.w,
-                              child: Center(
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.grey,
-                                  size: 33,
-                                ),
-                              ),
+                        onTap: () {
+                          _selectFile();
+                        },
+                        child: SizedBox(
+                          width: 13.w,
+                          height: 10.w,
+                          child: Center(
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.grey,
+                              size: 33,
                             ),
-                          ))),
-                  Obx(
-                        () =>
-                        Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: fileUploadController.images.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.memory(
-                                        fileUploadController.images[index]
-                                            .image,
-                                        height: 10.w,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Text(fileUploadController.images[index]
-                                          .fileName)
-                                    ],
-                                  ));
-                            },
                           ),
                         ),
+                      ))),
+                  Obx(
+                    () => fileUploadController.images.isEmpty &&
+                            widget.product != null
+                        ? Expanded(
+                            child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              SizedBox(
+                                  child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.network(
+                                    Urls.imageUrl +
+                                        widget.product!.images!
+                                            .replaceAll('[', "")
+                                            .replaceAll(']', '')
+                                            .replaceAll('"', "")
+                                            .replaceAll("\\", ""),
+                                    height: 10.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Text("")
+                                ],
+                              ))
+                            ],
+                          ))
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: fileUploadController.images.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                    child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.memory(
+                                      fileUploadController.images[index].image,
+                                      height: 10.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(fileUploadController
+                                        .images[index].fileName)
+                                  ],
+                                ));
+                              },
+                            ),
+                          ),
                   )
                 ],
               )
@@ -295,7 +318,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
               }
 
               bool? isClear =
-              await productsController?.addProduct(params, images);
+                  await productsController?.addProduct(params, images);
               if (isClear ?? false) {
                 fileUploadController.clear();
               }

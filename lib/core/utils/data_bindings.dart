@@ -7,6 +7,7 @@ import "package:get/get.dart";
 
 import "../../features/authentication/controller/login_controller.dart";
 import "../../features/sections/controller/all_sections_controller.dart";
+import "../../features/subsections/controller/dropdown_controller.dart";
 
 class DataBindings implements Bindings {
   @override
@@ -18,5 +19,6 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => ProductsController(), fenix: true);
     Get.lazyPut(() => RolesController(), fenix: true);
     Get.lazyPut(() => OffersController(), fenix: true);
+    Get.lazyPut(() => DropdownController(), fenix: true);
   }
 }

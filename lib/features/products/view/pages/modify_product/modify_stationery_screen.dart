@@ -22,6 +22,7 @@ import '../../../../../core/components/most_used_button.dart';
 import '../../../../../core/components/used_filled.dart';
 import '../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../core/constants/style/text_style_features.dart';
+import '../../../../../core/constants/urls.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
 import '../../../controller/file_upload_controller.dart';
@@ -223,26 +224,52 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                         ),
                       ))),
                   Obx(
-                    () => Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: fileUploadController.images.length,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                              child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                    () => fileUploadController.images.isEmpty &&
+                            widget.product != null
+                        ? Expanded(
+                            child: ListView(
+                            shrinkWrap: true,
                             children: [
-                              Image.memory(
-                                fileUploadController.images[index].image,
-                                height: 10.w,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(fileUploadController.images[index].fileName)
+                              SizedBox(
+                                  child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.network(
+                                    Urls.imageUrl +
+                                        widget.product!.images!
+                                            .replaceAll('[', "")
+                                            .replaceAll(']', '')
+                                            .replaceAll('"', "")
+                                            .replaceAll("\\", ""),
+                                    height: 10.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Text("")
+                                ],
+                              ))
                             ],
-                          ));
-                        },
-                      ),
-                    ),
+                          ))
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: fileUploadController.images.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                    child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.memory(
+                                      fileUploadController.images[index].image,
+                                      height: 10.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(fileUploadController
+                                        .images[index].fileName)
+                                  ],
+                                ));
+                              },
+                            ),
+                          ),
                   )
                 ],
               )

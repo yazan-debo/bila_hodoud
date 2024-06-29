@@ -30,15 +30,16 @@ class ModifySectionScreen extends StatefulWidget {
 
 class _ModifySectionScreenState extends State<ModifySectionScreen> {
   final AllSectionsController? getAllSectionsController =
-  Get.find<AllSectionsController>();
-  final DropdownController dropdownController =
-  Get.put(DropdownController());
+      Get.find<AllSectionsController>();
+  final DropdownController? dropdownController = Get.find<DropdownController>();
+
+  // final DropdownController dropdownController =
+  // Get.put(DropdownController());
 
   final _sectionFormKey = GlobalKey<FormState>();
   SectionParams params = SectionParams();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
-
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
     if (widget.section != null) {
       name.text = widget.section?.name ?? "";
       description.text = widget.section?.description ?? "";
-      dropdownController.change(widget.section?.priority ?? 1);
+      dropdownController?.change(widget.section?.priority ?? 1);
     }
 
     super.initState();
@@ -55,7 +56,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
-    Get.put(GlobalInterfaceController());
+        Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
@@ -94,12 +95,11 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
               height: 2.h,
             ),
 
-            Obx(() =>
-                CustomDropdownList(
+            Obx(() => CustomDropdownList(
                   hint: "ترتيب القسم",
                   label: "ترتيب القسم",
                   onChanged: (value) {
-                    dropdownController.change(value);
+                    dropdownController?.change(value);
                   },
                   items: List<DropdownMenuItem<int>>.generate(
                       widget.sectionsNumber ?? 0, (index) {
@@ -114,7 +114,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
                       ),
                     );
                   }),
-                  selectedItem: dropdownController.selectedItem.value,
+                  selectedItem: dropdownController?.selectedItem.value,
                 )),
 
             // Row(
@@ -183,7 +183,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
         onTap: () {
           if (_sectionFormKey.currentState!.validate()) {
             _sectionFormKey.currentState?.save();
-            params.priority = dropdownController.selectedItem.value;
+            params.priority = dropdownController?.selectedItem.value;
             if (widget.section != null) {
               getAllSectionsController?.updateSection(
                   widget.section?.id ?? 0, params);
