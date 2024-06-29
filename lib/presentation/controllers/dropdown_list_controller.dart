@@ -5,9 +5,9 @@ import '../../core/constants/style/text_style_features.dart';
 
 class DropdownListController extends GetxController {
   Map<String, String> sideBarRoutesMap = {
-    "طلبات الجملة": "",
-    "طلبات تم إلغاؤها": "",
-    "طلبات في طريقها للزبون": "",
+    "طلبات تم تنفيذها": "/done_orders",
+    "طلبات تم إلغاؤها": "/cancelled_orders",
+    "طلبات في طريقها للزبون": "/processing_orders",
     "طلبات في الانتظار": "/pending-orders",
     "إدارة الأقسام": "",
     "المنتجات": "",

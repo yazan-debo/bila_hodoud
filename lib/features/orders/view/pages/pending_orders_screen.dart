@@ -11,7 +11,9 @@ import '../widgets/paid_by_transfer_section.dart';
 import '../widgets/ordered_now_section.dart';
 
 class PendingOrdersScreen extends StatefulWidget {
-  const PendingOrdersScreen({super.key});
+  final int? initialPage;
+
+  const PendingOrdersScreen({super.key, this.initialPage});
 
   @override
   State<PendingOrdersScreen> createState() => _PendingOrdersScreenState();
@@ -25,7 +27,10 @@ class _PendingOrdersScreenState extends State<PendingOrdersScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    if (widget.initialPage != null) {
+      _selectedIndex = widget.initialPage!;
+    }
+    _pageController = PageController(initialPage: _selectedIndex);
   }
 
   @override

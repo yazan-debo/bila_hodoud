@@ -24,7 +24,7 @@ class GlobalInterfaceController extends GetxController {
       DropdownListController(
         name: 'إدارة الطلبات',
         choices: [
-          'طلبات الجملة',
+          'طلبات تم تنفيذها',
           'طلبات تم إلغاؤها',
           'طلبات في طريقها للزبون',
           'طلبات في الانتظار'

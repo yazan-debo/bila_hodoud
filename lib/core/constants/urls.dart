@@ -9,4 +9,5 @@ class Urls {
   static const String sectionSubsection = "section_subsections";
   static const String role = "role";
   static const String offer = "offer";
+  static const String orders = "orders";
 }
