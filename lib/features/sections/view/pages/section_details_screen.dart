@@ -1,4 +1,5 @@
 import 'package:bila_hodoud/features/products/view/pages/modify_product/modify_product_screen.dart';
+import 'package:bila_hodoud/features/products/view/pages/modify_product/modify_stationery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -11,6 +12,9 @@ import '../../../../core/components/most_used_button.dart';
 import '../../../orders/view/widgets/paid_by_transfer_section.dart';
 
 import '../../../../presentation/view/global_interface.dart';
+import '../../../products/view/pages/modify_product/modify_book_screen.dart';
+import '../../../products/view/pages/modify_product/modify_game_screen.dart';
+import '../../../products/view/pages/modify_product/modify_quran_screen.dart';
 import '../../../products/view/widgets/products_section.dart';
 import '../../../subsections/view/pages/modify_subsection_screen.dart';
 import '../../../subsections/view/widgets/subsections_section.dart';
@@ -162,17 +166,25 @@ class _SectionDetailsScreenState extends State<SectionDetailsScreen> {
           if (_selectedIndex == 0) {
             switch (widget.sectionId) {
               case 1:
-                print("1");
+                Get.to(() => ModifyBookScreen(
+                      sectionId: widget.sectionId,
+                    ));
                 break;
               case 2:
-                print("1");
+                Get.to(() => ModifyGameScreen(
+                      sectionId: widget.sectionId,
+                    ));
                 break;
               case 3:
-                print("1");
+                Get.to(() => ModifyStationeryScreen(
+                      sectionId: widget.sectionId,
+                    ));
                 break;
 
               case 4:
-                print("1");
+                Get.to(() => ModifyQuranScreen(
+                      sectionId: widget.sectionId,
+                    ));
                 break;
               default:
                 Get.to(() => ModifyProductScreen(

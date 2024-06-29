@@ -7,9 +7,14 @@ import '../controllers/global_interface_controller.dart';
 
 import '../../core/components/custom_app_bar.dart';
 
-class GlobalInterface extends StatelessWidget {
+class GlobalInterface extends StatefulWidget {
   const GlobalInterface({super.key});
 
+  @override
+  State<GlobalInterface> createState() => _GlobalInterfaceState();
+}
+
+class _GlobalInterfaceState extends State<GlobalInterface> {
   @override
   Widget build(BuildContext context) {
     return Directionality(

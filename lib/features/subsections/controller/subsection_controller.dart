@@ -102,10 +102,6 @@ class SubsectionsController extends GetxController
       var response =
           await http.put(Uri.parse(url), headers: headers, body: body);
 
-      print(params.toJson());
-      print(sectionId);
-      print(subsectionId);
-
       if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();

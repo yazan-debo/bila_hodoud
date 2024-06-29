@@ -69,6 +69,10 @@ class GlobalInterfaceController extends GetxController {
     }
   }
 
+  void refreshWidget() {
+    extraWidgets.clear();
+  }
+
   void removeExtraWidgets() {
     extraWidgets.clear();
   }
