@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import '../models/book_model.dart';
+import '../models/game_model.dart';
+import '../models/quran_model.dart';
+import '../models/stationery_model.dart';
+
 class ProductParams {
   String? name;
   String? barcode;
@@ -9,6 +14,11 @@ class ProductParams {
   String? minimumQuantity;
   String? sectionId;
   String? subSectionId;
+  dynamic subSectionsId;
+  BookModel? book;
+  GameModel? game;
+  QuranModel? quran;
+  StationeryModel? stationery;
 
   ProductParams({
     this.name,
@@ -19,6 +29,10 @@ class ProductParams {
     this.minimumQuantity,
     this.sectionId,
     this.subSectionId,
+    this.book,
+    this.game,
+    this.quran,
+    this.stationery,
   });
 
   factory ProductParams.fromRawJson(String str) =>
@@ -35,9 +49,16 @@ class ProductParams {
         minimumQuantity: json["minimumQuantity"],
         sectionId: json["section_id"],
         subSectionId: json["subSection_id"],
+        book: json["book"] == null ? null : BookModel.fromJson(json["book"]),
+        game: json["game"] == null ? null : GameModel.fromJson(json["game"]),
+        quran:
+            json["quran"] == null ? null : QuranModel.fromJson(json["quran"]),
+        stationery: json["stationery"] == null
+            ? null
+            : StationeryModel.fromJson(json["stationery"]),
       );
 
-  Map<String, String> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name ?? "",
         "barcode": barcode ?? "",
         "description": description ?? "",
@@ -46,5 +67,9 @@ class ProductParams {
         "minimumQuantity": minimumQuantity ?? "",
         "section_id": sectionId ?? "",
         "subSection_id": subSectionId ?? "",
+        if (book != null) "book": book?.toJson(),
+        if (game != null) "game": game?.toJson(),
+        if (quran != null) "quran": quran?.toJson(),
+        if (stationery != null) "stationery": stationery?.toJson(),
       };
 }

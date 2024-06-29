@@ -4,7 +4,7 @@ class QuranModel {
   int? id;
   String? publisher;
   String? size;
-  int? numOfPages;
+  dynamic numOfPages;
   String? printType;
   String? specifications;
   int? productId;
@@ -45,14 +45,11 @@ class QuranModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "publisher": publisher,
         "size": size,
         "num_of_pages": numOfPages,
         "print_type": printType,
         "specifications": specifications,
         "product_id": productId,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
       };
 }

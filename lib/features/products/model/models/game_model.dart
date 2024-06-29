@@ -6,7 +6,7 @@ class GameModel {
   String? goals;
   String? materials;
   String? manufacturer;
-  int? numOfPlayers;
+  dynamic numOfPlayers;
   int? productId;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -28,7 +28,8 @@ class GameModel {
 
   String toRawJson() => json.encode(toJson());
 
-  factory GameModel.fromJson(Map<String, dynamic> json) => GameModel(
+  factory GameModel.fromJson(Map<String, dynamic> json) =>
+      GameModel(
         id: json["id"],
         targetAge: json["target_age"],
         goals: json["goals"],
@@ -44,15 +45,15 @@ class GameModel {
             : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
+  Map<String, dynamic> toJson() =>
+      {
+
         "target_age": targetAge,
         "goals": goals,
         "materials": materials,
         "manufacturer": manufacturer,
         "num_of_players": numOfPlayers,
         "product_id": productId,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
+
       };
 }

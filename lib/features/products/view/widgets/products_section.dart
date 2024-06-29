@@ -42,7 +42,11 @@ class _ProductsSectionState extends State<ProductsSection> {
             itemCount: state?.length ?? 0,
             itemBuilder: (context, index) {
               return ProductWidget(
+                sectionId: widget.sectionId,
                 product: state![index],
+                onDelete: () {
+                  productsController?.getProducts(widget.sectionId, false);
+                },
               );
             },
           ),

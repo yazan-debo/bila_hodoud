@@ -1,5 +1,8 @@
 import 'package:bila_hodoud/features/libraries/view/pages/libraries_screen.dart';
 import 'package:bila_hodoud/features/offers/view/pages/offers_screen.dart';
+import 'package:bila_hodoud/features/orders/view/pages/cancelled_orders_screen.dart';
+import 'package:bila_hodoud/features/orders/view/pages/done_orders_screen.dart';
+import 'package:bila_hodoud/features/orders/view/pages/delivery_orders_screen.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
 import 'package:bila_hodoud/presentation/view/home_screen.dart';
 import 'package:bila_hodoud/features/authentication/view/pages/login_screen.dart';
@@ -83,6 +86,12 @@ class MyApp extends StatelessWidget {
           GetPage(
               name: '/display_stationary_page',
               page: () => const DisplayStationaryPage()),
+      GetPage(              name: '/processing_orders',
+              page: () => const DeliveryOrdersScreen()),
+          GetPage(
+              name: '/cancelled_orders',
+              page: () => const CancelledOrdersScreen()),
+          GetPage(name: '/done_orders', page: () => const DoneOrdersScreen()),
         ],
         theme: ThemeData(
           cardColor: ColorStyleFeatures.cardColor,

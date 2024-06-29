@@ -1,5 +1,6 @@
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:bila_hodoud/features/products/model/models/product_model.dart';
+import 'package:bila_hodoud/features/products/view/pages/modify_product/modify_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -12,13 +13,22 @@ import '../pages/display_products/display_game_page.dart';
 import '../pages/display_products/display_product_page.dart';
 import '../pages/display_products/display_quran_page.dart';
 import '../pages/display_products/display_stationary_page.dart';
+import '../../../../core/constants/urls.dart';
+import '../pages/modify_product/modify_book_screen.dart';
+import '../pages/modify_product/modify_game_screen.dart';
+import '../pages/modify_product/modify_quran_screen.dart';
+import '../pages/modify_product/modify_stationery_screen.dart';
 
 class ProductWidget extends StatefulWidget {
   final ProductModel product;
+  final Function onDelete;
+  final int sectionId;
 
   const ProductWidget({
     super.key,
     required this.product,
+    required this.onDelete,
+    required this.sectionId,
   });
 
   @override
@@ -68,15 +78,25 @@ class _ProductWidgetState extends State<ProductWidget> {
                           height: 1.h,
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.px),
-                          ),
-                          child: Icon(
-                            Icons.document_scanner_sharp,
-                            size: 75,
-                            color: Colors.white,
-                          ),
-                        ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25.px),
+                            ),
+                            child: SizedBox(
+                              height: 75,
+                              width: 75,
+                              child: Image.network(Urls.imageUrl +
+                                  widget.product.images!
+                                      .replaceAll('[', "")
+                                      .replaceAll(']', '')
+                                      .replaceAll('"', "")
+                                      .replaceAll("\\", "")),
+                            )
+                            // Icon(
+                            //   Icons.document_scanner_sharp,
+                            //   size: 75,
+                            //   color: Colors.white,
+                            // ),
+                            ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25.px),
@@ -105,26 +125,37 @@ class _ProductWidgetState extends State<ProductWidget> {
                     onTap: () {
                       switch (widget.product.sectionId) {
                         case 1:
-                          print("1");
+                          Get.to(() => ModifyBookScreen(
+                                product: widget.product,
+                                sectionId: widget.sectionId,
+                              ));
                           break;
                         case 2:
-                          print("1");
+                          Get.to(() => ModifyGameScreen(
+                                product: widget.product,
+                                sectionId: widget.sectionId,
+                              ));
                           break;
                         case 3:
-                          print("1");
+                          Get.to(() => ModifyStationeryScreen(
+                                product: widget.product,
+                                sectionId: widget.sectionId,
+                              ));
                           break;
 
                         case 4:
-                          print("1");
+                          Get.to(() => ModifyQuranScreen(
+                                product: widget.product,
+                                sectionId: widget.sectionId,
+                              ));
                           break;
                         default:
-                          print("1");
+                          Get.to(() => ModifyProductScreen(
+                                product: widget.product,
+                                sectionId: widget.sectionId,
+                              ));
                           break;
                       }
-                      // Get.to(() => ModifySubsectionScreen(
-                      //   subsection: widget.subsection,
-                      //   sectionId: widget.sectionId,
-                      // ));
                     },
                   ),
                   SizedBox(
@@ -134,11 +165,11 @@ class _ProductWidgetState extends State<ProductWidget> {
                     icon: Icons.delete,
                     backgroundColor: Colors.red[600]!,
                     onTap: () async {
-                      // bool? isSuccess = await productsController
-                      //     ?.deleteSubsection(widget.subsection.id ?? 0);
-                      // if (isSuccess ?? false) {
-                      //   widget.onDelete();
-                      // }
+                      bool? isSuccess = await productsController
+                          ?.deleteProduct(widget.product.id ?? 0);
+                      if (isSuccess ?? false) {
+                        widget.onDelete();
+                      }
                     },
                   ),
                 ],

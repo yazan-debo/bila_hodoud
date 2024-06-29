@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/components/custom_dropdown_list.dart';
 import '../../../../core/components/used_filled.dart';
 import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
+import '../../../subsections/controller/dropdown_controller.dart';
 import '../../controller/all_sections_controller.dart';
 import '../../model/models/section_model.dart';
 import '../../model/params/section_params.dart';
@@ -29,11 +31,15 @@ class ModifySectionScreen extends StatefulWidget {
 class _ModifySectionScreenState extends State<ModifySectionScreen> {
   final AllSectionsController? getAllSectionsController =
       Get.find<AllSectionsController>();
+  final DropdownController? dropdownController = Get.find<DropdownController>();
+
+  // final DropdownController dropdownController =
+  // Get.put(DropdownController());
+
   final _sectionFormKey = GlobalKey<FormState>();
   SectionParams params = SectionParams();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
-  int? _selectedItem = 1;
 
   @override
   void initState() {
@@ -41,9 +47,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
     if (widget.section != null) {
       name.text = widget.section?.name ?? "";
       description.text = widget.section?.description ?? "";
-      setState(() {
-        _selectedItem = widget.section?.priority;
-      });
+      dropdownController?.change(widget.section?.priority ?? 1);
     }
 
     super.initState();
@@ -90,56 +94,79 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
             SizedBox(
               height: 2.h,
             ),
-            Row(
-              children: [
-                Text(
-                  "ترتيب القسم",
-                  style: TextStyleFeatures.generalTextStyle,
-                  textDirection: TextDirection.rtl,
-                ),
-                const SizedBox(width: 25),
-                Container(
-                  height: 8.h,
-                  width: 100.w * 100.h * 0.0004,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: ColorStyleFeatures.headLinesTextColor,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: DropdownButton<int>(
-                    hint: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        "ترتيب القسم",
-                        style: TextStyle(fontSize: 14.px),
-                      ),
-                    ),
-                    underline: Container(),
-                    value: _selectedItem,
-                    onChanged: (int? selectedItem) {
-                      setState(() {
-                        _selectedItem = selectedItem;
-                      });
-                    },
-                    items: List<DropdownMenuItem<int>>.generate(
-                        widget.sectionsNumber ?? 0, (index) {
-                      return DropdownMenuItem<int>(
-                        value: index + 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            '${index + 1}',
-                            style: TextStyle(fontSize: 18.px),
-                          ),
+
+            Obx(() => CustomDropdownList(
+                  hint: "ترتيب القسم",
+                  label: "ترتيب القسم",
+                  onChanged: (value) {
+                    dropdownController?.change(value);
+                  },
+                  items: List<DropdownMenuItem<int>>.generate(
+                      widget.sectionsNumber ?? 0, (index) {
+                    return DropdownMenuItem<int>(
+                      value: index + 1,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          '${index + 1}',
+                          style: TextStyle(fontSize: 18.px),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
+                      ),
+                    );
+                  }),
+                  selectedItem: dropdownController?.selectedItem.value,
+                )),
+
+            // Row(
+            //   children: [
+            //     Text(
+            //       "ترتيب القسم",
+            //       style: TextStyleFeatures.generalTextStyle,
+            //       textDirection: TextDirection.rtl,
+            //     ),
+            //     const SizedBox(width: 25),
+            //     Container(
+            //       height: 8.h,
+            //       width: 100.w * 100.h * 0.0004,
+            //       decoration: BoxDecoration(
+            //         border: Border.all(
+            //           color: ColorStyleFeatures.headLinesTextColor,
+            //           width: 2.0,
+            //         ),
+            //         borderRadius: BorderRadius.circular(8.0),
+            //       ),
+            //       child: DropdownButton<int>(
+            //         hint: Padding(
+            //           padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            //           child: Text(
+            //             "ترتيب القسم",
+            //             style: TextStyle(fontSize: 14.px),
+            //           ),
+            //         ),
+            //         underline: Container(),
+            //         value: _selectedItem,
+            //         onChanged: (int? selectedItem) {
+            //           setState(() {
+            //             _selectedItem = selectedItem;
+            //           });
+            //         },
+            //         items: List<DropdownMenuItem<int>>.generate(
+            //             widget.sectionsNumber ?? 0, (index) {
+            //           return DropdownMenuItem<int>(
+            //             value: index + 1,
+            //             child: Padding(
+            //               padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //               child: Text(
+            //                 '${index + 1}',
+            //                 style: TextStyle(fontSize: 18.px),
+            //               ),
+            //             ),
+            //           );
+            //         }).toList(),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -156,7 +183,7 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
         onTap: () {
           if (_sectionFormKey.currentState!.validate()) {
             _sectionFormKey.currentState?.save();
-            params.priority = _selectedItem;
+            params.priority = dropdownController?.selectedItem.value;
             if (widget.section != null) {
               getAllSectionsController?.updateSection(
                   widget.section?.id ?? 0, params);

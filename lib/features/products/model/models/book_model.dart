@@ -5,7 +5,7 @@ class BookModel {
   String? author;
   String? translator;
   String? dimensions;
-  int? numOfPages;
+  dynamic numOfPages;
   String? printType;
   String? targetAge;
   int? productId;
@@ -48,15 +48,11 @@ class BookModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "author": author,
         "translator": translator,
         "dimensions": dimensions,
         "num_of_pages": numOfPages,
         "print_type": printType,
         "target_age": targetAge,
-        "product_id": productId,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
       };
 }

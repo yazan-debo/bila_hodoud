@@ -43,13 +43,10 @@ class StationeryModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "goals": goals,
         "materials": materials,
         "manufacturer": manufacturer,
         "specifications": specifications,
         "product_id": productId,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
       };
 }

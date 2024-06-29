@@ -10,6 +10,10 @@ class AppSharedPref {
     controller.sharedPref.setString("token", user.token ?? "");
   }
 
+  String getToken() {
+    return (controller.sharedPref.getString("token") ?? "");
+  }
+
   bool isLogin() {
     return (controller.sharedPref.getString("token") ?? "").isNotEmpty;
   }

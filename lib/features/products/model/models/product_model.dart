@@ -56,11 +56,12 @@ class ProductModel {
         sectionId: json["section_id"],
         subSectionsId: json["subSections_id"],
         book: json["book"] == null ? null : BookModel.fromJson(json["book"]),
-        game: json["game"] == null ? null : GameModel.fromJson(json["book"]),
-        quran: json["quran"] == null ? null : QuranModel.fromJson(json["book"]),
+        game: json["game"] == null ? null : GameModel.fromJson(json["game"]),
+        quran:
+            json["quran"] == null ? null : QuranModel.fromJson(json["quran"]),
         stationery: json["stationery"] == null
             ? null
-            : StationeryModel.fromJson(json["book"]),
+            : StationeryModel.fromJson(json["stationery"]),
       );
 
   Map<String, dynamic> toJson() => {
