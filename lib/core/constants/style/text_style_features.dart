@@ -85,3 +85,14 @@ class LogoImage extends StatelessWidget {
     );
   }
 }
+class LogInImage extends StatelessWidget {
+  const LogInImage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'web/icons/logo.jfif',
+      fit: BoxFit.contain,
+    );
+  }
+}

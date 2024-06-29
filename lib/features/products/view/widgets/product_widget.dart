@@ -7,6 +7,11 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/components/custom_button.dart';
 import '../../../../core/constants/style/color_style_features.dart';
+import '../pages/display_products/display_book_page.dart';
+import '../pages/display_products/display_game_page.dart';
+import '../pages/display_products/display_product_page.dart';
+import '../pages/display_products/display_quran_page.dart';
+import '../pages/display_products/display_stationary_page.dart';
 
 class ProductWidget extends StatefulWidget {
   final ProductModel product;
@@ -26,7 +31,24 @@ class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+
+          if (widget.product.book != null){
+            Get.to(() =>  DisplayBookPage(productModel: widget.product,));
+          }
+          else   if (widget.product.stationery != null){
+            Get.to(() =>  DisplayStationaryPage(productModel: widget.product,));
+          }
+          else   if (widget.product.game != null){
+            Get.to(() =>  DisplayGamePage(productModel: widget.product,));
+          }
+          else   if (widget.product.quran != null){
+            Get.to(() =>  DisplayQuranPage(productModel: widget.product,));
+          } else   {
+            Get.to(() =>  DisplayProductPage(productModel: widget.product,));
+          }
+
+        },
         child: Stack(
           children: [
             Center(

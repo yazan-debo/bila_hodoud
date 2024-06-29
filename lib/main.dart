@@ -19,6 +19,11 @@ import 'core/services/settings_services.dart';
 import 'core/utils/data_bindings.dart';
 import 'features/orders/view/pages/pending_order_details_screen.dart';
 import 'features/orders/view/pages/pending_orders_screen.dart';
+import 'features/products/view/pages/display_products/display_book_page.dart';
+import 'features/products/view/pages/display_products/display_game_page.dart';
+import 'features/products/view/pages/display_products/display_product_page.dart';
+import 'features/products/view/pages/display_products/display_quran_page.dart';
+import 'features/products/view/pages/display_products/display_stationary_page.dart';
 import 'features/sections/view/pages/all_sections_page.dart';
 
 Future<void> main() async {
@@ -63,6 +68,21 @@ class MyApp extends StatelessWidget {
           GetPage(
               name: '/libraries_screen', page: () => const LibrariesScreen()),
           GetPage(name: '/offers_screen', page: () => const OffersScreen()),
+          GetPage(
+              name: '/display_product_page',
+              page: () => const DisplayProductPage()),
+          GetPage(
+              name: '/display_book_page',
+              page: () => const DisplayBookPage()),
+          GetPage(
+              name: '/display_game_page',
+              page: () => const DisplayGamePage()),
+          GetPage(
+              name: '/display_quran_page',
+              page: () => const DisplayQuranPage()),
+          GetPage(
+              name: '/display_stationary_page',
+              page: () => const DisplayStationaryPage()),
         ],
         theme: ThemeData(
           cardColor: ColorStyleFeatures.cardColor,
