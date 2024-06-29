@@ -3,6 +3,7 @@ import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
 import 'package:bila_hodoud/features/orders/controller/normal_orders_controller.dart';
 import 'package:bila_hodoud/features/orders/model/models/normal_order_model.dart';
+import 'package:bila_hodoud/features/orders/view/pages/pending_orders_screen.dart';
 import 'package:bila_hodoud/features/orders/view/widgets/normal_order_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
 import '../../controller/status_dropdown_controller.dart';
+import '../../model/params/change_status_params.dart';
 import '../../model/params/processing_order_params.dart';
 
 class ModifyProcessingOrderScreen extends StatefulWidget {
@@ -43,6 +45,7 @@ class _ModifyProcessingOrderScreenState
   ProcessingOrderParams params = ProcessingOrderParams();
   TextEditingController deliveryMethod = TextEditingController();
   TextEditingController deliveryCost = TextEditingController();
+  ChangeStatusParams params1 = ChangeStatusParams();
 
   @override
   void initState() {
@@ -191,12 +194,22 @@ class _ModifyProcessingOrderScreenState
       MostUsedButton(
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
-        onTap: () {
+        onTap: () async {
           if (_processingOrderFromKey.currentState!.validate()) {
             _processingOrderFromKey.currentState?.save();
 
-            normalOrdersController?.updateOrder(
-                widget.order?.id ?? 0, params, widget.pageIndex);
+            bool? isSuccess = await normalOrdersController?.updateOrder(
+                widget.order?.id ?? 0, params);
+            if (isSuccess ?? false) {
+              params1.status = statusDropdownController?.selectedItem.value;
+              bool? isSuccess1 = await normalOrdersController
+                  ?.changeOrderStatus(widget.order?.id ?? 0, params1);
+              if (isSuccess1 ?? false) {
+                Get.off(() => PendingOrdersScreen(
+                      initialPage: widget.pageIndex,
+                    ));
+              }
+            }
           }
         },
       ),

@@ -141,7 +141,7 @@ class NormalOrdersController extends GetxController
     }
   }
 
-  Future<void> changeOrderStatus(int orderId, ChangeStatusParams params) async {
+  Future<bool> changeOrderStatus(int orderId, ChangeStatusParams params) async {
     try {
       DialogHelper.showLoadingDialog();
 
@@ -167,15 +167,17 @@ class NormalOrdersController extends GetxController
       if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();
-        Get.offNamed("/processing_orders");
+        return true;
       } else {
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
+        return false;
       }
     } catch (e) {
       Get.back();
       DialogHelper.showErrorDialog(title: "خطأ", description: e.toString());
+      return false;
     }
   }
 
@@ -263,8 +265,10 @@ class NormalOrdersController extends GetxController
     }
   }
 
-  Future<void> updateOrder(
-      int orderId, ProcessingOrderParams params, int pageIndex) async {
+  Future<bool> updateOrder(
+    int orderId,
+    ProcessingOrderParams params,
+  ) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}dashboard/${Urls.orders}/get/$orderId';
@@ -288,17 +292,17 @@ class NormalOrdersController extends GetxController
       if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();
-        Get.off(() => PendingOrdersScreen(
-              initialPage: pageIndex,
-            ));
+        return true;
       } else {
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
+        return false;
       }
     } catch (e) {
       Get.back();
       DialogHelper.showErrorDialog(title: "خطأ", description: e.toString());
+      return true;
     }
   }
 }

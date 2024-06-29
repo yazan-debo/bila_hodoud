@@ -174,8 +174,11 @@ class _ModifyDeliveryOrderScreenState extends State<ModifyDeliveryOrderScreen> {
         buttonIcon: Icons.save,
         onTap: () async {
           params.status = statusDropdownController?.selectedItem.value;
-          normalOrdersController?.changeOrderStatus(
+          bool? isSuccess = await normalOrdersController?.changeOrderStatus(
               widget.order.id ?? 0, params);
+          if (isSuccess ?? false) {
+            Get.offNamed("/delivery_orders");
+          }
         },
       ),
     );
