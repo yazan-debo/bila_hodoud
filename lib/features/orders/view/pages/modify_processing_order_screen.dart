@@ -192,7 +192,7 @@ class _ModifyProcessingOrderScreenState
                                 }),
                           ],
                         ),
-                        if (widget.pageIndex == 1)
+                 /*       if (widget.pageIndex == 1)
                           SizedBox(
                             height: 2.h,
                           ),
@@ -211,7 +211,7 @@ class _ModifyProcessingOrderScreenState
                                     .replaceAll("\\", ""),
                             height: 10.w,
                             fit: BoxFit.cover,
-                          ),
+                          ),*/
                         SizedBox(
                           height: 2.h,
                         ),
