@@ -8,6 +8,7 @@ import "package:bila_hodoud/features/subsections/controller/subsection_controlle
 import "package:get/get.dart";
 
 import "../../features/authentication/controller/login_controller.dart";
+import "../../features/orders/controller/delivery_method_dropdown_controller.dart";
 import "../../features/orders/controller/status_dropdown_controller.dart";
 import "../../features/sections/controller/all_sections_controller.dart";
 import "../../features/subsections/controller/dropdown_controller.dart";
@@ -25,5 +26,6 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => DropdownController(), fenix: true);
     Get.lazyPut(() => StatusDropdownController(), fenix: true);
     Get.lazyPut(() => NormalOrdersController(), fenix: true);
+    Get.lazyPut(() => DeliveryMethodDropdownController(), fenix: true);
   }
 }

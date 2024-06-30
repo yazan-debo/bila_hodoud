@@ -1,6 +1,7 @@
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
+import 'package:bila_hodoud/features/orders/controller/delivery_method_dropdown_controller.dart';
 import 'package:bila_hodoud/features/orders/controller/normal_orders_controller.dart';
 import 'package:bila_hodoud/features/orders/model/models/normal_order_model.dart';
 import 'package:bila_hodoud/features/orders/view/pages/pending_orders_screen.dart';
@@ -41,6 +42,8 @@ class _ModifyProcessingOrderScreenState
       Get.find<NormalOrdersController>();
   final StatusDropdownController? statusDropdownController =
       Get.find<StatusDropdownController>();
+  final DeliveryMethodDropdownController? deliveryMethodDropdownController =
+      Get.find<DeliveryMethodDropdownController>();
   final _processingOrderFromKey = GlobalKey<FormState>();
   ProcessingOrderParams params = ProcessingOrderParams();
   TextEditingController deliveryMethod = TextEditingController();
@@ -50,9 +53,6 @@ class _ModifyProcessingOrderScreenState
   @override
   void initState() {
     // TODO: implement initState
-    if (widget.order != null) {
-      deliveryMethod.text = widget.order?.paymentMethod ?? "";
-    }
 
     statusDropdownController?.change("قيد المعالجة");
 
@@ -81,13 +81,89 @@ class _ModifyProcessingOrderScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UsedFilled(
-              label: 'طريقة التوصيل',
-              controller: deliveryMethod,
-              isMandatory: true,
-              onSaved: (value) {
-                params.deliveryMethod = value;
-              },
+            Row(
+              children: [
+                Text(
+                  "رقم الهاتف:",
+                  style:
+                      TextStyle(fontSize: 15.px, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 1.w,
+                ),
+                Text(
+                  "",
+                  style:
+                      TextStyle(fontSize: 15.px, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            Obx(() => Row(
+                  children: [
+                    Text(
+                      "طريقة التوصيل",
+                      style: TextStyleFeatures.generalTextStyle,
+                      textDirection: TextDirection.rtl,
+                    ),
+                    const SizedBox(width: 25),
+                    Container(
+                      height: 8.h,
+                      width: 100.w * 100.h * 0.0004,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: ColorStyleFeatures.headLinesTextColor,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: DropdownButton<String>(
+                        hint: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "طريقة التوصيل",
+                            style: TextStyle(fontSize: 14.px),
+                          ),
+                        ),
+                        underline: Container(),
+                        value: deliveryMethodDropdownController
+                            ?.selectedItem.value,
+                        onChanged: (String? selectedItem) {
+                          deliveryMethodDropdownController
+                              ?.change(selectedItem ?? "");
+                        },
+                        items: [
+                          DropdownMenuItem<String>(
+                            value: "شحن الى محافظة أخرى",
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                "شحن الى محافظة أخرى",
+                                style: TextStyle(fontSize: 18.px),
+                              ),
+                            ),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "توصيل ضمن دمشق",
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                "توصيل ضمن دمشق",
+                                style: TextStyle(fontSize: 18.px),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 1.h,
             ),
             UsedFilled(
               label: 'كلفة التوصيل',
@@ -197,6 +273,8 @@ class _ModifyProcessingOrderScreenState
         onTap: () async {
           if (_processingOrderFromKey.currentState!.validate()) {
             _processingOrderFromKey.currentState?.save();
+            params.deliveryMethod =
+                deliveryMethodDropdownController?.selectedItem.value;
 
             bool? isSuccess = await normalOrdersController?.updateOrder(
                 widget.order?.id ?? 0, params);
