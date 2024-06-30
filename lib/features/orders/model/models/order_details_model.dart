@@ -10,6 +10,7 @@ class OrderDetailsModel {
   String? phoneNumber;
   String? address;
   String? notes;
+  String? paymentPicture;
   List<OrderDetail>? orderDetails;
 
   OrderDetailsModel({
@@ -23,6 +24,7 @@ class OrderDetailsModel {
     this.address,
     this.notes,
     this.orderDetails,
+    this.paymentPicture,
   });
 
   factory OrderDetailsModel.fromRawJson(String str) =>
@@ -33,8 +35,9 @@ class OrderDetailsModel {
   factory OrderDetailsModel.fromJson(Map<String, dynamic> json) =>
       OrderDetailsModel(
         id: json["id"],
-        orderDate: json["order_date"] == null ? null : DateTime.parse(
-            json["order_date"]),
+        orderDate: json["order_date"] == null
+            ? null
+            : DateTime.parse(json["order_date"]),
         totalCost: json["total_cost"],
         totalNumberOfProducts: json["total_number_of_products"],
         orderStatus: json["order_status"],
@@ -42,17 +45,17 @@ class OrderDetailsModel {
         phoneNumber: json["phone_number"],
         address: json["address"],
         notes: json["notes"],
-        orderDetails: json["order_details"] == null ? [] : List<
-            OrderDetail>.from(
-            json["order_details"]!.map((x) => OrderDetail.fromJson(x))),
+        paymentPicture: json["payment_picture"],
+        orderDetails: json["order_details"] == null
+            ? []
+            : List<OrderDetail>.from(
+                json["order_details"]!.map((x) => OrderDetail.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id": id,
-        "order_date": "${orderDate!.year.toString().padLeft(
-            4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!
-            .day.toString().padLeft(2, '0')}",
+        "order_date":
+            "${orderDate!.year.toString().padLeft(4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!.day.toString().padLeft(2, '0')}",
         "total_cost": totalCost,
         "total_number_of_products": totalNumberOfProducts,
         "order_status": orderStatus,
@@ -60,8 +63,10 @@ class OrderDetailsModel {
         "phone_number": phoneNumber,
         "address": address,
         "notes": notes,
-        "order_details": orderDetails == null ? [] : List<dynamic>.from(
-            orderDetails!.map((x) => x.toJson())),
+        "payment_picture": notes,
+        "order_details": orderDetails == null
+            ? []
+            : List<dynamic>.from(orderDetails!.map((x) => x.toJson())),
       };
 }
 
@@ -85,8 +90,7 @@ class OrderDetail {
 
   String toRawJson() => json.encode(toJson());
 
-  factory OrderDetail.fromJson(Map<String, dynamic> json) =>
-      OrderDetail(
+  factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
         id: json["id"],
         name: json["name"],
         quantity: json["quantity"],
@@ -94,8 +98,7 @@ class OrderDetail {
         totalPrice: json["total_price"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "quantity": quantity,

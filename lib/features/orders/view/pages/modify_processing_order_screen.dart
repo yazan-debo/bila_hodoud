@@ -18,6 +18,7 @@ import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
 
+import '../../../../core/constants/urls.dart';
 import '../../../../presentation/controllers/global_interface_controller.dart';
 
 import '../../../../core/components/most_used_button.dart';
@@ -197,30 +198,20 @@ class _ModifyProcessingOrderScreenState
                           ),
                         if (widget.pageIndex == 1)
                           Text(
-                            "تفاصيل الطلب:",
+                            "صورة الوصل:",
                             style: TextStyleFeatures.generalTextStyle,
                           ),
                         if (widget.pageIndex == 1)
-                          Container(
-                              width: 15.w,
-                              height: 12.w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
-                              child: Center(
-                                  child: GestureDetector(
-                                onTap: () {},
-                                child: SizedBox(
-                                  width: 13.w,
-                                  height: 10.w,
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.photo,
-                                      color: Colors.grey,
-                                      size: 33,
-                                    ),
-                                  ),
-                                ),
-                              ))),
+                          Image.network(
+                            Urls.imageUrl +
+                                state.paymentPicture!
+                                    .replaceAll('[', "")
+                                    .replaceAll(']', '')
+                                    .replaceAll('"', "")
+                                    .replaceAll("\\", ""),
+                            height: 10.w,
+                            fit: BoxFit.cover,
+                          ),
                         SizedBox(
                           height: 2.h,
                         ),
