@@ -7,7 +7,7 @@ class DropdownListController extends GetxController {
   Map<String, String> sideBarRoutesMap = {
     "طلبات تم تنفيذها": "/done_orders",
     "طلبات تم إلغاؤها": "/cancelled_orders",
-    "طلبات في طريقها للزبون": "/processing_orders",
+    "طلبات في طريقها للزبون": "/delivery_orders",
     "طلبات في الانتظار": "/pending-orders",
     "إدارة الأقسام": "",
     "المنتجات": "",
