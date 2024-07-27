@@ -33,7 +33,9 @@ class _OfferWidgetState extends State<OfferWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {},
-        child: Stack(
+        child:LayoutBuilder (
+        builder: (context, constraints){
+       return Stack(
           children: [
             Center(
               child: Container(
@@ -106,6 +108,7 @@ class _OfferWidgetState extends State<OfferWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomButton(
+                    constraints: constraints,
                     icon: Icons.edit,
                     backgroundColor: Colors.grey[400]!,
                     onTap: () {
@@ -118,6 +121,7 @@ class _OfferWidgetState extends State<OfferWidget> {
                     width: 1.w,
                   ),
                   CustomButton(
+                    constraints: constraints,
                     icon: Icons.delete,
                     backgroundColor: Colors.red[600]!,
                     onTap: () async {
@@ -132,6 +136,8 @@ class _OfferWidgetState extends State<OfferWidget> {
               ),
             ),
           ],
-        ));
+        );
+  })
+    );
   }
 }

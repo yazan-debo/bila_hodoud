@@ -5,15 +5,23 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/constants/style/color_style_features.dart';
+import '../../../../core/constants/style/constraint_style_features.dart';
+import '../../../../core/constants/style/text_style_features.dart';
 
 class NormalOrderWidget extends StatelessWidget {
   final NormalOrderModel order;
   final Function? onTap;
+  final BoxConstraints? constraints;
 
-  const NormalOrderWidget({super.key, required this.order, this.onTap});
+  NormalOrderWidget({super.key, required this.order, this.onTap, required this.constraints})
+      : textStyleFeatures = TextStyleFeatures.textStyleFeaturesWithConstraints(constraints);
 
+  final TextStyleFeatures textStyleFeatures;
   @override
   Widget build(BuildContext context) {
+
+    double maxSize = constraints!.maxHeight * constraints!.maxWidth;
+    ConstraintStyleFeatures constraintStyleFeatures;
     return GestureDetector(
       onTap: () {
         if (onTap != null) {
@@ -21,72 +29,76 @@ class NormalOrderWidget extends StatelessWidget {
         }
       },
       child: Container(
-          margin: EdgeInsets.all(20.px),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.px),
             color: ColorStyleFeatures.headLinesTextColor,
           ),
           child: Padding(
-            padding: EdgeInsets.all(30.px),
+            padding: EdgeInsets.all(maxSize * 0.00001),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      height: 60,
-                      width: 170,
+                      height: constraints!.maxHeight * 0.09,
+                      width: constraints!.maxWidth * 0.10,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.px),
                         color: Colors.white,
                       ),
-                      child: Center(
-                        child: Text(
-                          order.id.toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20.px, fontWeight: FontWeight.bold),
+
+                        child: Center(
+
+                          child: Text(
+                            order.id.toString(),
+                            textAlign: TextAlign.center,
+                            style: textStyleFeatures.generalTextStyleWithConstraints(),
+                          ),
+                        ),
+
+                    ),
+                    Container(
+
+                      height: constraints!.maxHeight * 0.09,
+                      width: constraints!.maxWidth * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.px),
+                        color: Colors.white,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Center(
+                          child: Text(
+                            order.paymentMethod.toString(),
+                            textAlign: TextAlign.center,
+                            style: textStyleFeatures.generalTextStyleWithConstraints(),
+                          ),
                         ),
                       ),
                     ),
                     Container(
-                      height: 60,
-                      width: 170,
+                      height: constraints!.maxHeight * 0.09,
+                      width: constraints!.maxWidth * 0.14,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.px),
                         color: Colors.white,
                       ),
-                      child: Center(
-                        child: Text(
-                          order.paymentMethod.toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20.px, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 60,
-                      width: 170,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.px),
-                        color: Colors.white,
-                      ),
+                      child: SingleChildScrollView(
                       child: Center(
                         child: Text(
                           order.address.toString(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20.px, fontWeight: FontWeight.bold),
+                          style: textStyleFeatures.generalTextStyleWithConstraints(),
                         ),
-                      ),
+                      ),),
                     ),
                   ],
                 ),
+                //550.6399780273438
                 Container(
-                  height: 180,
-                  width: 180,
+                  height: constraints!.maxHeight * 0.40 ,
+                  width: constraints!.maxWidth * 0.15,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.px),
                     color: Colors.white,
@@ -95,8 +107,7 @@ class NormalOrderWidget extends StatelessWidget {
                     child: Text(
                       order.notes.toString(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 20.px, fontWeight: FontWeight.bold),
+                      style: textStyleFeatures.generalTextStyleWithConstraints(),
                     ),
                   ),
                 ),

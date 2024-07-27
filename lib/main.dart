@@ -56,13 +56,13 @@ class MyApp extends StatelessWidget {
           GetPage(name: '/', page: () => SplashScreen()),
           GetPage(name: '/home', page: () => const HomeScreen()),
           GetPage(name: '/settings', page: () => SettingsScreen()),
-          GetPage(name: '/login', page: () => LoginScreen()),
+          GetPage(name: '/login', page: () => const LoginScreen()),
           GetPage(
               name: '/section-details',
               page: () => const SectionDetailsScreen()),
           GetPage(name: '/all-sections', page: () => const AllSectionsScreen()),
           GetPage(name: '/sys_roles', page: () => const SysRolesInterface()),
-          GetPage(name: '/modifySection', page: () => ModifySectionScreen()),
+          GetPage(name: '/modifySection', page: () => const ModifySectionScreen()),
           GetPage(
               name: '/pending-orders', page: () => const PendingOrdersScreen()),
           GetPage(
@@ -75,18 +75,17 @@ class MyApp extends StatelessWidget {
               name: '/display_product_page',
               page: () => const DisplayProductPage()),
           GetPage(
-              name: '/display_book_page',
-              page: () => const DisplayBookPage()),
+              name: '/display_book_page', page: () => const DisplayBookPage()),
           GetPage(
-              name: '/display_game_page',
-              page: () => const DisplayGamePage()),
+              name: '/display_game_page', page: () => const DisplayGamePage()),
           GetPage(
               name: '/display_quran_page',
               page: () => const DisplayQuranPage()),
           GetPage(
               name: '/display_stationary_page',
               page: () => const DisplayStationaryPage()),
-      GetPage(              name: '/processing_orders',
+          GetPage(
+              name: '/delivery_orders',
               page: () => const DeliveryOrdersScreen()),
           GetPage(
               name: '/cancelled_orders',

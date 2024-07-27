@@ -59,7 +59,9 @@ class _ProductWidgetState extends State<ProductWidget> {
           }
 
         },
-        child: Stack(
+        child: LayoutBuilder(
+        builder: (context, constraints) {
+        return Stack(
           children: [
             Center(
               child: Container(
@@ -120,6 +122,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomButton(
+                    constraints: constraints,
                     icon: Icons.edit,
                     backgroundColor: Colors.grey[400]!,
                     onTap: () {
@@ -162,6 +165,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     width: 1.w,
                   ),
                   CustomButton(
+                    constraints: constraints,
                     icon: Icons.delete,
                     backgroundColor: Colors.red[600]!,
                     onTap: () async {
@@ -176,6 +180,8 @@ class _ProductWidgetState extends State<ProductWidget> {
               ),
             ),
           ],
-        ));
+        );}
+    )
+    );
   }
 }

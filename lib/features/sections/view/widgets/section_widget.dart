@@ -65,7 +65,7 @@ class _SectionWidgetState extends State<SectionWidget> {
               children: [
                 Center(
                   child: Container(
-                    padding: EdgeInsets.all(cardPadding),
+                    padding: EdgeInsets.fromLTRB(cardPadding, constraints.maxHeight * 0.3, cardPadding, cardPadding),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -90,13 +90,15 @@ class _SectionWidgetState extends State<SectionWidget> {
                     ),
                   ),
                 ),
+               // const SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomButton(
+                        constraints: constraints,
                         icon: Icons.edit,
                         backgroundColor: ColorStyleFeatures.headLinesTextColor,
                         onTap: () {

@@ -54,6 +54,7 @@ class _ModifyProcessingOrderScreenState
   final _processingOrderFromKey = GlobalKey<FormState>();
   ProcessingOrderParams params = ProcessingOrderParams();
   TextEditingController deliveryMethod = TextEditingController();
+  TextStyleFeatures textStyleFeatures =  TextStyleFeatures();
   TextEditingController deliveryCost = TextEditingController();
   ChangeStatusParams params1 = ChangeStatusParams();
 
@@ -85,301 +86,308 @@ class _ModifyProcessingOrderScreenState
     globalInterfaceController.addExtraWidget(
       orderDetailsController!.obx(
           (state) => Form(
-                key: _processingOrderFromKey,
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 40.w,
-                            height: 7.h,
+              key: _processingOrderFromKey,
+              child: Expanded(
+                child: LayoutBuilder(builder: (context, constraint) {
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: constraint.maxWidth * 0.3,
+                            height: constraint.maxHeight * 0.1,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.px),
-                              color: ColorStyleFeatures.headLinesTextColor,
+                              borderRadius: BorderRadius.circular(10.px),
+                              color: ColorStyleFeatures.mostUsedButtonColor,
                             ),
                             child: Center(
                               child: Text(
                                 "تفاصييل الطلب رقم ${state?.id}",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18.px),
+                                style: textStyleFeatures
+                                    .generalTextStyleWithConstraints1(constraint),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        LabelWidget(
-                          label: "رقم الهاتف:",
-                          value: state?.phoneNumber ?? "",
-                        ),
-                        LabelWidget(
-                          label: "تاريخ الطلب:",
-                          value: DateFormat('yyyy-MM-dd – kk:mm')
-                              .format(state!.orderDate!),
-                        ),
-                        LabelWidget(
-                          label: "الكلفة الاجمالية:",
-                          value: state.totalCost.toString() ?? "",
-                        ),
-                        LabelWidget(
-                          label: "اجمالي عدد المنتجات:",
-                          value: state.totalNumberOfProducts.toString() ?? "",
-                        ),
-                        LabelWidget(
-                          label: "حالة الطلب:",
-                          value: state.orderStatus ?? "",
-                        ),
-                        LabelWidget(
-                          label: "اسم صاحب الطلب:",
-                          value: state.username ?? "",
-                        ),
-                        LabelWidget(
-                          label: "العنوان:",
-                          value: state.address ?? "",
-                        ),
-                        LabelWidget(
-                          label: "ملاحظات من الزبون:",
-                          value: state.notes ?? "",
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Text(
-                          "تفاصيل الطلب:",
-                          style: TextStyleFeatures.generalTextStyle,
-                        ),
-                        Column(
-                          children: [
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: state.orderDetails?.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Column(
-                                    children: [
-                                      LabelWidget(
-                                        label: "الاسم:",
-                                        value:
-                                            state.orderDetails?[index].name ??
-                                                "",
-                                      ),
-                                      LabelWidget(
-                                        label: "الكمية:",
-                                        value: state
-                                                .orderDetails?[index].quantity
-                                                .toString() ??
-                                            "",
-                                      ),
-                                      LabelWidget(
-                                        label: "سعر القطعة:",
-                                        value: state
-                                                .orderDetails?[index].unitPrice
-                                                .toString() ??
-                                            "",
-                                      ),
-                                      LabelWidget(
-                                        label: "الإجمالي:",
-                                        value: state
-                                                .orderDetails?[index].totalPrice
-                                                .toString() ??
-                                            "",
-                                      ),
-                                    ],
-                                  );
-                                }),
-                          ],
-                        ),
-                 /*       if (widget.pageIndex == 1)
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          LabelWidget(
+                            label: "رقم الهاتف:",
+                            value: state?.phoneNumber ?? "",
+                          ),
+                          LabelWidget(
+                            label: "تاريخ الطلب:",
+                            value: DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(state!.orderDate!),
+                          ),
+                          LabelWidget(
+                            label: "الكلفة الاجمالية:",
+                            value: state.totalCost.toString() ?? "",
+                          ),
+                          LabelWidget(
+                            label: "اجمالي عدد المنتجات:",
+                            value: state.totalNumberOfProducts.toString() ?? "",
+                          ),
+                          LabelWidget(
+                            label: "حالة الطلب:",
+                            value: state.orderStatus ?? "",
+                          ),
+                          LabelWidget(
+                            label: "اسم صاحب الطلب:",
+                            value: state.username ?? "",
+                          ),
+                          LabelWidget(
+                            label: "العنوان:",
+                            value: state.address ?? "",
+                          ),
+                          LabelWidget(
+                            label: "ملاحظات من الزبون:",
+                            value: state.notes ?? "",
+                          ),
                           SizedBox(
                             height: 2.h,
                           ),
-                        if (widget.pageIndex == 1)
                           Text(
-                            "صورة الوصل:",
+                            "تفاصيل الطلب:",
                             style: TextStyleFeatures.generalTextStyle,
                           ),
-                        if (widget.pageIndex == 1)
-                          Image.network(
-                            Urls.imageUrl +
-                                state.paymentPicture!
-                                    .replaceAll('[', "")
-                                    .replaceAll(']', '')
-                                    .replaceAll('"', "")
-                                    .replaceAll("\\", ""),
-                            height: 10.w,
-                            fit: BoxFit.cover,
-                          ),*/
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Obx(() => Row(
-                              children: [
+                          Column(
+                            children: [
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: state.orderDetails?.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Column(
+                                      children: [
+                                        LabelWidget(
+                                          label: "الاسم:",
+                                          value:
+                                              state.orderDetails?[index].name ??
+                                                  "",
+                                        ),
+                                        LabelWidget(
+                                          label: "الكمية:",
+                                          value: state
+                                                  .orderDetails?[index].quantity
+                                                  .toString() ??
+                                              "",
+                                        ),
+                                        LabelWidget(
+                                          label: "سعر القطعة:",
+                                          value: state.orderDetails?[index]
+                                                  .unitPrice
+                                                  .toString() ??
+                                              "",
+                                        ),
+                                        LabelWidget(
+                                          label: "الإجمالي:",
+                                          value: state.orderDetails?[index]
+                                                  .totalPrice
+                                                  .toString() ??
+                                              "",
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                            ],
+                          ),
+                          /*
+
+                             if (widget.pageIndex == 1)
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                              if (widget.pageIndex == 1)
                                 Text(
-                                  "طريقة التوصيل",
+                                  "صورة الوصل:",
                                   style: TextStyleFeatures.generalTextStyle,
                                 ),
-                                const SizedBox(width: 25),
-                                Container(
-                                  height: 8.h,
-                                  width: 100.w * 100.h * 0.0004,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color:
-                                          ColorStyleFeatures.headLinesTextColor,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: DropdownButton<String>(
-                                    hint: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Text(
-                                        "طريقة التوصيل",
-                                        style: TextStyle(fontSize: 14.px),
-                                      ),
-                                    ),
-                                    underline: Container(),
-                                    value: deliveryMethodDropdownController
-                                        ?.selectedItem.value,
-                                    onChanged: (String? selectedItem) {
-                                      deliveryMethodDropdownController
-                                          ?.change(selectedItem ?? "");
-                                    },
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value: "شحن الى محافظة أخرى",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "شحن الى محافظة أخرى",
-                                            style: TextStyle(fontSize: 18.px),
-                                          ),
-                                        ),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: "توصيل ضمن دمشق",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "توصيل ضمن دمشق",
-                                            style: TextStyle(fontSize: 18.px),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              if (widget.pageIndex == 1)
+                                Image.network(
+                                  Urls.imageUrl +
+                                      state.paymentPicture!
+                                          .replaceAll('[', "")
+                                          .replaceAll(']', '')
+                                          .replaceAll('"', "")
+                                          .replaceAll("\\", ""),
+                                  height: 10.w,
+                                  fit: BoxFit.cover,
                                 ),
-                              ],
-                            )),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        UsedFilled(
-                          label: 'كلفة التوصيل',
-                          controller: deliveryCost,
-                          isMandatory: true,
-                          onSaved: (value) {
-                            params.deliveryCost = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        Obx(() => Row(
-                              children: [
-                                Text(
-                                  "حالة الطلب",
-                                  style: TextStyleFeatures.generalTextStyle,
-                                ),
-                                const SizedBox(width: 25),
-                                Container(
-                                  height: 8.h,
-                                  width: 100.w * 100.h * 0.0004,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color:
-                                          ColorStyleFeatures.headLinesTextColor,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
+
+                              */
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Obx(() => Row(
+                                children: [
+                                  Text(
+                                    "طريقة التوصيل",
+                                    style: TextStyleFeatures.generalTextStyle,
                                   ),
-                                  child: DropdownButton<String>(
-                                    hint: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Text(
-                                        "حالة الطلب",
-                                        style: TextStyle(fontSize: 14.px),
+                                  const SizedBox(width: 25),
+                                  Container(
+                                    height: 8.h,
+                                    width: 100.w * 100.h * 0.0004,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: ColorStyleFeatures
+                                            .headLinesTextColor,
+                                        width: 2.0,
                                       ),
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    underline: Container(),
-                                    value: statusDropdownController
-                                        ?.selectedItem.value,
-                                    onChanged: (String? selectedItem) {
-                                      statusDropdownController
-                                          ?.change(selectedItem ?? "");
-                                    },
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value: "في طريقه إليك",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "في طريقه إليك",
-                                            style: TextStyle(fontSize: 18.px),
-                                          ),
+                                    child: DropdownButton<String>(
+                                      hint: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          "طريقة التوصيل",
+                                          style: TextStyle(fontSize: 14.px),
                                         ),
                                       ),
-                                      DropdownMenuItem<String>(
-                                        value: "قيد المعالجة",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "قيد المعالجة",
-                                            style: TextStyle(fontSize: 18.px),
+                                      underline: Container(),
+                                      value: deliveryMethodDropdownController
+                                          ?.selectedItem.value,
+                                      onChanged: (String? selectedItem) {
+                                        deliveryMethodDropdownController
+                                            ?.change(selectedItem ?? "");
+                                      },
+                                      items: [
+                                        DropdownMenuItem<String>(
+                                          value: "شحن الى محافظة أخرى",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "شحن الى محافظة أخرى",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: "تم تنفيذه",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "تم تنفيذه",
-                                            style: TextStyle(fontSize: 18.px),
+                                        DropdownMenuItem<String>(
+                                          value: "توصيل ضمن دمشق",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "توصيل ضمن دمشق",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: "تم إلغاؤه",
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Text(
-                                            "تم إلغاؤه",
-                                            style: TextStyle(fontSize: 18.px),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )),
-                      ],
+                                ],
+                              )),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          UsedFilled(
+                            label: 'كلفة التوصيل',
+                            controller: deliveryCost,
+                            isMandatory: true,
+                            onSaved: (value) {
+                              params.deliveryCost = value;
+                            },
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          Obx(() => Row(
+                                children: [
+                                  Text(
+                                    "حالة الطلب",
+                                    style: TextStyleFeatures.generalTextStyle,
+                                  ),
+                                  const SizedBox(width: 25),
+                                  Container(
+                                    height: 8.h,
+                                    width: 100.w * 100.h * 0.0004,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: ColorStyleFeatures
+                                            .headLinesTextColor,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: DropdownButton<String>(
+                                      hint: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          "حالة الطلب",
+                                          style: TextStyle(fontSize: 14.px),
+                                        ),
+                                      ),
+                                      underline: Container(),
+                                      value: statusDropdownController
+                                          ?.selectedItem.value,
+                                      onChanged: (String? selectedItem) {
+                                        statusDropdownController
+                                            ?.change(selectedItem ?? "");
+                                      },
+                                      items: [
+                                        DropdownMenuItem<String>(
+                                          value: "في طريقه إليك",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "في طريقه إليك",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
+                                          ),
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          value: "قيد المعالجة",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "قيد المعالجة",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
+                                          ),
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          value: "تم تنفيذه",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "تم تنفيذه",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
+                                          ),
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          value: "تم إلغاؤه",
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              "تم إلغاؤه",
+                                              style: TextStyle(fontSize: 18.px),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                  );
+                }),
+              )),
           onLoading: const Center(child: CircularProgressIndicator()),
           onEmpty: Center(
             child: RetryWidget(

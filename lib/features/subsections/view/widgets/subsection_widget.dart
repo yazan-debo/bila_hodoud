@@ -73,6 +73,8 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomButton(
+                        constraints: constraints,
+
                         icon: Icons.edit,
                         backgroundColor: ColorStyleFeatures.headLinesTextColor,
                         onTap: () {
@@ -86,6 +88,7 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
                         width: 1.w,
                       ),
                       CustomButton(
+                        constraints: constraints,
                         icon: Icons.delete,
                         backgroundColor: Colors.red[600]!,
                         onTap: () async {

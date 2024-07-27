@@ -4,11 +4,32 @@ import 'color_style_features.dart';
 import 'constraint_style_features.dart';
 
 class TextStyleFeatures {
+  late BoxConstraints? constraints;
   static const String fontFamily = 'Arial';
+  late double size = constraints!.maxWidth * constraints!.maxHeight;
+TextStyleFeatures.textStyleFeaturesWithConstraints (this.constraints);
+TextStyleFeatures();
 
+   TextStyle generalTextStyleWithConstraints (){
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontSize: size * 0.00003,
+      fontWeight: FontWeight.bold,
+      color: ColorStyleFeatures.generalTextColor,
+    );
+  }
+  TextStyle generalTextStyleWithConstraints1 (BoxConstraints? constraints){
+    double size = constraints!.maxWidth * constraints!.maxHeight;
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontSize: size * 0.00003,
+      fontWeight: FontWeight.bold,
+      color: ColorStyleFeatures.generalTextColor,
+    );
+  }
   static TextStyle generalTextStyle = TextStyle(
     fontFamily: fontFamily,
-    fontSize: Get.mediaQuery.size.width * 0.02,
+    fontSize:Get.mediaQuery.size.width * 0.02,
    fontWeight: FontWeight.bold,
     color: ColorStyleFeatures.generalTextColor,
   );

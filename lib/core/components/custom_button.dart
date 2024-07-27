@@ -5,12 +5,14 @@ class CustomButton extends StatelessWidget {
   final IconData icon;
   final Function onTap;
   final Color backgroundColor;
+  final BoxConstraints constraints;
 
   const CustomButton(
       {super.key,
       required this.icon,
       required this.onTap,
-      required this.backgroundColor});
+      required this.backgroundColor,
+      required this.constraints});
 
   @override
   Widget build(BuildContext context) {

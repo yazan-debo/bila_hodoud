@@ -59,7 +59,7 @@ class _AllSectionsScreenState extends State<AllSectionsScreen> {
                       EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount: 3,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                     childAspectRatio: 1.5,

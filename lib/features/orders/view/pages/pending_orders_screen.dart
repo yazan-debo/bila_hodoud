@@ -43,24 +43,29 @@ class _PendingOrdersScreenState extends State<PendingOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
-    Get.put(GlobalInterfaceController());
+        Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
 
     globalInterfaceController.addExtraWidget(
+     // SizedBox(child:
       Expanded(
-        child: Column(
-          children: [
-            Container(
-              height: 10.h,
-              width: ((100.w) - 280),
-              child: Row(
+          child: Column(
+        children: [
+          SizedBox(
+            height: 30.h,
+            child:Expanded(
+            child:
+            LayoutBuilder(builder: (context, constraint) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
                       _pageController.jumpToPage(0);
                     },
                     child: Container(
-                      width: (55.w - 280),
+                      width: constraint.maxWidth * 0.498,
+                      height: constraint.maxHeight * 0.2,
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -89,17 +94,21 @@ class _PendingOrdersScreenState extends State<PendingOrdersScreen> {
                       ),
                     ),
                   ),
-                  VerticalDivider(
-                    width: 0.5.w,
-                    color: Colors.black,
-                    thickness: 0.5.w,
+                  SizedBox(
+                    height: constraint.maxHeight * 0.2,
+                    child: VerticalDivider(
+                      width: constraint.maxWidth * 0.0009,
+                      color: Colors.black,
+                      thickness: 0.3.w,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
                       _pageController.jumpToPage(1);
                     },
                     child: Container(
-                      width: (52.w - 280),
+                      width: constraint.maxWidth * 0.4999,
+                      height: constraint.maxHeight * 0.2,
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -129,25 +138,28 @@ class _PendingOrdersScreenState extends State<PendingOrdersScreen> {
                     ),
                   ),
                 ],
-              ),
+              );
+            }),
+          ),),
+
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() => _selectedIndex = index);
+              },
+              children: const <Widget>[
+                OrderedNowSection(),
+                PaidByTransferSection(),
+                // RegisterTab(),
+              ],
             ),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() => _selectedIndex = index);
-                },
-                children: const <Widget>[
-                  OrderedNowSection(),
-                  PaidByTransferSection(),
-                  // RegisterTab(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          )
+        ],
+      )),
+      //),
     );
-    return GlobalInterface();
+
+    return const GlobalInterface();
   }
 }

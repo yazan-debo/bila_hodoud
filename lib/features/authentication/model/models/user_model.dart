@@ -1,14 +1,19 @@
 import 'dart:convert';
+import 'package:bila_hodoud/features/authentication/model/models/role_model.dart';
 
 class UserModel {
   String? message;
   String? token;
   int? userId;
+  String? userName;
+  RoleModel? role;
 
   UserModel({
     this.message,
     this.token,
     this.userId,
+    this.userName,
+    this.role,
   });
 
   factory UserModel.fromRawJson(String str) =>
@@ -20,11 +25,16 @@ class UserModel {
         message: json["message"],
         token: json["token"],
         userId: json["user_id"],
+    userName: json["user_name"],
+    role: RoleModel.fromJson(json['role']),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
         "token": token,
         "user_id": userId,
-      };
+    "user_name":userName,
+    "role": role?.toJson(),
+
+  };
 }

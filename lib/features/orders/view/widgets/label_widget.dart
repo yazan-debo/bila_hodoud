@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
 
 class LabelWidget extends StatelessWidget {
@@ -17,14 +20,21 @@ class LabelWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyleFeatures.generalTextStyle,
+            style:
+            TextStyle(
+              fontFamily: 'Arial',
+              fontSize:Get.mediaQuery.size.width * 0.02,
+              fontWeight: FontWeight.bold,
+              color: ColorStyleFeatures.dropdownChoicesBackgroundColor,
+            ),
           ),
           SizedBox(
             width: 1.w,
           ),
           Text(
             value,
-            style: TextStyleFeatures.generalTextStyle,
+            style:             TextStyleFeatures.generalTextStyle,
+
           ),
         ],
       ),

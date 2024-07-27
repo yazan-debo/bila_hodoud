@@ -53,37 +53,42 @@ class _DoneOrdersScreenState extends State<DoneOrdersScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      Expanded(
-        child: normalOrdersController!.obx(
-            (state) => GridView.builder(
-                  padding:
-                      EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 1.5,
+      LayoutBuilder(builder: (context, constraints) {
+        return Expanded(
+          child: normalOrdersController!.obx(
+              (state) => GridView.builder(
+                    padding:
+                        EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 1.5,
+                    ),
+                    itemCount: state?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return NormalOrderWidget(
+                        constraints: constraints,
+                        order: state![index],
+                      );
+                    },
                   ),
-                  itemCount: state?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return NormalOrderWidget(
-                      order: state![index],
-                    );
-                  },
-                ),
-            onLoading: const Center(child: CircularProgressIndicator()),
-            onEmpty: Center(
-              child: RetryWidget(
-                  error: "لا يوجد نتائج",
-                  func: () => normalOrdersController?.getDeliveryOrders()),
-            ),
-            onError: (error) => Center(
-                  child: RetryWidget(
-                      error: error!,
-                      func: () => normalOrdersController?.getDeliveryOrders()),
-                )),
-      ),
+              onLoading: const Center(child: CircularProgressIndicator()),
+              onEmpty: Center(
+                child: RetryWidget(
+                    error: "لا يوجد نتائج",
+                    func: () => normalOrdersController?.getDeliveryOrders()),
+              ),
+              onError: (error) => Center(
+                    child: RetryWidget(
+                        error: error!,
+                        func: () =>
+                            normalOrdersController?.getDeliveryOrders()),
+                  )),
+        );
+      }),
     );
 
     globalInterfaceController.addExtraWidget(

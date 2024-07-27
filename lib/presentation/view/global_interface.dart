@@ -30,18 +30,14 @@ class _GlobalInterfaceState extends State<GlobalInterface> {
               ),
             ),
             Expanded(
-              flex: 3,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppBar(),
-                    const SizedBox(
-                        height: ConstraintStyleFeatures.spaceBetweenElements),
-                    ...Get.put(GlobalInterfaceController()).extraWidgets,
-                  ],
-                ),
+              flex: 6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomAppBar(),
+
+                  ...Get.put(GlobalInterfaceController()).extraWidgets,
+                ],
               ),
             ),
           ],
