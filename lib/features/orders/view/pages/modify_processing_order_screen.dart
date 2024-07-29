@@ -54,7 +54,7 @@ class _ModifyProcessingOrderScreenState
   final _processingOrderFromKey = GlobalKey<FormState>();
   ProcessingOrderParams params = ProcessingOrderParams();
   TextEditingController deliveryMethod = TextEditingController();
-  TextStyleFeatures textStyleFeatures =  TextStyleFeatures();
+  TextStyleFeatures textStyleFeatures = TextStyleFeatures();
   TextEditingController deliveryCost = TextEditingController();
   ChangeStatusParams params1 = ChangeStatusParams();
 
@@ -109,7 +109,8 @@ class _ModifyProcessingOrderScreenState
                               child: Text(
                                 "تفاصييل الطلب رقم ${state?.id}",
                                 style: textStyleFeatures
-                                    .generalTextStyleWithConstraints1(constraint),
+                                    .generalTextStyleWithConstraints1(
+                                        constraint),
                               ),
                             ),
                           ),
@@ -170,6 +171,8 @@ class _ModifyProcessingOrderScreenState
 
                                         return Column(
                                       children: [
+                                        //
+                                        //
                                         LabelWidget(
                                           label: "الاسم:",
                                           value:
