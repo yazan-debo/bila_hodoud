@@ -29,28 +29,28 @@ import '../../model/params/change_status_params.dart';
 import '../../model/params/processing_order_params.dart';
 import '../widgets/label_widget.dart';
 
-class ModifyProcessingOrderScreen extends StatefulWidget {
+class ModifyProcessingOrderTransferScreen extends StatefulWidget {
   final NormalOrderModel? order;
   final int pageIndex;
 
-  const ModifyProcessingOrderScreen(
+  const ModifyProcessingOrderTransferScreen(
       {super.key, this.order, required this.pageIndex});
 
   @override
-  State<ModifyProcessingOrderScreen> createState() =>
-      _ModifyProcessingOrderScreenState();
+  State<ModifyProcessingOrderTransferScreen> createState() =>
+      _ModifyProcessingOrderTransferScreenState();
 }
 
-class _ModifyProcessingOrderScreenState
-    extends State<ModifyProcessingOrderScreen> {
+class _ModifyProcessingOrderTransferScreenState
+    extends State<ModifyProcessingOrderTransferScreen> {
   final NormalOrdersController? normalOrdersController =
-      Get.find<NormalOrdersController>();
+  Get.find<NormalOrdersController>();
   final OrderDetailsController? orderDetailsController =
-      Get.find<OrderDetailsController>();
+  Get.find<OrderDetailsController>();
   final StatusDropdownController? statusDropdownController =
-      Get.find<StatusDropdownController>();
+  Get.find<StatusDropdownController>();
   final DeliveryMethodDropdownController? deliveryMethodDropdownController =
-      Get.find<DeliveryMethodDropdownController>();
+  Get.find<DeliveryMethodDropdownController>();
   final _processingOrderFromKey = GlobalKey<FormState>();
   ProcessingOrderParams params = ProcessingOrderParams();
   TextEditingController deliveryMethod = TextEditingController();
@@ -71,7 +71,7 @@ class _ModifyProcessingOrderScreenState
   Widget build(BuildContext context) {
 
     final GlobalInterfaceController globalInterfaceController =
-        Get.put(GlobalInterfaceController());
+    Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
@@ -87,11 +87,18 @@ class _ModifyProcessingOrderScreenState
     globalInterfaceController.addExtraWidget(
       orderDetailsController!.obx(
 
-          (state) => Form(
+              (state) => Form(
 
               key: _processingOrderFromKey,
               child: Expanded(
                 child: LayoutBuilder(builder: (context, constraint) {
+                  print("${state?.paymentPicture}");
+                  print(      widget.order!.paymentPicture.toString()
+                      .replaceAll('[', "")
+                      .replaceAll(']', '')
+                      .replaceAll('"', "")
+                      .replaceAll("\\", ""),);
+
                   return SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -165,36 +172,35 @@ class _ModifyProcessingOrderScreenState
                                   itemCount: state.orderDetails?.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                        print("Order Details Length: ${state.orderDetails?.length}");
-                                        print("Building item at index: $index");
 
-                                        return Column(
+
+                                    return Column(
                                       children: [
                                         LabelWidget(
                                           label: "الاسم:",
                                           value:
-                                              state.orderDetails?[index].name ??
-                                                  "",
+                                          state.orderDetails?[index].name ??
+                                              "",
                                         ),
                                         LabelWidget(
                                           label: "الكمية:",
                                           value: state
-                                                  .orderDetails?[index].quantity
-                                                  .toString() ??
+                                              .orderDetails?[index].quantity
+                                              .toString() ??
                                               "",
                                         ),
                                         LabelWidget(
                                           label: "سعر القطعة:",
                                           value: state.orderDetails?[index]
-                                                  .unitPrice
-                                                  .toString() ??
+                                              .unitPrice
+                                              .toString() ??
                                               "",
                                         ),
                                         LabelWidget(
                                           label: "الإجمالي:",
                                           value: state.orderDetails?[index]
-                                                  .totalPrice
-                                                  .toString() ??
+                                              .totalPrice
+                                              .toString() ??
                                               "",
                                         ),
                                       ],
@@ -202,21 +208,23 @@ class _ModifyProcessingOrderScreenState
                                   }),
                             ],
                           ),
-                          /*
 
-                             if (widget.pageIndex == 1)
+
+
+                             //if (widget.pageIndex == 1)
                                 SizedBox(
                                   height: 2.h,
                                 ),
-                              if (widget.pageIndex == 1)
+                            //  if (widget.pageIndex == 1)
                                 Text(
                                   "صورة الوصل:",
                                   style: TextStyleFeatures.generalTextStyle,
                                 ),
-                              if (widget.pageIndex == 1)
-                                Image.network(
+                             if (widget.pageIndex == 1)
+
+                  Image.network(
                                   Urls.imageUrl +
-                                      state.paymentPicture!
+                                      widget.order!.paymentPicture.toString()
                                           .replaceAll('[', "")
                                           .replaceAll(']', '')
                                           .replaceAll('"', "")
@@ -224,171 +232,94 @@ class _ModifyProcessingOrderScreenState
                                   height: 10.w,
                                   fit: BoxFit.cover,
                                 ),
-
-                              */
                           SizedBox(
                             height: 2.h,
                           ),
+
                           Obx(() => Row(
-                                children: [
-                                  Text(
-                                    "طريقة التوصيل",
-                                    style: TextStyleFeatures.generalTextStyle,
+                            children: [
+                              Text(
+                                "حالة الطلب",
+                                style: TextStyleFeatures.generalTextStyle,
+                              ),
+                              const SizedBox(width: 25),
+                              Container(
+                                height: 8.h,
+                                width: 100.w * 100.h * 0.0004,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: ColorStyleFeatures
+                                        .headLinesTextColor,
+                                    width: 2.0,
                                   ),
-                                  const SizedBox(width: 25),
-                                  Container(
-                                    height: 8.h,
-                                    width: 100.w * 100.h * 0.0004,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: ColorStyleFeatures
-                                            .headLinesTextColor,
-                                        width: 2.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: DropdownButton<String>(
+                                  hint: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      "حالة الطلب",
+                                      style: TextStyle(fontSize: 14.px),
                                     ),
-                                    child: DropdownButton<String>(
-                                      hint: Padding(
+                                  ),
+                                  underline: Container(),
+                                  value: statusDropdownController
+                                      ?.selectedItem.value,
+                                  onChanged: (String? selectedItem) {
+                                    statusDropdownController
+                                        ?.change(selectedItem ?? "");
+                                  },
+                                  items: [
+                                    DropdownMenuItem<String>(
+                                      value: "في طريقه إليك",
+                                      child: Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
+                                            horizontal: 20.0),
                                         child: Text(
-                                          "طريقة التوصيل",
-                                          style: TextStyle(fontSize: 14.px),
+                                          "في طريقه إليك",
+                                          style: TextStyle(fontSize: 18.px),
                                         ),
                                       ),
-                                      underline: Container(),
-                                      value: deliveryMethodDropdownController
-                                          ?.selectedItem.value,
-                                      onChanged: (String? selectedItem) {
-                                        deliveryMethodDropdownController
-                                            ?.change(selectedItem ?? "");
-                                      },
-                                      items: [
-                                        DropdownMenuItem<String>(
-                                          value: "شحن الى محافظة أخرى",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "شحن الى محافظة أخرى",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                        DropdownMenuItem<String>(
-                                          value: "توصيل ضمن دمشق",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "توصيل ضمن دمشق",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
                                     ),
-                                  ),
-                                ],
-                              )),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          UsedFilled(
-                            label: 'كلفة التوصيل',
-                            controller: deliveryCost,
-                            isMandatory: true,
-                            onSaved: (value) {
-                              params.deliveryCost = value;
-                            },
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Obx(() => Row(
-                                children: [
-                                  Text(
-                                    "حالة الطلب",
-                                    style: TextStyleFeatures.generalTextStyle,
-                                  ),
-                                  const SizedBox(width: 25),
-                                  Container(
-                                    height: 8.h,
-                                    width: 100.w * 100.h * 0.0004,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: ColorStyleFeatures
-                                            .headLinesTextColor,
-                                        width: 2.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: DropdownButton<String>(
-                                      hint: Padding(
+                                    DropdownMenuItem<String>(
+                                      value: "قيد المعالجة",
+                                      child: Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
+                                            horizontal: 20.0),
                                         child: Text(
-                                          "حالة الطلب",
-                                          style: TextStyle(fontSize: 14.px),
+                                          "قيد المعالجة",
+                                          style: TextStyle(fontSize: 18.px),
                                         ),
                                       ),
-                                      underline: Container(),
-                                      value: statusDropdownController
-                                          ?.selectedItem.value,
-                                      onChanged: (String? selectedItem) {
-                                        statusDropdownController
-                                            ?.change(selectedItem ?? "");
-                                      },
-                                      items: [
-                                        DropdownMenuItem<String>(
-                                          value: "في طريقه إليك",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "في طريقه إليك",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                        DropdownMenuItem<String>(
-                                          value: "قيد المعالجة",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "قيد المعالجة",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                        DropdownMenuItem<String>(
-                                          value: "تم تنفيذه",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "تم تنفيذه",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                        DropdownMenuItem<String>(
-                                          value: "تم إلغاؤه",
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              "تم إلغاؤه",
-                                              style: TextStyle(fontSize: 18.px),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
                                     ),
-                                  ),
-                                ],
-                              )),
+                                    DropdownMenuItem<String>(
+                                      value: "تم تنفيذه",
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
+                                        child: Text(
+                                          "تم تنفيذه",
+                                          style: TextStyle(fontSize: 18.px),
+                                        ),
+                                      ),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: "تم إلغاؤه",
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
+                                        child: Text(
+                                          "تم إلغاؤه",
+                                          style: TextStyle(fontSize: 18.px),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
                         ],
                       ),
                     ),
@@ -403,11 +334,11 @@ class _ModifyProcessingOrderScreenState
                     ?.getOrderDetails(widget.order?.id ?? 0)),
           ),
           onError: (error) => Center(
-                child: RetryWidget(
-                    error: error!,
-                    func: () => orderDetailsController
-                        ?.getOrderDetails(widget.order?.id ?? 0)),
-              )),
+            child: RetryWidget(
+                error: error!,
+                func: () => orderDetailsController
+                    ?.getOrderDetails(widget.order?.id ?? 0)),
+          )),
     );
 
     globalInterfaceController.addExtraWidget(
@@ -415,7 +346,7 @@ class _ModifyProcessingOrderScreenState
     );
 
     globalInterfaceController.addExtraWidget(orderDetailsController!.obx(
-      (state) => MostUsedButton(
+          (state) => MostUsedButton(
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () async {
@@ -432,8 +363,8 @@ class _ModifyProcessingOrderScreenState
                   ?.changeOrderStatus(widget.order?.id ?? 0, params1);
               if (isSuccess1 ?? false) {
                 Get.off(() => PendingOrdersScreen(
-                      initialPage: widget.pageIndex,
-                    ));
+                  initialPage: widget.pageIndex,
+                ));
               }
             }
           }
