@@ -16,6 +16,7 @@ import '../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../core/constants/style/text_style_features.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
+import 'modify_cancelled_order_screen.dart';
 
 class CancelledOrdersScreen extends StatefulWidget {
   const CancelledOrdersScreen({super.key});
@@ -80,6 +81,12 @@ class _CancelledOrdersScreenState extends State<CancelledOrdersScreen> {
                                 return NormalOrderWidget(
                                   constraints: constraints,
                                   order: state![index],
+                                  onTap: () {
+                                    Get.to(() => ModifyCancelledOrderScreen(
+                                      pageIndex: 1,
+                                      order: state[index],
+                                    ));
+                                  },
                                 );
                               },
                             ),

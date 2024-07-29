@@ -29,21 +29,21 @@ import '../../model/params/change_status_params.dart';
 import '../../model/params/processing_order_params.dart';
 import '../widgets/label_widget.dart';
 
-class ModifyDeliveryOrderScreen extends StatefulWidget {
+class ModifyCancelledOrderScreen extends StatefulWidget {
 
   final NormalOrderModel? order;
   final int pageIndex;
 
-  const ModifyDeliveryOrderScreen(
+  const ModifyCancelledOrderScreen(
       {super.key, this.order, required this.pageIndex});
 
   @override
-  State<ModifyDeliveryOrderScreen> createState() =>
-      _ModifyDeliveryOrderScreenState();
+  State<ModifyCancelledOrderScreen> createState() =>
+      _ModifyCancelledOrderScreenState();
 }
 
-class _ModifyDeliveryOrderScreenState
-    extends State<ModifyDeliveryOrderScreen> {
+class _ModifyCancelledOrderScreenState
+    extends State<ModifyCancelledOrderScreen> {
   final NormalOrdersController? normalOrdersController =
   Get.find<NormalOrdersController>();
   final OrderDetailsController? orderDetailsController =

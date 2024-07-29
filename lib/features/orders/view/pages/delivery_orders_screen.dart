@@ -81,6 +81,7 @@ class _DeliveryOrdersScreenState extends State<DeliveryOrdersScreen> {
                             order: state![index],
                             onTap: () {
                               Get.to(() => ModifyDeliveryOrderScreen(
+                                pageIndex: 1,
                                 order: state[index],
                               ));
                             },
