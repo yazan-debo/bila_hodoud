@@ -16,6 +16,7 @@ import '../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../core/constants/style/text_style_features.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
+import 'modify_done_order_screen.dart';
 
 class DoneOrdersScreen extends StatefulWidget {
   const DoneOrdersScreen({super.key});
@@ -31,7 +32,7 @@ class _DoneOrdersScreenState extends State<DoneOrdersScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    normalOrdersController?.getDeliveryOrders();
+    normalOrdersController?.getDoneOrders();
     super.initState();
   }
 
@@ -78,6 +79,12 @@ class _DoneOrdersScreenState extends State<DoneOrdersScreen> {
                               return NormalOrderWidget(
                                 constraints: constraints,
                                 order: state![index],
+                                onTap: () {
+                                  Get.to(() => ModifyDoneOrderScreen(
+                                    pageIndex: 1,
+                                    order: state[index],
+                                  ));
+                                },
                               );
                             },
                           ),
