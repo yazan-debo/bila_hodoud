@@ -10,7 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../../core/components/used_filled.dart';
 import '../../../../../core/constants/style/color_style_features.dart';
 import '../../../../../core/constants/style/constraint_style_features.dart';
@@ -21,6 +21,7 @@ import '../../../../../presentation/controllers/global_interface_controller.dart
 import '../../../../../core/components/most_used_button.dart';
 
 import '../../../../../presentation/view/global_interface.dart';
+import '../../../../core/components/retry_widget.dart';
 import '../../../../core/constants/urls.dart';
 import '../../../orders/view/widgets/label_widget.dart';
 import '../../../products/controller/file_upload_controller.dart';
@@ -35,6 +36,16 @@ class ReportsScreen extends StatefulWidget {
 
 class _ReportsScreenState extends State<ReportsScreen> {
   final ReportsController? reportsController = Get.find<ReportsController>();
+
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // reportsController?.getReport();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +71,22 @@ class _ReportsScreenState extends State<ReportsScreen> {
           SizedBox(
             height: 2.h,
           ),
+
+        // reportsController!.obx(
+        //         (state) =>  SfPdfViewer.memory(state!,
+        // ),
+        //     onLoading: const Center(child: CircularProgressIndicator()),
+        //     onEmpty: Center(
+        //       child: RetryWidget(
+        //           error: "لا يوجد نتائج",
+        //           func: () => reportsController?.getReport()),
+        //     ),
+        //     onError: (error) => Center(
+        //       child: RetryWidget(
+        //           error: error!,
+        //           func: () => reportsController?.getReport()),
+        //     )),
+
         ],
       ),
     ));
@@ -73,7 +100,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         buttonText: 'استيراد',
         buttonIcon: Icons.arrow_circle_down,
         onTap: () async {
-          await reportsController?.getReport();
+          reportsController!.downloadFile("http://127.0.0.1:8000/api/report","report.pdf",);
         },
       ),
     );

@@ -93,12 +93,7 @@ class _ModifyProcessingOrderTransferScreenState
               key: _processingOrderFromKey,
               child: Expanded(
                 child: LayoutBuilder(builder: (context, constraint) {
-                  print("${state?.paymentPicture}");
-                  print(      widget.order!.paymentPicture.toString()
-                      .replaceAll('[', "")
-                      .replaceAll(']', '')
-                      .replaceAll('"', "")
-                      .replaceAll("\\", ""),);
+
 
                   return SingleChildScrollView(
                     child: Padding(

@@ -158,8 +158,6 @@ class NormalOrdersController extends GetxController
       };
       var body = jsonEncode(params.toJson());
 
-      print(url);
-      print(params.toJson());
 
       var response =
           await http.post(Uri.parse(url), headers: headers, body: body);
@@ -283,8 +281,7 @@ class NormalOrdersController extends GetxController
       };
 
       var body = jsonEncode(params.toJson());
-      print(params.toJson());
-      print(url);
+
 
       var response =
           await http.post(Uri.parse(url), headers: headers, body: body);

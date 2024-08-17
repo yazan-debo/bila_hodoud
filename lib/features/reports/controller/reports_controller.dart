@@ -5,13 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:html'as html;
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import 'dart:typed_data';
 
 import '../../products/model/models/image_file_model.dart';
 
-class ReportsController extends GetxController with StateMixin<String> {
+class ReportsController extends GetxController with StateMixin< Uint8List? > {
   Future<void> getReport() async {
     DialogHelper.showLoadingDialog();
 
@@ -32,17 +33,21 @@ class ReportsController extends GetxController with StateMixin<String> {
       if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();
-        var data = jsonDecode(response.body);
-        print(data);
+        Uint8List  pdfData = response.bodyBytes;
+        change(pdfData, status: RxStatus.success());
+
       } else {
-        Get.back();
-        DialogHelper.showErrorDialog(
-            title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
+        change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
       }
     } catch (e) {
-      Get.back();
-      DialogHelper.showErrorDialog(
-          title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
+      change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
     }
+  }
+
+  void downloadFile(String url, String filename) {
+    // Create an anchor element
+    final anchor = html.AnchorElement(href: url)
+      ..setAttribute('download', filename)
+      ..click(); // Programmatically click the anchor
   }
 }

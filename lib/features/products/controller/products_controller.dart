@@ -215,8 +215,7 @@ class ProductsController extends GetxController
         request.files.add(multipartFile);
       }
 
-      print(request.fields);
-      print(request.url);
+
       var response = await request.send();
 
       if (response.statusCode == 200) {

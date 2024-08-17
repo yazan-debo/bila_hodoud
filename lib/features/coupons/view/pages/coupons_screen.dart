@@ -1,5 +1,6 @@
 import 'dart:js_interop';
 
+import 'package:bila_hodoud/features/coupons/model/coupon_model.dart';
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/view/pages/modify_library_screen.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
@@ -52,33 +53,111 @@ class _CouponsScreenState extends State<CouponsScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      Expanded(
-        child: couponsController!.obx(
-            (state) => ListView.builder(
-                  padding:
-                      EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
-                  shrinkWrap: true,
-                  itemCount: state?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return CouponWidget(
-                      coupon: state![index],
+
+
+
+
+        Expanded(
+          child: couponsController!.obx(
+                  (state) => Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                border: TableBorder.all(),
+                columnWidths: const {
+                  0: FractionColumnWidth(0.5),
+                  1: FractionColumnWidth(0.5),
+
+                },
+                children: [
+                  const TableRow(
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: Text('اسم المرسل',
+                                style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Center(
+                          child: Text('اسم المستقبل',
+                              style: TextStyle(
+                                fontFamily: 'Arabic',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  ...state!.map((item) {
+                    return _buildTableRow(
+                      item,
+
                     );
-                  },
-                ),
-            onLoading: const Center(child: CircularProgressIndicator()),
-            onEmpty: Center(
-              child: RetryWidget(
-                  error: "لا يوجد نتائج",
-                  func: () => couponsController?.getCoupons(true)),
-            ),
-            onError: (error) => Center(
-                  child: RetryWidget(
-                      error: error!,
-                      func: () => couponsController?.getCoupons(true)),
-                )),
-      ),
+                  }),
+                ],
+              ),
+              onLoading: const Center(child: CircularProgressIndicator()),
+              onEmpty: Center(
+                child: RetryWidget(
+                    error: "لا يوجد نتائج",
+                    func: () => couponsController?.getCoupons(true)),
+              ),
+              onError: (error) => Center(
+                child: RetryWidget(
+                    error: error!,
+                    func: () => couponsController?.getCoupons(true)),
+              )),
+        )
+
+
+
+
+
+
+
     );
 
     return GlobalInterface();
+  }
+
+  TableRow _buildTableRow(
+      CouponModel coupon,
+
+
+      ) {
+    final textStyle = TextStyle(
+      fontFamily: 'Arabic',
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+    );
+
+    return TableRow(
+      decoration: BoxDecoration(color: Colors.grey[200]),
+      children: [
+        TableCell(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(coupon.sender ?? "", style: textStyle),
+              )),
+        ),
+        TableCell(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(coupon.receiver.toString() ?? "", style: textStyle),
+              )),
+        ),
+
+      ],
+    );
   }
 }

@@ -13,7 +13,9 @@ import '../../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../../core/constants/style/text_style_features.dart';
 import '../../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../../presentation/view/global_interface.dart';
+import '../../../../core/components/edit_button.dart';
 import '../../controller/points_controller.dart';
+import '../../model/point_model.dart';
 import '../widgets/point_widget.dart';
 
 class PointsScreen extends StatefulWidget {
@@ -52,33 +54,112 @@ class _PointsScreenState extends State<PointsScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      Expanded(
-        child: pointsController!.obx(
-            (state) => ListView.builder(
-                  padding:
-                      EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
-                  shrinkWrap: true,
-                  itemCount: state?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return PointWidget(
-                      point: state![index],
+
+
+        Expanded(
+          child: pointsController!.obx(
+                  (state) => Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                border: TableBorder.all(),
+                columnWidths: const {
+                  0: FractionColumnWidth(0.5),
+                  1: FractionColumnWidth(0.5),
+
+                },
+                children: [
+                  const TableRow(
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: Text('اسم الزبون',
+                                style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Center(
+                          child: Text('عدد النقاط',
+                              style: TextStyle(
+                                fontFamily: 'Arabic',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  ...state!.map((item) {
+                    return _buildTableRow(
+                      item,
+
                     );
-                  },
-                ),
-            onLoading: const Center(child: CircularProgressIndicator()),
-            onEmpty: Center(
-              child: RetryWidget(
-                  error: "لا يوجد نتائج",
-                  func: () => pointsController?.getPoints(true)),
-            ),
-            onError: (error) => Center(
-                  child: RetryWidget(
-                      error: error!,
-                      func: () => pointsController?.getPoints(true)),
-                )),
-      ),
+                  }),
+                ],
+              ),
+              onLoading: const Center(child: CircularProgressIndicator()),
+              onEmpty: Center(
+                child: RetryWidget(
+                    error: "لا يوجد نتائج",
+                    func: () => pointsController?.getPoints(true)),
+              ),
+              onError: (error) => Center(
+                child: RetryWidget(
+                    error: error!,
+                    func: () => pointsController?.getPoints(true)),
+              )),
+        )
+
+
+
+
+
+
+
+
     );
 
     return GlobalInterface();
+  }
+
+
+
+  TableRow _buildTableRow(
+      PointModel point,
+
+
+      ) {
+    final textStyle = TextStyle(
+      fontFamily: 'Arabic',
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+    );
+
+    return TableRow(
+      decoration: BoxDecoration(color: Colors.grey[200]),
+      children: [
+        TableCell(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(point.name ?? "", style: textStyle),
+              )),
+        ),
+        TableCell(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(point.points.toString() ?? "", style: textStyle),
+              )),
+        ),
+
+      ],
+    );
   }
 }

@@ -166,8 +166,7 @@ class _ModifyProcessingOrderScreenState
                                   itemCount: state.orderDetails?.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                        print("Order Details Length: ${state.orderDetails?.length}");
-                                        print("Building item at index: $index");
+
 
                                         return Column(
                                       children: [

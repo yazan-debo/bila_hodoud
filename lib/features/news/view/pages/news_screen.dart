@@ -36,7 +36,8 @@ class _NewsScreenState extends State<NewsScreen> {
         Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
 
-    globalInterfaceController.addExtraWidget(Expanded(
+    globalInterfaceController.addExtraWidget(
+        Expanded(
       child: newsController!.obx(
           (state) => Table(
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
