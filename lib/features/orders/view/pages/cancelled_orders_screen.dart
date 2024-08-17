@@ -3,10 +3,13 @@ import 'dart:js_interop';
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/view/pages/modify_library_screen.dart';
 import 'package:bila_hodoud/features/orders/controller/normal_orders_controller.dart';
+import 'package:bila_hodoud/features/orders/view/pages/modify_cancelled_order_screen.dart';
+import 'package:bila_hodoud/features/orders/view/pages/modify_delivery_order_screen.dart';
 import 'package:bila_hodoud/features/orders/view/widgets/normal_order_widget.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../core/components/most_used_button.dart';
 import '../../../../../core/components/retry_widget.dart';
@@ -25,24 +28,24 @@ class CancelledOrdersScreen extends StatefulWidget {
 
 class _CancelledOrdersScreenState extends State<CancelledOrdersScreen> {
   final NormalOrdersController? normalOrdersController =
-      Get.find<NormalOrdersController>();
+  Get.find<NormalOrdersController>();
 
   @override
   void initState() {
     // TODO: implement initState
-    normalOrdersController?.getDeliveryOrders();
+    normalOrdersController?.getCancelledOrders();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
-        Get.put(GlobalInterfaceController());
+    Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
-          'الطلبات اللتي تم إلغاؤها',
+          'الطلبات التي تم إلغاؤها',
           style: TextStyleFeatures.headLinesTextStyle,
         ),
       ),
@@ -53,43 +56,63 @@ class _CancelledOrdersScreenState extends State<CancelledOrdersScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      LayoutBuilder(
-        builder: (context,constraints) {
-          return Expanded(
-            child: normalOrdersController!.obx(
-                (state) => GridView.builder(
-                      padding:
-                          EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
+      Expanded(
+        child:
+        Column(
+          children: [
+            SizedBox(height: 10.h),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return normalOrdersController!.obx(
+                        (state) => GridView.builder(
+                      padding: EdgeInsets.all(ConstraintStyleFeatures.gridsPadding()),
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 1.5,
-                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          // Number of columns
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          mainAxisExtent: 220.px,
+                          childAspectRatio: 1),
                       itemCount: state?.length ?? 0,
                       itemBuilder: (context, index) {
                         return NormalOrderWidget(
                           constraints: constraints,
                           order: state![index],
+                          onTap: () {
+                            Get.to(() => ModifyCancelledOrderScreen(
+                              pageIndex: 1,
+                              order: state[index],
+                            ));
+                          },
                         );
                       },
                     ),
-                onLoading: const Center(child: CircularProgressIndicator()),
-                onEmpty: Center(
-                  child: RetryWidget(
-                      error: "لا يوجد نتائج",
-                      func: () => normalOrdersController?.getDeliveryOrders()),
-                ),
-                onError: (error) => Center(
+                    onLoading: const Center(child: CircularProgressIndicator()),
+                    onEmpty: Center(
                       child: RetryWidget(
-                          error: error!,
-                          func: () => normalOrdersController?.getDeliveryOrders()),
-                    )),
-          );
-        }
+                        error: "لا يوجد نتائج",
+                        func: () => normalOrdersController?.getDeliveryOrders(),
+                      ),
+                    ),
+                    onError: (error) => Center(
+                      child: RetryWidget(
+                        error: error!,
+                        func: () => normalOrdersController?.getDeliveryOrders(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+          ],
+        ),
       ),
     );
+
+
 
     globalInterfaceController.addExtraWidget(
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),

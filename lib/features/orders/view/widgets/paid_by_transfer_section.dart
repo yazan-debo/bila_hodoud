@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/components/retry_widget.dart';
 import '../pages/modify_processing_order_screen.dart';
+import '../pages/modify_processing_order_transfer_screen.dart';
 import 'normal_order_widget.dart';
 
 class PaidByTransferSection extends StatefulWidget {
@@ -48,7 +49,7 @@ class _PaidByTransferSectionState extends State<PaidByTransferSection> {
 
                       order: state![index],
                       onTap: () {
-                        Get.to(() => ModifyProcessingOrderScreen(
+                        Get.to(() => ModifyProcessingOrderTransferScreen(
                               pageIndex: 1,
                               order: state[index],
                             ));

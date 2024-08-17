@@ -69,6 +69,7 @@ class _ModifyProcessingOrderScreenState
 
   @override
   Widget build(BuildContext context) {
+
     final GlobalInterfaceController globalInterfaceController =
         Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
@@ -85,7 +86,9 @@ class _ModifyProcessingOrderScreenState
     );
     globalInterfaceController.addExtraWidget(
       orderDetailsController!.obx(
+
           (state) => Form(
+
               key: _processingOrderFromKey,
               child: Expanded(
                 child: LayoutBuilder(builder: (context, constraint) {
@@ -150,6 +153,7 @@ class _ModifyProcessingOrderScreenState
                           SizedBox(
                             height: 2.h,
                           ),
+
                           Text(
                             "تفاصيل الطلب:",
                             style: TextStyleFeatures.generalTextStyle,
@@ -162,7 +166,10 @@ class _ModifyProcessingOrderScreenState
                                   itemCount: state.orderDetails?.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Column(
+                                        print("Order Details Length: ${state.orderDetails?.length}");
+                                        print("Building item at index: $index");
+
+                                        return Column(
                                       children: [
                                         LabelWidget(
                                           label: "الاسم:",

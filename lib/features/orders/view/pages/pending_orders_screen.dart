@@ -47,7 +47,6 @@ class _PendingOrdersScreenState extends State<PendingOrdersScreen> {
     globalInterfaceController.removeExtraWidgets();
 
     globalInterfaceController.addExtraWidget(
-     // SizedBox(child:
       Expanded(
           child: Column(
         children: [

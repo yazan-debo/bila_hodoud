@@ -49,25 +49,24 @@ class OrderDetailsModel {
         orderDetails: json["order_details"] == null
             ? []
             : List<OrderDetail>.from(
-                json["order_details"]!.map((x) => OrderDetail.fromJson(x))),
+            json["order_details"].map((x) => OrderDetail.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "order_date":
-            "${orderDate!.year.toString().padLeft(4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!.day.toString().padLeft(2, '0')}",
-        "total_cost": totalCost,
-        "total_number_of_products": totalNumberOfProducts,
-        "order_status": orderStatus,
-        "username": username,
-        "phone_number": phoneNumber,
-        "address": address,
-        "notes": notes,
-        "payment_picture": notes,
-        "order_details": orderDetails == null
-            ? []
-            : List<dynamic>.from(orderDetails!.map((x) => x.toJson())),
-      };
+    "id": id,
+    "order_date": orderDate?.toIso8601String(),
+    "total_cost": totalCost,
+    "total_number_of_products": totalNumberOfProducts,
+    "order_status": orderStatus,
+    "username": username,
+    "phone_number": phoneNumber,
+    "address": address,
+    "notes": notes,
+    "payment_picture": paymentPicture,
+    "order_details": orderDetails == null
+        ? []
+        : List<dynamic>.from(orderDetails!.map((x) => x.toJson())),
+  };
 }
 
 class OrderDetail {
@@ -91,18 +90,18 @@ class OrderDetail {
   String toRawJson() => json.encode(toJson());
 
   factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
-        id: json["id"],
-        name: json["name"],
-        quantity: json["quantity"],
-        unitPrice: json["unit_price"],
-        totalPrice: json["total_price"],
-      );
+    id: json["id"],
+    name: json["name"],
+    quantity: json["quantity"],
+    unitPrice: json["unit_price"],
+    totalPrice: json["total_price"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "quantity": quantity,
-        "unit_price": unitPrice,
-        "total_price": totalPrice,
-      };
+    "id": id,
+    "name": name,
+    "quantity": quantity,
+    "unit_price": unitPrice,
+    "total_price": totalPrice,
+  };
 }

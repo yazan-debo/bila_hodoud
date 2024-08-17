@@ -29,21 +29,21 @@ import '../../model/params/change_status_params.dart';
 import '../../model/params/processing_order_params.dart';
 import '../widgets/label_widget.dart';
 
-class ModifyDeliveryOrderScreen extends StatefulWidget {
-
+class ModifyProcessingOrderTransferScreen extends StatefulWidget {
+  //ModifyDeliveryOrderScreen
   final NormalOrderModel? order;
   final int pageIndex;
 
-  const ModifyDeliveryOrderScreen(
+  const ModifyProcessingOrderTransferScreen(
       {super.key, this.order, required this.pageIndex});
 
   @override
-  State<ModifyDeliveryOrderScreen> createState() =>
-      _ModifyDeliveryOrderScreenState();
+  State<ModifyProcessingOrderTransferScreen> createState() =>
+      _ModifyProcessingOrderTransferScreenState();
 }
 
-class _ModifyDeliveryOrderScreenState
-    extends State<ModifyDeliveryOrderScreen> {
+class _ModifyProcessingOrderTransferScreenState
+    extends State<ModifyProcessingOrderTransferScreen> {
   final NormalOrdersController? normalOrdersController =
   Get.find<NormalOrdersController>();
   final OrderDetailsController? orderDetailsController =
@@ -93,7 +93,12 @@ class _ModifyDeliveryOrderScreenState
               key: _processingOrderFromKey,
               child: Expanded(
                 child: LayoutBuilder(builder: (context, constraint) {
-
+                  print("${state?.paymentPicture}");
+                  print(      widget.order!.paymentPicture.toString()
+                      .replaceAll('[', "")
+                      .replaceAll(']', '')
+                      .replaceAll('"', "")
+                      .replaceAll("\\", ""),);
 
                   return SingleChildScrollView(
                     child: Padding(
@@ -206,6 +211,31 @@ class _ModifyDeliveryOrderScreenState
                           ),
 
 
+
+                             //if (widget.pageIndex == 1)
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                            //  if (widget.pageIndex == 1)
+                                Text(
+                                  "صورة الوصل:",
+                                  style: TextStyleFeatures.generalTextStyle,
+                                ),
+                             if (widget.pageIndex == 1)
+
+                  Image.network(
+                                  Urls.imageUrl +
+                                      widget.order!.paymentPicture.toString()
+                                          .replaceAll('[', "")
+                                          .replaceAll(']', '')
+                                          .replaceAll('"', "")
+                                          .replaceAll("\\", ""),
+                                  height: 10.w,
+                                  fit: BoxFit.cover,
+                                ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
 
                           Obx(() => Row(
                             children: [
