@@ -10,8 +10,16 @@ class AppSharedPref {
     controller.sharedPref.setString("token", user.token ?? "");
   }
 
+  void saveUserId(UserModel user) {
+    controller.sharedPref.setString("user_id", user.userId.toString());
+  }
+
   String getToken() {
     return (controller.sharedPref.getString("token") ?? "");
+  }
+
+  String getUserId() {
+    return (controller.sharedPref.getString("user_id") ?? "");
   }
 
   bool isLogin() {

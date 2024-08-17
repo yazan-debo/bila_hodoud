@@ -6,8 +6,9 @@ import '../../../core/helper/dialog_helper.dart';
 import '../../../core/utils/app_shared_pref.dart';
 import '../model/models/user_model.dart';
 import '../model/params/login_params.dart';
+import '../model/params/user_info_params.dart';
 
-class LoginController extends GetxController with StateMixin<bool> {
+class AuthenticationController extends GetxController with StateMixin<bool> {
   late AppSharedPref appSharedPref;
 
   @override
@@ -34,14 +35,50 @@ class LoginController extends GetxController with StateMixin<bool> {
       if (response.statusCode == 200) {
         UserModel user = UserModel.fromJson(jsonDecode(response.body));
         appSharedPref.saveToken(user);
+        appSharedPref.saveUserId(user);
         Get.back();
-        Get.offAllNamed("/all-sections");
+        Get.offAllNamed("/home_screen");
         change(true, status: RxStatus.success());
       } else {
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ",
             description: "اسم المستخدم أو كلمة المررور غير صحيحة");
+      }
+    } catch (e) {
+      Get.back();
+      DialogHelper.showErrorDialog(title: "خطأ", description: e.toString());
+    }
+  }
+
+  Future<void> changeUserInfo(UserInfoParams params) async {
+    AppSharedPref appSharedPref = AppSharedPref();
+    String token = appSharedPref.getToken();
+    String userId = appSharedPref.getUserId();
+    try {
+      DialogHelper.showLoadingDialog();
+      var url = '${Urls.baseUrl}${Urls.dashboard}/update-account-info/$userId';
+
+      var headers = {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+        // Add any additional headers here
+      };
+
+      var body = jsonEncode(params.toJson());
+
+      var response =
+          await http.post(Uri.parse(url), headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        DialogHelper.showSuccessDialog();
+        AppSharedPref appSharedPref = AppSharedPref();
+        appSharedPref.deleteAll();
+        Get.offAllNamed("/login");
+      } else {
+        Get.back();
+        DialogHelper.showErrorDialog(
+            title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
       }
     } catch (e) {
       Get.back();

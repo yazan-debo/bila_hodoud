@@ -63,13 +63,14 @@ class _SectionDetailsScreenState extends State<SectionDetailsScreen> {
               height: 10.h,
               width: ((100.w) - 280),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () {
                       _pageController.jumpToPage(0);
                     },
                     child: Container(
-                        width: (50.w - 280),
+                        width: (50.w - 200),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -105,7 +106,7 @@ class _SectionDetailsScreenState extends State<SectionDetailsScreen> {
                         _pageController.jumpToPage(1);
                       },
                       child: Container(
-                          width: (50.w - 280),
+                          width: (50.w - 200),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,

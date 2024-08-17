@@ -15,61 +15,67 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          availableWidth = constraints.maxWidth;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Container(
+        height: 100,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            availableWidth = constraints.maxWidth;
 
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: ConstraintStyleFeatures.appBarPaddingValue(
-                      availableWidth)),
-              Expanded(
-                child: buildNavItem('الرئيسية', isHovered1,
-                    ConstraintStyleFeatures.appBarFontSize(availableWidth), () {
-                  Get.offAllNamed("/home");
-                }),
-              ),
-              Expanded(
-                child: buildNavItem('الإعدادات', isHovered2,
-                    ConstraintStyleFeatures.appBarFontSize(availableWidth), () {
-                  Get.offAllNamed("/settings");
-                }),
-              ),
-              Expanded(
-                child: buildNavItem(
-                    'تسجيل الخروج',
-                    isHovered3,
-                    ConstraintStyleFeatures.appBarFontSize(availableWidth) /
-                        1.02, () {
-                  AppSharedPref appSharedPref = AppSharedPref();
-                  appSharedPref.deleteAll();
-                  Get.offAllNamed("/login");
-                }),
-              ),
-              Spacer(),
-              SizedBox(
-                  width: ConstraintStyleFeatures.appBarPaddingValue(
-                      availableWidth)),
-              Container(
-                width: ConstraintStyleFeatures.appBarLogoSize(availableWidth),
-                height: ConstraintStyleFeatures.appBarLogoSize(availableWidth),
-                child: GestureDetector(
-                  onTap: () {
-                    // Handle logo tap
-                  },
-                  child: LogoImage(),
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: ConstraintStyleFeatures.appBarPaddingValue(
+                        availableWidth)),
+                Expanded(
+                  child: buildNavItem('الرئيسية', isHovered1,
+                      ConstraintStyleFeatures.appBarFontSize(availableWidth),
+                      () {
+                    Get.offAllNamed("/home_screen");
+                  }),
                 ),
-              ),
-              SizedBox(
-                  width: ConstraintStyleFeatures.appBarPaddingValue(
-                      availableWidth)),
-            ],
-          );
-        },
+                Expanded(
+                  child: buildNavItem('التقارير', isHovered2,
+                      ConstraintStyleFeatures.appBarFontSize(availableWidth),
+                      () {
+                    Get.offAllNamed("/reports_screen");
+                  }),
+                ),
+                Expanded(
+                  child: buildNavItem(
+                      'تسجيل الخروج',
+                      isHovered3,
+                      ConstraintStyleFeatures.appBarFontSize(availableWidth) /
+                          1.02, () {
+                    AppSharedPref appSharedPref = AppSharedPref();
+                    appSharedPref.deleteAll();
+                    Get.offAllNamed("/login");
+                  }),
+                ),
+                Spacer(),
+                SizedBox(
+                    width: ConstraintStyleFeatures.appBarPaddingValue(
+                        availableWidth)),
+                Container(
+                  width: ConstraintStyleFeatures.appBarLogoSize(availableWidth),
+                  height:
+                      ConstraintStyleFeatures.appBarLogoSize(availableWidth),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle logo tap
+                    },
+                    child: LogoImage(),
+                  ),
+                ),
+                SizedBox(
+                    width: ConstraintStyleFeatures.appBarPaddingValue(
+                        availableWidth)),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

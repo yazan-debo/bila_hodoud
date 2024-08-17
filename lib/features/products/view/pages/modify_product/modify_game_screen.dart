@@ -210,28 +210,28 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                     textDirection: TextDirection.rtl,
                   ),
                   const SizedBox(width: 25),
-                  Container(
-                      width: 15.w,
-                      height: 12.w,
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)),
-                      child: Center(
-                          child: GestureDetector(
-                        onTap: () {
-                          _selectFile();
-                        },
-                        child: SizedBox(
-                          width: 13.w,
-                          height: 10.w,
+                  GestureDetector(
+                      onTap: () {
+                        _selectFile();
+                      },
+                      child: Container(
+                          width: 15.w,
+                          height: 12.w,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)),
                           child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.grey,
-                              size: 33,
+                            child: SizedBox(
+                              width: 13.w,
+                              height: 10.w,
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.grey,
+                                  size: 33,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ))),
+                          ))),
                   Obx(
                     () => fileUploadController.images.isEmpty &&
                             widget.product != null

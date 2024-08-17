@@ -1,8 +1,13 @@
+import 'package:bila_hodoud/features/authentication/view/pages/account_settings_screen.dart';
+import 'package:bila_hodoud/features/balance/view/pages/balance_request_details_screen.dart';
+import 'package:bila_hodoud/features/balance/view/pages/balance_requests_screen.dart';
 import 'package:bila_hodoud/features/libraries/view/pages/libraries_screen.dart';
+import 'package:bila_hodoud/features/notifications/view/notifications_settings_screen.dart';
 import 'package:bila_hodoud/features/offers/view/pages/offers_screen.dart';
 import 'package:bila_hodoud/features/orders/view/pages/cancelled_orders_screen.dart';
 import 'package:bila_hodoud/features/orders/view/pages/done_orders_screen.dart';
 import 'package:bila_hodoud/features/orders/view/pages/delivery_orders_screen.dart';
+import 'package:bila_hodoud/features/reports/view/pages/reports_screen.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
 import 'package:bila_hodoud/presentation/view/home_screen.dart';
 import 'package:bila_hodoud/features/authentication/view/pages/login_screen.dart';
@@ -20,8 +25,11 @@ import 'core/constants/style/color_style_features.dart';
 import 'core/constants/style/text_style_features.dart';
 import 'core/services/settings_services.dart';
 import 'core/utils/data_bindings.dart';
+import 'features/coupons/view/pages/coupons_screen.dart';
+import 'features/news/view/pages/news_screen.dart';
 import 'features/orders/view/pages/pending_order_details_screen.dart';
 import 'features/orders/view/pages/pending_orders_screen.dart';
+import 'features/points/view/pages/points_screen.dart';
 import 'features/products/view/pages/display_products/display_book_page.dart';
 import 'features/products/view/pages/display_products/display_game_page.dart';
 import 'features/products/view/pages/display_products/display_product_page.dart';
@@ -54,15 +62,17 @@ class MyApp extends StatelessWidget {
         initialBinding: DataBindings(),
         getPages: [
           GetPage(name: '/', page: () => SplashScreen()),
-          GetPage(name: '/home', page: () => const HomeScreen()),
+          GetPage(name: '/home_screen', page: () => const HomeScreen()),
           GetPage(name: '/settings', page: () => SettingsScreen()),
           GetPage(name: '/login', page: () => const LoginScreen()),
+          GetPage(name: '/reports_screen', page: () => const ReportsScreen()),
           GetPage(
               name: '/section-details',
               page: () => const SectionDetailsScreen()),
           GetPage(name: '/all-sections', page: () => const AllSectionsScreen()),
           GetPage(name: '/sys_roles', page: () => const SysRolesInterface()),
-          GetPage(name: '/modifySection', page: () => const ModifySectionScreen()),
+          GetPage(
+              name: '/modifySection', page: () => const ModifySectionScreen()),
           GetPage(
               name: '/pending-orders', page: () => const PendingOrdersScreen()),
           GetPage(
@@ -91,6 +101,21 @@ class MyApp extends StatelessWidget {
               name: '/cancelled_orders',
               page: () => const CancelledOrdersScreen()),
           GetPage(name: '/done_orders', page: () => const DoneOrdersScreen()),
+          GetPage(name: '/news_screen', page: () => const NewsScreen()),
+          GetPage(
+              name: '/balance_request_details_screen',
+              page: () => const BalanceRequestDetailsScreen()),
+          GetPage(
+              name: '/notifications_settings_screen',
+              page: () => const NotificationsSettingsScreen()),
+          GetPage(name: '/points_screen', page: () => const PointsScreen()),
+          GetPage(name: '/coupons_screen', page: () => const CouponsScreen()),
+          GetPage(
+              name: '/balance_request_screen',
+              page: () => const BalanceRequestsScreen()),
+          GetPage(
+              name: '/account_settings_screen',
+              page: () => const AccountSettingsScreen()),
         ],
         theme: ThemeData(
           cardColor: ColorStyleFeatures.cardColor,

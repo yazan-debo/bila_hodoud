@@ -56,6 +56,90 @@ class ProductsController extends GetxController
     }
   }
 
+  Future<void> searchProductBySection(int sectionId, String keyword) async {
+    try {
+      await Future.delayed(Duration(milliseconds: 500)).then((g) {
+        // if (withRefresh) {
+        //   change(null, status: RxStatus.loading());
+        // }
+      });
+
+      String url = '${Urls.baseUrl}searchBySection/$sectionId/$keyword';
+
+      var headers = {
+        'Content-Type': 'application/json',
+        // Add any additional headers here
+      };
+      var response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        List<ProductModel> products = [];
+
+        products = (data['data'] as List<dynamic>)
+            .map((i) => ProductModel.fromJson(i))
+            .toList();
+        if (products.isNotEmpty) {
+          change(products, status: RxStatus.success());
+        } else {
+          change(products, status: RxStatus.empty());
+        }
+      } else {
+        change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
+  Future<void> searchProductByName(String keyword) async {
+    try {
+      await Future.delayed(Duration(milliseconds: 500)).then((g) {
+        // if (withRefresh) {
+        //   change(null, status: RxStatus.loading());
+        // }
+      });
+
+      String url = '${Urls.baseUrl}search?name=$keyword';
+
+      Uri uri = Uri.parse(url);
+
+      var headers = {
+        'Content-Type': 'application/json',
+        // 'Accept': 'application/json',
+        // Add any additional headers here
+      };
+
+      var response = await http.get(
+        uri,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        List<ProductModel> products = [];
+
+        products = (data['data'] as List<dynamic>)
+            .map((i) => ProductModel.fromJson(i))
+            .toList();
+        if (products.isNotEmpty) {
+          change(products, status: RxStatus.success());
+        } else {
+          change(products, status: RxStatus.empty());
+        }
+      } else {
+        change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
   Future<bool> addProduct(
       ProductParams params, List<ImageFileModel> images) async {
     try {
@@ -80,7 +164,6 @@ class ProductsController extends GetxController
         request.files.add(multipartFile);
       }
 
-      print(request.fields);
       var response = await request.send();
 
       if (response.statusCode == 201) {

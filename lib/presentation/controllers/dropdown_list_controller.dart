@@ -21,12 +21,18 @@ class DropdownListController extends GetxController {
     "إدارة الإشعارات": "",
     "إشعارات النظام": "",
     "إشعارات المستخدمين": "",
+    "الأخبار": "/news_screen",
     "إدارة الصلاحيات": "",
     "صلاحيّات الأدوار": "",
     "أدوار المستخدمين": "",
     "حسابات المستخدمين": "/display_product_page",
     "أدوار النظام": "/sys_roles",
     "المكتبات": "/libraries_screen",
+    "إعدادات الاشعارات": "/notifications_settings_screen",
+    "نقاط المستخدمين": "/points_screen",
+    "قسائم المستخدمين": "/coupons_screen",
+    "إعدادات الحساب": "/account_settings_screen",
+    "طلبات تعبئة المحفظة": "/balance_request_screen",
   };
   final String name;
   final List<String> choices;

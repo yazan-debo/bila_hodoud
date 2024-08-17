@@ -1,4 +1,4 @@
-import 'package:bila_hodoud/features/authentication/controller/login_controller.dart';
+import 'package:bila_hodoud/features/authentication/controller/authentication_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -16,7 +16,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
-  final LoginController? loginController = Get.find<LoginController>();
+  final AuthenticationController? loginController =
+      Get.find<AuthenticationController>();
   TextEditingController userName = TextEditingController();
   TextEditingController password = TextEditingController();
   LoginParams loginParams = LoginParams();
@@ -134,61 +135,63 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 0.03 * MediaQuery.of(context).size.height,
                         ),
-                    Container(
-                      width: constraints.maxWidth * 0.4,
-                      height: constraints.maxHeight * 0.08,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // color: Colors.grey[300],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.067),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "كلمة المرور",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: constraints.maxHeight * 0.022,
-                              ),
-                            ),
-                            SizedBox(
-                              width: constraints.maxWidth * 0.03,
-                            ),
-                            SizedBox(
-                              width: constraints.maxWidth * 0.1,
-                              height: constraints.maxHeight * 0.08,
-                              child: Center(
-                                child: TextFormField(
-                                  controller: password,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.0,
+                        Container(
+                          width: constraints.maxWidth * 0.4,
+                          height: constraints.maxHeight * 0.08,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            // color: Colors.grey[300],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: constraints.maxWidth * 0.067),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "كلمة المرور",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: constraints.maxHeight * 0.022,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: constraints.maxWidth * 0.03,
+                                ),
+                                SizedBox(
+                                  width: constraints.maxWidth * 0.1,
+                                  height: constraints.maxHeight * 0.08,
+                                  child: Center(
+                                    child: TextFormField(
+                                      controller: password,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.white,
+                                            width: 1.0,
+                                          ),
+                                        ),
                                       ),
+                                      onChanged: (value) {},
+                                      obscureText: true,
+                                      onSaved: (value) {
+                                        loginParams.password = password.text;
+                                      },
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'ادخل قيمة';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
-                                  onChanged: (value) {},
-                                  obscureText: true,
-                                  onSaved: (value) {
-                                    loginParams.password = password.text;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'ادخل قيمة';
-                                    }
-                                    return null;
-                                  },
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),                        SizedBox(
+                        SizedBox(
                           height: 3.h,
                         ),
                         Text(
@@ -202,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 3.h,
                         ),
                         SizedBox(
-                          height: constraints.maxHeight *0.05,
+                          height: constraints.maxHeight * 0.05,
                           width: constraints.maxWidth * 0.18,
                           child: ElevatedButton(
                             onPressed: () async {

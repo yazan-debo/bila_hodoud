@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget {
       const Duration(seconds: 1),
       () {
         if (AppSharedPref().isLogin()) {
-          Get.offAndToNamed("/all-sections");
+          Get.offAndToNamed("/home_screen");
         } else {
           Get.offAndToNamed("/login");
         }

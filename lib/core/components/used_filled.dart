@@ -7,11 +7,13 @@ class UsedFilled extends StatefulWidget {
   final bool isMandatory;
   final Function(String)? onSaved;
   final TextEditingController controller;
+  final bool? obscureText;
 
   const UsedFilled({
     required this.label,
     required this.isMandatory,
     this.onSaved,
+    this.obscureText = false,
     required this.controller,
     Key? key,
   }) : super(key: key);
@@ -38,6 +40,7 @@ class _UsedFilledState extends State<UsedFilled> {
           width: screenSpace * 0.0004, // Set the desired width of the TextField
           child: TextFormField(
             controller: widget.controller,
+            obscureText: widget.obscureText ?? false,
             onSaved: (value) {
               widget.onSaved!(value!);
             },

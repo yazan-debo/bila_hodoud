@@ -27,6 +27,7 @@ class OffersScreen extends StatefulWidget {
 
 class _OffersScreenState extends State<OffersScreen> {
   final OffersController? offersController = Get.find<OffersController>();
+  TextEditingController keyword = TextEditingController();
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _OffersScreenState extends State<OffersScreen> {
           height: 60,
           width: 50.w,
           child: TextField(
+            controller: keyword,
             style: TextStyle(
               color: const Color(0xff020202),
               fontSize: 20,
@@ -112,7 +114,11 @@ class _OffersScreenState extends State<OffersScreen> {
                     return OfferWidget(
                       offer: state![index],
                       onDelete: () {
-                        offersController?.getOffers(false);
+                        if (keyword.text.isNotEmpty) {
+                          offersController?.searchOffer(keyword.text);
+                        } else {
+                          offersController?.getOffers(false);
+                        }
                       },
                     );
                   },
@@ -121,12 +127,24 @@ class _OffersScreenState extends State<OffersScreen> {
             onEmpty: Center(
               child: RetryWidget(
                   error: "لا يوجد نتائج",
-                  func: () => offersController?.getOffers(true)),
+                  func: () {
+                    if (keyword.text.isNotEmpty) {
+                      offersController?.searchOffer(keyword.text);
+                    } else {
+                      offersController?.getOffers(true);
+                    }
+                  }),
             ),
             onError: (error) => Center(
                   child: RetryWidget(
                       error: error!,
-                      func: () => offersController?.getOffers(true)),
+                      func: () {
+                        if (keyword.text.isNotEmpty) {
+                          offersController?.searchOffer(keyword.text);
+                        } else {
+                          offersController?.getOffers(true);
+                        }
+                      }),
                 )),
       ),
     );

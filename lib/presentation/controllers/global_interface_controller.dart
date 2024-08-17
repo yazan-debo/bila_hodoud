@@ -45,10 +45,11 @@ class GlobalInterfaceController extends GetxController {
         name: 'الإدارة المالية',
         choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
       ),
-      DropdownListController(
-        name: 'إدارة الإشعارات',
-        choices: ['إشعارات النظام', 'إشعارات المستخدمين'],
-      ),
+      // DropdownListController(
+      //   name: 'إدارة الإشعارات',
+      //   choices: ['إعدادات الاشعارات', 'إشعارات النظام', 'إشعارات المستخدمين'],
+      // ),
+
       DropdownListController(
         name: 'إدارة الصلاحيات',
         choices: [
@@ -56,6 +57,36 @@ class GlobalInterfaceController extends GetxController {
           'أدوار المستخدمين',
           'حسابات المستخدمين',
           'أدوار النظام'
+        ],
+      ),
+      DropdownListController(
+        name: 'إدارة الأخبار',
+        choices: ['الأخبار'],
+      ),
+      DropdownListController(
+        name: 'إدارة النقاط',
+        choices: [
+          'نقاط المستخدمين',
+        ],
+      ),
+
+      DropdownListController(
+        name: 'إدارة القسائم',
+        choices: [
+          'قسائم المستخدمين',
+        ],
+      ),
+      DropdownListController(
+        name: 'الإعدادات',
+        choices: [
+          'إعدادات الحساب',
+        ],
+      ),
+
+      DropdownListController(
+        name: 'المحفظة الإلكترونية',
+        choices: [
+          'طلبات تعبئة المحفظة',
         ],
       ),
     ];

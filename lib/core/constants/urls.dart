@@ -10,4 +10,11 @@ class Urls {
   static const String role = "role";
   static const String offer = "offer";
   static const String orders = "orders";
+  static const String news = "news";
+  static const String points = "points";
+  static const String coupon = "coupon";
+  static const String dashboard = "dashboard";
+  static const String balanceRequest = "balance-request";
+  static const String updateBalance = "updateBalance";
+  static const String report = "report";
 }

@@ -23,21 +23,23 @@ class _GlobalInterfaceState extends State<GlobalInterface> {
         body: Row(
           children: [
             Flexible(
-              flex: 1,
+              flex: 2,
               child: CustomSidebar(
                 dropdowns: Get.put(GlobalInterfaceController()).dropdowns,
                 loggedInUser: 'yazan',
               ),
             ),
             Expanded(
-              flex: 6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAppBar(),
-
-                  ...Get.put(GlobalInterfaceController()).extraWidgets,
-                ],
+              flex: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomAppBar(),
+                    ...Get.put(GlobalInterfaceController()).extraWidgets,
+                  ],
+                ),
               ),
             ),
           ],

@@ -78,7 +78,6 @@ class _LibraryWidgetState extends State<LibraryWidget> {
                     children: [
                       CustomButton(
                         constraints: constraints,
-
                         icon: Icons.edit,
                         backgroundColor: ColorStyleFeatures.headLinesTextColor,
                         onTap: () {
