@@ -6,6 +6,7 @@ import '../../../../core/components/edit_button.dart';
 import '../../../../core/components/retry_widget.dart';
 import '../../../../core/components/switch_button.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
+import '../../../../core/constants/style/text_style_features.dart';
 import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../core/components/most_used_button.dart';
 import '../../model/models/role_model.dart';
@@ -24,7 +25,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
   @override
   void initState() {
     // TODO: implement initState
-    rolesController?.getRoles(true);
+    rolesController?.getAllPermissions(true);
     super.initState();
   }
 
@@ -33,104 +34,116 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
     final GlobalInterfaceController globalInterfaceController =
         Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
-
-    globalInterfaceController.addExtraWidget(Expanded(
-      child: rolesController!.obx(
-          (state) => Table(
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                border: TableBorder.all(),
-                columnWidths: const {
-                  0: FractionColumnWidth(0.35),
-                  1: FractionColumnWidth(0.35),
-                  2: FractionColumnWidth(0.15),
-                  3: FractionColumnWidth(0.15),
-                },
-                children: [
-                  const TableRow(
+    globalInterfaceController.addExtraWidget(
+      Center(
+        child: Text(
+          'أدوار النظام' ,
+          style: TextStyleFeatures.headLinesTextStyle,
+        ),
+      ),
+    );
+    globalInterfaceController.addExtraWidget(
+        Expanded(
+  child:
+          rolesController!.obx(
+              (state) => Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    border: TableBorder.all(),
+                    columnWidths: const {
+                      //0: FractionColumnWidth(0.35),
+                      1: FractionColumnWidth(0.4),
+                      2: FractionColumnWidth(0.3),
+                      3: FractionColumnWidth(0.3),
+                    },
                     children: [
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Center(
-                            child: Text('حالة الدور',
-                                style: TextStyle(
-                                  fontFamily: 'Arabic',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                      const TableRow(
+                        children: [
+                  /*        TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                              child: Center(
+                                child: Text('حالة الدور',
+                                    style: TextStyle(
+                                      fontFamily: 'Arabic',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                            ),
                           ),
-                        ),
+                         */
+                          TableCell(
+                            child: Center(
+                              child: Text('اسم الدور',
+                                  style: TextStyle(
+                                    fontFamily: 'Arabic',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                          ),
+                          TableCell(
+                            child: Center(
+                              child: Text('تعديل الدور',
+                                  style: TextStyle(
+                                    fontFamily: 'Arabic',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                          ),
+                          TableCell(
+                            child: Center(
+                              child: Text('حذف الدور',
+                                  style: TextStyle(
+                                    fontFamily: 'Arabic',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                          ),
+                        ],
                       ),
-                      TableCell(
-                        child: Center(
-                          child: Text('اسم الدور',
-                              style: TextStyle(
-                                fontFamily: 'Arabic',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ),
-                      TableCell(
-                        child: Center(
-                          child: Text('تعديل الدور',
-                              style: TextStyle(
-                                fontFamily: 'Arabic',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ),
-                      TableCell(
-                        child: Center(
-                          child: Text('حذف الدور',
-                              style: TextStyle(
-                                fontFamily: 'Arabic',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ),
+                      ...state!.map((item) {
+                        return _buildTableRow(
+                          item,
+                          CellButton(
+                            onTap: () {
+                              Get.to(() => ModifyRoleScreen(
+                                    role: item,
+                                  ));
+                            },
+                            icon: Icons.edit,
+                            label: "تعديل",
+                          ),
+                          CellButton(
+                            onTap: () async {
+                              bool? isRefresh =
+                                  await rolesController?.deleteRole(item.id ?? 0);
+                              if (isRefresh ?? false) {
+                                rolesController?.getAllPermissions(false);
+                              }
+                            },
+                            icon: Icons.delete,
+                            label: "حذف",
+                          ),
+                        );
+                      }),
                     ],
                   ),
-                  ...state!.map((item) {
-                    return _buildTableRow(
-                      item,
-                      CellButton(
-                        onTap: () {
-                          Get.to(() => ModifyRoleScreen(
-                                role: item,
-                              ));
-                        },
-                        icon: Icons.edit,
-                        label: "تعديل",
-                      ),
-                      CellButton(
-                        onTap: () async {
-                          bool? isRefresh =
-                              await rolesController?.deleteRole(item.id ?? 0);
-                          if (isRefresh ?? false) {
-                            rolesController?.getRoles(false);
-                          }
-                        },
-                        icon: Icons.delete,
-                        label: "حذف",
-                      ),
-                    );
-                  }),
-                ],
-              ),
-          onLoading: const Center(child: CircularProgressIndicator()),
-          onEmpty: Center(
-            child: RetryWidget(
-                error: "لا يوجد نتائج",
-                func: () => rolesController?.getRoles(true)),
-          ),
-          onError: (error) => Center(
+              onLoading: const Center(child: CircularProgressIndicator()),
+              onEmpty: Center(
                 child: RetryWidget(
-                    error: error!, func: () => rolesController?.getRoles(true)),
-              )),
-    ));
+                    error: "لا يوجد نتائج",
+                    func: () => rolesController?.getAllPermissions(true)),
+              ),
+              onError: (error) => Center(
+                    child: RetryWidget(
+                        error: error!, func: () => rolesController?.getAllPermissions(true)),
+                  )),
+
+    ),
+    );
 
     globalInterfaceController.addExtraWidget(
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
@@ -148,7 +161,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
   }
 
   TableRow _buildTableRow(
-    RoleModel role,
+    PermessionModel role,
     Widget editButton,
     Widget deleteButton,
   ) {
@@ -161,7 +174,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
     return TableRow(
       decoration: BoxDecoration(color: Colors.grey[200]),
       children: [
-        TableCell(
+    /*    TableCell(
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -182,6 +195,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
             ),
           ),
         ),
+       */
         TableCell(
           child: Center(
             child: Text(role.name ?? "", style: textStyle),

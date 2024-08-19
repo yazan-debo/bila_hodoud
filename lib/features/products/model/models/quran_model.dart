@@ -50,6 +50,5 @@ class QuranModel {
         "num_of_pages": numOfPages,
         "print_type": printType,
         "specifications": specifications,
-        "product_id": productId,
       };
 }

@@ -4,8 +4,10 @@ import 'package:bila_hodoud/features/libraries/model/params/library_params.dart'
 import 'package:bila_hodoud/features/offers/controller/offers_controller.dart';
 import 'package:bila_hodoud/features/offers/model/models/offer_model.dart';
 import 'package:bila_hodoud/features/offers/model/params/offer_params.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/components/used_filled.dart';
@@ -18,6 +20,7 @@ import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
+import '../../../products/controller/file_upload_controller.dart';
 
 class ModifyOfferScreen extends StatefulWidget {
   final OfferModel? offer;
@@ -33,6 +36,13 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
   final _offerFormKey = GlobalKey<FormState>();
   OfferParams params = OfferParams();
   TextEditingController name = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController discountRate = TextEditingController();
+  TextEditingController startDate = TextEditingController();
+  TextEditingController endDate = TextEditingController();
+
+  final FileUploadController fileUploadController =
+      Get.put(FileUploadController());
 
   @override
   void initState() {
@@ -40,8 +50,53 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
     if (widget.offer != null) {
       name.text = widget.offer?.name ?? "";
     }
-
     super.initState();
+  }
+
+  DateFormat format = DateFormat("yyyy-MM-dd kk:mm");
+
+  DateTime? selectedDateTime;
+
+  Future<void> _selectDateTime(
+      BuildContext context, TextEditingController text) async {
+    DateTime now = DateTime.now();
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDateTime ?? now,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(selectedDateTime ?? now),
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          selectedDateTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+              DateTime.now().second);
+
+          text.text = DateFormat('yyyy-MM-dd hh:mm:ss')
+              .format(selectedDateTime!.toLocal());
+        });
+      }
+    }
+  }
+
+  void _selectFile() async {
+    final FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      fileUploadController.addFile(
+          result.files.first.bytes!, result.files.first.name);
+    }
   }
 
   @override
@@ -63,18 +118,149 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
     globalInterfaceController.addExtraWidget(Form(
       key: _offerFormKey,
       child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UsedFilled(
-              label: 'اسم العرض',
-              controller: name,
-              isMandatory: true,
-              onSaved: (value) {
-                params.name = value;
-              },
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UsedFilled(
+                label: 'اسم العرض',
+                controller: name,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.name = value;
+                },
+              ),
+              UsedFilled(
+                label: 'وصف العرض',
+                controller: description,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.description = value;
+                },
+              ),
+              UsedFilled(
+                label: 'الحسم',
+                controller: discountRate,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.discountRate = int.parse(value);
+                },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: UsedFilled(
+                      label: 'تاريخ البدء',
+                      controller: startDate,
+                      isMandatory: true,
+                      enabled: false,
+                      validator: (value) {
+                        if (startDate.text == "") {
+                          return 'ادخل قيمة';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        params.startDate = DateFormat('yyyy-MM-dd hh:mm:ss')
+                            .parse(startDate.text);
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _selectDateTime(context, startDate);
+                    },
+                    child: Text('اختر التاريخ'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: UsedFilled(
+                      label: 'تاريخ النهاية',
+                      controller: endDate,
+                      isMandatory: true,
+                      enabled: false,
+                      validator: (value) {
+                        if (startDate.text == "") {
+                          return 'ادخل قيمة';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        params.endDate = DateFormat('yyyy-MM-dd hh:mm:ss')
+                            .parse(endDate.text);
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _selectDateTime(context, endDate);
+                    },
+                    child: Text('اختر التاريخ'),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 3.h,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "صورة العرض",
+                    style: TextStyleFeatures.generalTextStyle,
+                    // textDirection: TextDirection.rtl,
+                  ),
+                  const SizedBox(width: 25),
+                  GestureDetector(
+                      onTap: () {
+                        _selectFile();
+                      },
+                      child: Container(
+                          width: 15.w,
+                          height: 12.w,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)),
+                          child: Center(
+                            child: SizedBox(
+                              width: 13.w,
+                              height: 10.w,
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.grey,
+                                  size: 33,
+                                ),
+                              ),
+                            ),
+                          ))),
+                  Obx(
+                    () => Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: fileUploadController.images.length,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                              child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.memory(
+                                fileUploadController.images[index].image,
+                                height: 10.w,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(fileUploadController.images[index].fileName)
+                            ],
+                          ));
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     ));

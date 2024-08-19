@@ -47,6 +47,5 @@ class StationeryModel {
         "materials": materials,
         "manufacturer": manufacturer,
         "specifications": specifications,
-        "product_id": productId,
       };
 }

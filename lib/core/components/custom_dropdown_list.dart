@@ -8,16 +8,21 @@ class CustomDropdownList extends StatefulWidget {
   final String label;
   final String hint;
   final List<DropdownMenuItem<int>>? items;
+  final List<DropdownMenuItem<String>>? sItems;
+  final List<DropdownMenuItem<dynamic>>? dItems;
   final dynamic selectedItem;
   final Function(dynamic value) onChanged;
 
-  const CustomDropdownList(
-      {super.key,
-      required this.label,
-      required this.hint,
-      this.items,
-      this.selectedItem,
-      required this.onChanged});
+  const CustomDropdownList({
+    super.key,
+    required this.label,
+    required this.hint,
+    this.items,
+    this.selectedItem,
+    required this.onChanged,
+    this.sItems,
+    this.dItems,
+  });
 
   @override
   State<CustomDropdownList> createState() => _CustomDropdownListState();
@@ -44,21 +49,53 @@ class _CustomDropdownListState extends State<CustomDropdownList> {
             ),
             borderRadius: BorderRadius.circular(8.0),
           ),
-          child: DropdownButton<int>(
-            hint: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                widget.hint,
-                style: TextStyle(fontSize: 14.px),
-              ),
-            ),
-            underline: Container(),
-            value: widget.selectedItem,
-            onChanged: (int? selectedItem) {
-              widget.onChanged(selectedItem);
-            },
-            items: widget.items?.toList(),
-          ),
+          child: widget.items != null
+              ? DropdownButton<int>(
+                  hint: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      widget.hint,
+                      style: TextStyle(fontSize: 14.px),
+                    ),
+                  ),
+                  underline: Container(),
+                  value: widget.selectedItem as int?,
+                  onChanged: (int? selectedItem) {
+                    widget.onChanged(selectedItem);
+                  },
+                  items: widget.items?.toList(),
+                )
+              : widget.dItems != null
+                  ? DropdownButton<dynamic>(
+                      hint: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          widget.hint,
+                          style: TextStyle(fontSize: 14.px),
+                        ),
+                      ),
+                      underline: Container(),
+                      value: widget.selectedItem,
+                      onChanged: (dynamic? selectedItem) {
+                        widget.onChanged(selectedItem);
+                      },
+                      items: widget.dItems?.toList(),
+                    )
+                  : DropdownButton<String>(
+                      hint: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          widget.hint,
+                          style: TextStyle(fontSize: 14.px),
+                        ),
+                      ),
+                      underline: Container(),
+                      value: widget.selectedItem as String?,
+                      onChanged: (String? selectedItem) {
+                        widget.onChanged(selectedItem);
+                      },
+                      items: widget.sItems?.toList(),
+                    ),
         ),
       ],
     );

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 class RoleParams {
+  String? roleId;
   String? name;
   String? description;
 
   RoleParams({
+    this.roleId,
     this.name,
     this.description,
   });
@@ -23,4 +25,7 @@ class RoleParams {
         "name": name,
         "description": description,
       };
+  Map<String, dynamic> updateUserRoleToJson() => {
+    "role_id": roleId,
+  };
 }

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import '../../../core/utils/app_shared_pref.dart';
 import '../model/params/library_params.dart';
 
 class LibrariesController extends GetxController
@@ -21,9 +22,13 @@ class LibrariesController extends GetxController
 
       const url = '${Urls.baseUrl}${Urls.library}';
 
+    AppSharedPref appSharedPref = AppSharedPref();
+    String token = appSharedPref.getToken();
+
       var headers = {
         'Content-Type': 'application/json',
-        // Add any additional headers here
+        "Authorization": "Bearer $token"
+    // Add any additional headers here
       };
       var response = await http.get(
         Uri.parse(url),
@@ -55,9 +60,13 @@ class LibrariesController extends GetxController
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.library}';
 
+    AppSharedPref appSharedPref = AppSharedPref();
+    String token = appSharedPref.getToken();
+
       var headers = {
         'Content-Type': 'application/json',
-        // Add any additional headers here
+        "Authorization": "Bearer $token"
+    // Add any additional headers here
       };
 
       var body = jsonEncode(params.toJson());
@@ -85,9 +94,13 @@ class LibrariesController extends GetxController
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.library}/$libraryId';
 
+    AppSharedPref appSharedPref = AppSharedPref();
+    String token = appSharedPref.getToken();
+
       var headers = {
         'Content-Type': 'application/json',
-        // Add any additional headers here
+        "Authorization": "Bearer $token"
+    // Add any additional headers here
       };
 
       var body = jsonEncode(params.toJson());
@@ -115,9 +128,14 @@ class LibrariesController extends GetxController
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.library}/$libraryId';
 
-      var headers = {
+    AppSharedPref appSharedPref = AppSharedPref();
+    String token = appSharedPref.getToken();
+
+    var headers = {
         'Content-Type': 'application/json',
-        // Add any additional headers here
+        "Authorization": "Bearer $token"
+
+    // Add any additional headers here
       };
 
       var response = await http.delete(Uri.parse(url), headers: headers);

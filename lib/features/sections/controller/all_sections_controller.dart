@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
 
+import '../../../core/utils/app_shared_pref.dart';
 import '../model/models/section_model.dart';
 import '../model/params/section_params.dart';
 
@@ -19,9 +20,12 @@ class AllSectionsController extends GetxController
       });
 
       const url = '${Urls.baseUrl}${Urls.section}';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -140,4 +144,5 @@ class AllSectionsController extends GetxController
       return false;
     }
   }
+
 }

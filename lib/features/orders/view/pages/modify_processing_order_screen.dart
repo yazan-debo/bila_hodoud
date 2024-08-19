@@ -426,10 +426,13 @@ class _ModifyProcessingOrderScreenState
 
             bool? isSuccess = await normalOrdersController?.updateOrder(
                 widget.order?.id ?? 0, params);
+            print("isSuccess: $isSuccess");
             if (isSuccess ?? false) {
               params1.status = statusDropdownController?.selectedItem.value;
+              print("status: ${params1.status} ");
               bool? isSuccess1 = await normalOrdersController
                   ?.changeOrderStatus(widget.order?.id ?? 0, params1);
+              print("isSuccess1: $isSuccess1");
               if (isSuccess1 ?? false) {
                 Get.off(() => PendingOrdersScreen(
                       initialPage: widget.pageIndex,

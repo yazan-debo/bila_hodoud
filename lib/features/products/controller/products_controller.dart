@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import '../../../core/utils/app_shared_pref.dart';
 import '../../sections/view/pages/section_details_screen.dart';
 import '../model/models/product_model.dart';
 import '../model/params/product_params.dart';
@@ -25,9 +26,13 @@ class ProductsController extends GetxController
       });
 
       String url = '${Urls.baseUrl}${Urls.section}/${Urls.products}/$sectionId';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
+
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
         // Add any additional headers here
       };
       var response = await http.get(
@@ -141,6 +146,7 @@ class ProductsController extends GetxController
   }
 
   Future<bool> addProduct(
+
       ProductParams params, List<ImageFileModel> images) async {
     try {
       DialogHelper.showLoadingDialog();
@@ -151,7 +157,9 @@ class ProductsController extends GetxController
         // Add any additional headers here
       };
 
-      Map<String, dynamic> body = params.toJson();
+
+      Map<String, dynamic> body;
+      params.subSectionId == null?  body = params.toJson() :body = params.toJsonWithSubsectionId();
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
@@ -163,7 +171,7 @@ class ProductsController extends GetxController
             filename: images[i].fileName);
         request.files.add(multipartFile);
       }
-
+print("request sent as");
       var response = await request.send();
 
       if (response.statusCode == 201) {
@@ -197,12 +205,16 @@ class ProductsController extends GetxController
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.products}/update/$productId';
 
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
+
       var headers = {
         'Content-Type': 'multipart/form-data',
+        "Authorization": "Bearer $token"
         // Add any additional headers here
       };
-
-      Map<String, dynamic> body = params.toJson();
+      Map<String, dynamic> body;
+      params.subSectionId == null?  body = params.toJson() :body = params.toJsonWithSubsectionId();
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
@@ -264,6 +276,88 @@ class ProductsController extends GetxController
       return false;
     }
   }
+
+  Future<void> searchProduct(String keyword, int sectionId) async {
+    try {
+      await Future.delayed(Duration(milliseconds: 500)).then((g) {
+        // if (withRefresh) {
+        //   change(null, status: RxStatus.loading());
+        // }
+      });
+
+      String url = '${Urls.baseUrl}searchBySection/$sectionId/$keyword';
+
+      var headers = {
+        'Content-Type': 'application/json',
+        // Add any additional headers here
+      };
+      var response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        print(url);
+        var data = jsonDecode(response.body);
+
+        List<ProductModel> products = [];
+        products = (data['data'] as List<dynamic>)
+          .map((i) => ProductModel.fromJson(i))
+          .toList();
+      if (products.isNotEmpty) {
+        change(products, status: RxStatus.success());
+      } else {
+        change(products, status: RxStatus.empty());
+      }
+    } else {
+    change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
+    }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
+  Future<void> getSubsectionProducts(int subsectionId, bool withRefresh) async {
+    try {
+      await Future.delayed(Duration(milliseconds: 500)).then((g) {
+        if (withRefresh) {
+          change(null, status: RxStatus.loading());
+        }
+      });
+
+      String url = '${Urls.baseUrl}${Urls.products}/by-subsection/$subsectionId';
+
+      var headers = {
+        'Content-Type': 'application/json',
+        // Add any additional headers here
+      };
+      var response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        List<ProductModel> products = [];
+
+        products = (data['data'] as List<dynamic>)
+            .map((i) => ProductModel.fromJson(i))
+            .toList();
+        if (products.isNotEmpty) {
+          change(products, status: RxStatus.success());
+        } else {
+          change(products, status: RxStatus.empty());
+        }
+      } else {
+        change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
+
 }
 
 jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {

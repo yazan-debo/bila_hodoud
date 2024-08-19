@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bila_hodoud/features/authentication/controller/user_info_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/constants/urls.dart';
@@ -34,8 +35,11 @@ class AuthenticationController extends GetxController with StateMixin<bool> {
 
       if (response.statusCode == 200) {
         UserModel user = UserModel.fromJson(jsonDecode(response.body));
+        UserInfoController userInfoController =   Get.find<UserInfoController>();
+        userInfoController.setUserName(user.userName);
         appSharedPref.saveToken(user);
         appSharedPref.saveUserId(user);
+
         Get.back();
         Get.offAllNamed("/home_screen");
         change(true, status: RxStatus.success());

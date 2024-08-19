@@ -10,6 +10,7 @@ import '../../../../core/components/custom_button.dart';
 import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
+import '../pages/subsection_details.dart';
 
 class SubSectionWidget extends StatefulWidget {
   final SubsectionModel subsection;
@@ -34,7 +35,9 @@ class _SubSectionWidgetState extends State<SubSectionWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.to(() =>  SubsectionDetailsScreen(subsectionId:widget.subsection.id,sectionId:widget.sectionId));
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

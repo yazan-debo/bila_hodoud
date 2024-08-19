@@ -1,3 +1,4 @@
+import "package:bila_hodoud/features/authentication/controller/user_info_controller.dart";
 import "package:bila_hodoud/features/libraries/controller/libraries_controller.dart";
 import "package:bila_hodoud/features/news/controller/news_controller.dart";
 import "package:bila_hodoud/features/offers/controller/offers_controller.dart";
@@ -16,6 +17,7 @@ import "../../features/coupons/controller/coupons_controller.dart";
 import "../../features/orders/controller/delivery_method_dropdown_controller.dart";
 import "../../features/orders/controller/order_details_controller.dart";
 import "../../features/orders/controller/status_dropdown_controller.dart";
+import "../../features/permissions/controller/permissions_controller.dart";
 import "../../features/points/controller/points_controller.dart";
 import "../../features/sections/controller/all_sections_controller.dart";
 import "../../features/subsections/controller/dropdown_controller.dart";
@@ -41,5 +43,7 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => BalanceRequestsController(), fenix: true);
     Get.lazyPut(() => BalanceRequestsDetailsController(), fenix: true);
     Get.lazyPut(() => ReportsController(), fenix: true);
+    Get.lazyPut(() => UserInfoController(), fenix: true);
+    Get.lazyPut(() => PermissionsController(), fenix: true);
   }
 }

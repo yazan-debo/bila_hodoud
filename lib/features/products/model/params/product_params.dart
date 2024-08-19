@@ -58,7 +58,8 @@ class ProductParams {
             : StationeryModel.fromJson(json["stationery"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJsonWithSubsectionId() {
+    return {
         "name": name ?? "",
         "barcode": barcode ?? "",
         "description": description ?? "",
@@ -66,10 +67,24 @@ class ProductParams {
         "quantity": quantity ?? "",
         "minimumQuantity": minimumQuantity ?? "",
         "section_id": sectionId ?? "",
-        "subSection_id": subSectionId ?? "",
+        "subSections_id": subSectionId ?? "",
         if (book != null) "book": book?.toJson(),
         if (game != null) "game": game?.toJson(),
         if (quran != null) "quran": quran?.toJson(),
         if (stationery != null) "stationery": stationery?.toJson(),
       };
+  }
+  Map<String, dynamic> toJson() => {
+    "name": name ?? "",
+    "barcode": barcode ?? "",
+    "description": description ?? "",
+    "price": price ?? "",
+    "quantity": quantity ?? "",
+    "minimumQuantity": minimumQuantity ?? "",
+    "section_id": sectionId ?? "",
+    if (book != null) "book": book?.toJson(),
+    if (game != null) "game": game?.toJson(),
+    if (quran != null) "quran": quran?.toJson(),
+    if (stationery != null) "stationery": stationery?.toJson(),
+  };
 }

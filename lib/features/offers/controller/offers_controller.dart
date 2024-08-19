@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import '../../../core/utils/app_shared_pref.dart';
 import '../model/models/offer_model.dart';
 
 class OffersController extends GetxController
@@ -21,9 +22,14 @@ class OffersController extends GetxController
       });
 
       const url = '${Urls.baseUrl}${Urls.offer}/index';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token",
+      'Accept': 'application/json',
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -55,6 +61,7 @@ class OffersController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.offer}/store';
+
 
       var headers = {
         'Content-Type': 'application/json',

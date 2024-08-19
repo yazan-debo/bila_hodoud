@@ -30,6 +30,7 @@ import 'features/news/view/pages/news_screen.dart';
 import 'features/orders/view/pages/pending_order_details_screen.dart';
 import 'features/orders/view/pages/pending_orders_screen.dart';
 import 'features/points/view/pages/points_screen.dart';
+import 'features/permissions/view/pages/users_accounts_screen.dart';
 import 'features/products/view/pages/display_products/display_book_page.dart';
 import 'features/products/view/pages/display_products/display_game_page.dart';
 import 'features/products/view/pages/display_products/display_product_page.dart';
@@ -116,6 +117,9 @@ class MyApp extends StatelessWidget {
           GetPage(
               name: '/account_settings_screen',
               page: () => const AccountSettingsScreen()),
+          GetPage(name: '/users_accounts', page: () => const UsersAccountsScreen()),
+
+
         ],
         theme: ThemeData(
           cardColor: ColorStyleFeatures.cardColor,

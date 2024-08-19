@@ -1,3 +1,4 @@
+import 'package:bila_hodoud/features/authentication/controller/user_info_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,11 @@ class GlobalInterface extends StatefulWidget {
 }
 
 class _GlobalInterfaceState extends State<GlobalInterface> {
+@override
+  void initState() {
+    super.initState();
+    Get.put(UserInfoController());  // Puts UserInfoController when this widget is initialized
+  }
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -24,10 +30,12 @@ class _GlobalInterfaceState extends State<GlobalInterface> {
           children: [
             Flexible(
               flex: 2,
-              child: CustomSidebar(
-                dropdowns: Get.put(GlobalInterfaceController()).dropdowns,
-                loggedInUser: 'yazan',
-              ),
+              child: Obx(() {
+                return CustomSidebar(
+                  dropdowns: Get.find<GlobalInterfaceController>().dropdowns,
+                  loggedInUser: UserInfoController.uName.value ?? "",
+                );
+              }),
             ),
             Expanded(
               flex: 8,

@@ -33,8 +33,6 @@ class _ModifySectionScreenState extends State<ModifySectionScreen> {
       Get.find<AllSectionsController>();
   final DropdownController? dropdownController = Get.find<DropdownController>();
 
-  // final DropdownController dropdownController =
-  // Get.put(DropdownController());
 
   final _sectionFormKey = GlobalKey<FormState>();
   SectionParams params = SectionParams();

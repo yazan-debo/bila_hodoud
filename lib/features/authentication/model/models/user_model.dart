@@ -29,6 +29,8 @@ class UserModel {
     role: RoleModel.fromJson(json['role']),
       );
 
+
+
   Map<String, dynamic> toJson() => {
         "message": message,
         "token": token,

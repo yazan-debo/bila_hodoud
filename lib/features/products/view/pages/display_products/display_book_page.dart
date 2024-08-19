@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
+import '../../../controller/received_images_controller.dart';
 import '../../../model/models/product_model.dart';
 import '../../widgets/product_display_widget.dart';
 
@@ -15,6 +16,16 @@ class DisplayBookPage extends StatefulWidget {
 }
 
 class _DisplayBookPageState extends State<DisplayBookPage> {
+  final ReceivedImagesController receivedImagesController = Get.put(ReceivedImagesController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Parse images when the widget is initialized
+    if (widget.productModel?.images != null) {
+      receivedImagesController.parseImages(widget.productModel!.images!);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
@@ -27,7 +38,7 @@ class _DisplayBookPageState extends State<DisplayBookPage> {
     );
 
     globalInterfaceController.addExtraWidget(ProductDisplayWidget(
-      images: widget.productModel?.images ?? "",
+      images: receivedImagesController.imagePaths.toList(),
       description: widget.productModel?.description??"",
       productName: widget.productModel?.name??"",
       barcode: widget.productModel?.barcode??"",

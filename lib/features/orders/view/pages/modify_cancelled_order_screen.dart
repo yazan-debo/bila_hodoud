@@ -321,25 +321,14 @@ class _ModifyCancelledOrderScreenState
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () async {
-          if (_processingOrderFromKey.currentState!.validate()) {
-            _processingOrderFromKey.currentState?.save();
-            params.deliveryMethod =
-                deliveryMethodDropdownController?.selectedItem.value;
-
-            bool? isSuccess = await normalOrdersController?.updateOrder(
-                widget.order?.id ?? 0, params);
-            if (isSuccess ?? false) {
-              params1.status = statusDropdownController?.selectedItem.value;
-              bool? isSuccess1 = await normalOrdersController
-                  ?.changeOrderStatus(widget.order?.id ?? 0, params1);
-              if (isSuccess1 ?? false) {
-                Get.off(() => PendingOrdersScreen(
-                  initialPage: widget.pageIndex,
-                ));
-              }
-            }
-          }
-        },
+          params1.status = statusDropdownController?.selectedItem.value;
+          bool? isSuccess1 = await normalOrdersController
+              ?.changeOrderStatus(widget.order?.id ?? 0, params1);
+          if (isSuccess1 ?? false) {
+            Get.off(() => PendingOrdersScreen(
+              initialPage: widget.pageIndex,
+            ));
+          }        },
       ),
       onLoading: SizedBox(),
       onEmpty: SizedBox(),

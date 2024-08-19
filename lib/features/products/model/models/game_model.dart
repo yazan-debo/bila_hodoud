@@ -47,13 +47,10 @@ class GameModel {
 
   Map<String, dynamic> toJson() =>
       {
-
         "target_age": targetAge,
         "goals": goals,
         "materials": materials,
         "manufacturer": manufacturer,
         "num_of_players": numOfPlayers,
-        "product_id": productId,
-
       };
 }

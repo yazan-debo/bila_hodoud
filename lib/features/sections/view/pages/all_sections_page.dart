@@ -1,6 +1,7 @@
 import 'dart:js_interop';
 
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,7 @@ import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
 import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../presentation/view/global_interface.dart';
+import '../../../products/controller/file_upload_controller.dart';
 import '../widgets/section_widget.dart';
 
 import '../../controller/all_sections_controller.dart';
@@ -25,14 +27,27 @@ class AllSectionsScreen extends StatefulWidget {
 class _AllSectionsScreenState extends State<AllSectionsScreen> {
   final AllSectionsController? getAllSectionsController =
       Get.find<AllSectionsController>();
-
+  final FileUploadController fileUploadController =
+  Get.put(FileUploadController());
   @override
   void initState() {
     // TODO: implement initState
     getAllSectionsController?.getAllSections();
     super.initState();
   }
+  void _selectFile() async {
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xls', 'xlsx'], // Allow Excel file types only
+    );
 
+    if (result != null) {
+      fileUploadController.addExcelFile(
+          result.files.first.bytes!,
+          result.files.first.name
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
@@ -91,29 +106,56 @@ class _AllSectionsScreenState extends State<AllSectionsScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      getAllSectionsController!.obx(
-          (state) => MostUsedButton(
-              buttonText: 'أضف قسما جديدا',
-              buttonIcon: Icons.add_circle_outline,
-              onTap: () {
-                Get.to(() => ModifySectionScreen(
-                      sectionsNumber: state?.length,
-                    ));
-              }),
-          onLoading: SizedBox(),
-          onEmpty: MostUsedButton(
-            buttonText: 'أضف قسما جديدا',
-            buttonIcon: Icons.add_circle_outline,
-            onTap: () {
-              Get.to(() => ModifySectionScreen(sectionsNumber: 5));
-            },
-          ),
-          onError: (error) => MostUsedButton(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+        getAllSectionsController!.obx(
+                (state) => MostUsedButton(
+                buttonText: 'أضف قسما جديدا',
+                buttonIcon: Icons.add_circle_outline,
+                onTap: () {
+                  Get.to(() => ModifySectionScreen(
+                    sectionsNumber: state?.length,
+                  ));
+                }),
+            onLoading: SizedBox(),
+            onEmpty: MostUsedButton(
               buttonText: 'أضف قسما جديدا',
               buttonIcon: Icons.add_circle_outline,
               onTap: () {
                 Get.to(() => ModifySectionScreen(sectionsNumber: 5));
-              })),
+              },
+            ),
+            onError: (error) => MostUsedButton(
+                buttonText: 'أضف قسما جديدا',
+                buttonIcon: Icons.add_circle_outline,
+                onTap: () {
+                  Get.to(() =>  ModifySectionScreen(sectionsNumber: 5));
+                })),
+        getAllSectionsController!.obx(
+                (state) => MostUsedButton(
+                buttonText: 'أضف منتجات',
+                buttonIcon: Icons.add_circle_outline,
+                onTap: () {
+                  _selectFile();
+                }),
+            onLoading: SizedBox(),
+            onEmpty: MostUsedButton(
+              buttonText: 'أضف منتجات',
+              buttonIcon: Icons.add_circle_outline,
+              onTap: () {
+                _selectFile();
+              },
+            ),
+            onError: (error) => MostUsedButton(
+                buttonText: 'أضف منتجات',
+                buttonIcon: Icons.add_circle_outline,
+                onTap: () {
+                  _selectFile();
+                })),
+      ],)
+
     );
 
     return GlobalInterface();

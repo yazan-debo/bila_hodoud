@@ -7,7 +7,7 @@ import '../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../core/constants/style/text_style_features.dart';
 
 class ProductDisplayWidget extends StatelessWidget {
-  final String images;
+  final List<String> images;
   final String description;
   final String productName;
   final String barcode;
@@ -27,7 +27,6 @@ class ProductDisplayWidget extends StatelessWidget {
     this.additionalSpecifications = const {},
   });
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Row(

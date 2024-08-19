@@ -17,4 +17,5 @@ class Urls {
   static const String balanceRequest = "balance-request";
   static const String updateBalance = "updateBalance";
   static const String report = "report";
+  static const String permission = "permission";
 }

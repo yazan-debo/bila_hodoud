@@ -7,14 +7,19 @@ class UsedFilled extends StatefulWidget {
   final bool isMandatory;
   final Function(String)? onSaved;
   final TextEditingController controller;
+
+  final String? Function(String?)? validator; // Custom validator if needed
   final bool? obscureText;
+  final bool? enabled;
 
   const UsedFilled({
     required this.label,
     required this.isMandatory,
     this.onSaved,
     this.obscureText = false,
+    this.enabled = true,
     required this.controller,
+    this.validator, // Add this line to accept a custom validator
     Key? key,
   }) : super(key: key);
 
@@ -42,8 +47,11 @@ class _UsedFilledState extends State<UsedFilled> {
             controller: widget.controller,
             obscureText: widget.obscureText ?? false,
             onSaved: (value) {
-              widget.onSaved!(value!);
+              if (value != null) {
+                widget.onSaved!(value);
+              }
             },
+            enabled: widget.enabled,
             decoration: InputDecoration(
               hintText: 'أدخل ${widget.label}',
               hintStyle: const TextStyle(
@@ -51,13 +59,13 @@ class _UsedFilledState extends State<UsedFilled> {
                 color: Colors.grey,
               ),
             ),
-            validator: (value) {
-              if (widget.isMandatory) {
-                if (value!.isEmpty) {
-                  return "لا يمكن ان يكون هذا الحقل فارغ";
-                }
-              }
-            },
+            validator: widget.validator ??
+                (value) {
+                  if (widget.isMandatory && (value == null || value.isEmpty)) {
+                    return "لا يمكن ان يكون هذا الحقل فارغ";
+                  }
+                  return null;
+                },
             style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black,

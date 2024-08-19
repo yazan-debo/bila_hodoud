@@ -1,23 +1,16 @@
-import 'dart:typed_data';
 
-import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
-import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
-import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
-import 'package:bila_hodoud/features/products/model/models/book_model.dart';
 import 'package:bila_hodoud/features/products/model/models/image_file_model.dart';
 import 'package:bila_hodoud/features/products/model/models/product_model.dart';
 import 'package:bila_hodoud/features/products/model/models/stationery_model.dart';
 import 'package:bila_hodoud/features/products/model/params/product_params.dart';
-import 'package:bila_hodoud/features/subsections/controller/subsection_controller.dart';
-import 'package:bila_hodoud/features/subsections/model/models/subsection_model.dart';
-import 'package:bila_hodoud/features/subsections/model/params/subsection_params.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../../core/components/custom_dropdown_list.dart';
 import '../../../../../core/components/most_used_button.dart';
 import '../../../../../core/components/used_filled.dart';
 import '../../../../../core/constants/style/constraint_style_features.dart';
@@ -25,6 +18,8 @@ import '../../../../../core/constants/style/text_style_features.dart';
 import '../../../../../core/constants/urls.dart';
 import '../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../presentation/view/global_interface.dart';
+import '../../../../subsections/controller/dropdown_controller.dart';
+import '../../../../subsections/controller/subsection_controller.dart';
 import '../../../controller/file_upload_controller.dart';
 
 class ModifyStationeryScreen extends StatefulWidget {
@@ -38,7 +33,10 @@ class ModifyStationeryScreen extends StatefulWidget {
 }
 
 class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
+  int? subsectionsNumber = 0;
+
   final ProductsController? productsController = Get.find<ProductsController>();
+  final DropdownController? dropdownController = Get.find<DropdownController>();
 
   final FileUploadController fileUploadController =
       Get.put(FileUploadController());
@@ -54,6 +52,8 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
   TextEditingController materials = TextEditingController();
   TextEditingController manufacturer = TextEditingController();
   TextEditingController specifications = TextEditingController();
+  final SubsectionsController? subsectionsController =
+  Get.find<SubsectionsController>();
 
   @override
   void initState() {
@@ -74,6 +74,7 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
       specifications.text =
           widget.product?.stationery?.specifications.toString() ?? "";
     }
+    subsectionsController?.getSubsections(widget.sectionId, true);
 
     super.initState();
   }
@@ -190,6 +191,52 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                   params.stationery?.specifications = value;
                 },
               ),
+
+              Padding(
+                padding: const EdgeInsets.all(.5),
+                child: subsectionsController!.obx((state) {
+                  var subsections = state ?? [];
+                  var itemNames = subsections.map((item) => item.name).toList();
+                  var selectedItem = dropdownController?.selectedStringItems.value;
+
+                  // Ensure selectedItem is in the list
+                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                    selectedItem = null; // Reset if invalid
+                  }
+
+                  return CustomDropdownList(
+                    hint: "القسم الفرعي",
+                    label: "القسم الفرعي",
+                    onChanged: (value) {
+                      // Update the selected string
+                      dropdownController?.sChange(value);
+
+                      // Find and update the corresponding ID
+                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
+                      dropdownController?.setSubSectionId(selectedSubSection?.id);
+                      subsectionsNumber =  subsections.length;
+                    },
+                    sItems: List<DropdownMenuItem<String>>.generate(
+                      subsections.length,
+                          (index) {
+                        return DropdownMenuItem<String>(
+                          value: subsections[index].name,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              '${subsections[index].name}',
+                              style: TextStyle(fontSize: 18.px),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    selectedItem: selectedItem,
+                  );
+                }),
+              ),
+
+
               SizedBox(
                 height: 3.h,
               ),
@@ -294,6 +341,11 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
             _stationeryFormKey.currentState?.save();
 
             if (widget.product != null) {
+              if (subsectionsNumber!=0){
+                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
+              else{
+                params.subSectionId = null;
+              }
               params.sectionId = widget.sectionId.toString();
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {
@@ -302,6 +354,11 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
             } else {
+              if (subsectionsNumber!=0){
+                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
+              else{
+                params.subSectionId = null;
+              }
               params.sectionId = widget.sectionId.toString();
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {

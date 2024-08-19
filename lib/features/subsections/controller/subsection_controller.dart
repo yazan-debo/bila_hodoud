@@ -14,8 +14,11 @@ import '../model/params/subsection_params.dart';
 
 class SubsectionsController extends GetxController
     with StateMixin<List<SubsectionModel>> {
-  Future<void> getSubsections(int sectionId, bool withRefresh) async {
+  Future<void> getSubsections(int? sectionId, bool withRefresh) async {
+    print("entered");
+
     try {
+      print("trying");
       await Future.delayed(Duration(milliseconds: 500)).then((g) {
         if (withRefresh) {
           change(null, status: RxStatus.loading());
@@ -34,6 +37,8 @@ class SubsectionsController extends GetxController
       );
 
       if (response.statusCode == 200) {
+        print("200");
+
         var data = jsonDecode(response.body);
 
         List<SubsectionModel> subsections = [];

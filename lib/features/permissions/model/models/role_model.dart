@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-class RoleModel {
+class PermessionModel {
   int? id;
   String? name;
   String? description;
 
-  RoleModel({
+  PermessionModel({
     this.id,
     this.name,
     this.description,
   });
 
-  factory RoleModel.fromRawJson(String str) =>
-      RoleModel.fromJson(json.decode(str));
+  factory PermessionModel.fromRawJson(String str) =>
+      PermessionModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RoleModel.fromJson(Map<String, dynamic> json) => RoleModel(
+  factory PermessionModel.fromJson(Map<String, dynamic> json) => PermessionModel(
         id: json["id"],
         name: json["name"],
         description: json["description"],

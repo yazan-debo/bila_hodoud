@@ -25,7 +25,7 @@ class DropdownListController extends GetxController {
     "إدارة الصلاحيات": "",
     "صلاحيّات الأدوار": "",
     "أدوار المستخدمين": "",
-    "حسابات المستخدمين": "/display_product_page",
+    "حسابات المستخدمين": "/users_accounts",
     "أدوار النظام": "/sys_roles",
     "المكتبات": "/libraries_screen",
     "إعدادات الاشعارات": "/notifications_settings_screen",

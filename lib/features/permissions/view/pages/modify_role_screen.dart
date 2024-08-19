@@ -1,12 +1,16 @@
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
+import 'package:bila_hodoud/features/permissions/controller/permissions_controller.dart';
 import 'package:bila_hodoud/features/permissions/model/models/role_model.dart';
+import 'package:bila_hodoud/features/permissions/model/params/permission_params.dart';
 import 'package:bila_hodoud/features/permissions/model/params/role_params.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/components/custom_dropdown_list.dart';
+import '../../../../core/components/retry_widget.dart';
 import '../../../../core/components/used_filled.dart';
 import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
@@ -20,7 +24,7 @@ import '../../../../presentation/view/global_interface.dart';
 import '../../controller/roles_controller.dart';
 
 class ModifyRoleScreen extends StatefulWidget {
-  final RoleModel? role;
+  final PermessionModel? role;
 
   const ModifyRoleScreen({super.key, this.role});
 
@@ -30,14 +34,23 @@ class ModifyRoleScreen extends StatefulWidget {
 
 class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
   final RolesController? rolesController = Get.find<RolesController>();
+  final PermissionsController? permissionsController =
+      Get.find<PermissionsController>();
   final _roleFormKey = GlobalKey<FormState>();
   RoleParams params = RoleParams();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
 
+  List<PermissionParams> permissionsParams = [];
+
   @override
   void initState() {
     // TODO: implement initState
+
+    rolesController?.getRolePermissions(true, widget.role?.id ?? -1);
+    permissionsController?.getAllPermissions(
+      true,
+    );
     if (widget.role != null) {
       name.text = widget.role?.name ?? "";
       description.text = widget.role?.description ?? "";
@@ -45,6 +58,8 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
 
     super.initState();
   }
+
+  PermessionModel permessionModel = PermessionModel();
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +99,91 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
                 params.description = value;
               },
             ),
+            SizedBox(
+              height: 3.h,
+            ),
+            Text(
+              "الصلاحيات الحالية للدور",
+              style: TextStyleFeatures.generalTextStyle,
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            ListView.builder(
+              itemCount: permissionsParams.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Text(
+                  permissionsParams[index].name ?? "",
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                );
+              },
+            ),
+            rolesController!.obx(
+                (state) => ListView.builder(
+                      itemCount: state?.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Text(
+                          state?[index].name ?? "",
+                          style: TextStyle(fontSize: 20),
+                        );
+                      },
+                    ),
+                onLoading: const Center(child: CircularProgressIndicator()),
+                onEmpty: Center(
+                  child: RetryWidget(
+                      error: "لا يوجد نتائج",
+                      func: () => rolesController?.getAllPermissions(true)),
+                ),
+                onError: (error) => Center(
+                      child: RetryWidget(
+                          error: error!,
+                          func: () => rolesController?.getAllPermissions(true)),
+                    )),
+            SizedBox(
+              height: 3.h,
+            ),
+            permissionsController!.obx(
+                (state) => CustomDropdownList(
+                      hint: "الصلاحيات",
+                      label: "إضافة صلاحيات",
+                      onChanged: (value) {
+                        setState(() {
+                          permissionsParams.add(value);
+                        });
+                      },
+                      dItems: List<DropdownMenuItem<PermissionParams>>.generate(
+                        state!.length,
+                        (index) {
+                          return DropdownMenuItem<PermissionParams>(
+                            value: PermissionParams(
+                                id: state[index].id.toString(),
+                                name: state[index].name),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                '${state[index].name}',
+                                style: TextStyle(fontSize: 18.px),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      selectedItem: state[0],
+                    ),
+                onLoading: const Center(child: CircularProgressIndicator()),
+                onEmpty: Center(
+                  child: RetryWidget(
+                      error: "لا يوجد نتائج",
+                      func: () => rolesController?.getAllPermissions(true)),
+                ),
+                onError: (error) => Center(
+                      child: RetryWidget(
+                          error: error!,
+                          func: () => rolesController?.getAllPermissions(true)),
+                    )),
           ],
         ),
       ),
@@ -103,6 +203,8 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
 
             if (widget.role != null) {
               rolesController?.updateRole(widget.role?.id ?? 0, params);
+              rolesController?.addPermissionsToRole(
+                  permissionsParams, widget.role?.id ?? 0);
             } else {
               rolesController?.addRole(params);
             }

@@ -81,26 +81,35 @@ class _ProductWidgetState extends State<ProductWidget> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      // Container(
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(25.px),
-                      //     ),
-                      //     child: SizedBox(
-                      //       height: 75,
-                      //       width: 75,
-                      //       child: Image.network(Urls.imageUrl +
-                      //           widget.product.images!
-                      //               .replaceAll('[', "")
-                      //               .replaceAll(']', '')
-                      //               .replaceAll('"', "")
-                      //               .replaceAll("\\", "")),
-                      //     )
-                      //     // Icon(
-                      //     //   Icons.document_scanner_sharp,
-                      //     //   size: 75,
-                      //     //   color: Colors.white,
-                      //     // ),
-                      //     ),
+                      Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.px),
+                          ),
+                          child: SizedBox(
+                            height: 75,
+                            width: 75,
+                            child: widget.product.images != null
+                                ? Image.network(Urls.imageUrl +
+                                    widget.product.images!
+                                        .replaceAll('[', "")
+                                        .replaceAll(']', '')
+                                        .replaceAll('"', "")
+                                        .replaceAll("\\", ""))
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(25.px),
+                                      color:
+                                          ColorStyleFeatures.headLinesTextColor,
+                                    ),
+                                  ),
+                          )
+                          // Icon(
+                          //   Icons.document_scanner_sharp,
+                          //   size: 75,
+                          //   color: Colors.white,
+                          // ),
+                          ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25.px),
@@ -118,7 +127,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 )),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,

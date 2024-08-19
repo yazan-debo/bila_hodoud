@@ -39,7 +39,7 @@ class GlobalInterfaceController extends GetxController {
       ),
       DropdownListController(
         name: 'إدارة العروض',
-        choices: ['إنشاء عرض جديد', 'العروض الحاليّة'],
+        choices: ['العروض الحاليّة'],
       ),
       DropdownListController(
         name: 'الإدارة المالية',
