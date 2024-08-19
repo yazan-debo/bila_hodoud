@@ -56,9 +56,13 @@ class BalanceRequestsDetailsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.updateBalance}/$balanceId';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 

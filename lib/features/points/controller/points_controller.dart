@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import '../../../core/utils/app_shared_pref.dart';
 import '../model/point_model.dart';
 
 class PointsController extends GetxController
@@ -20,9 +21,12 @@ class PointsController extends GetxController
       });
 
       const url = '${Urls.baseUrl}${Urls.points}/show';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(

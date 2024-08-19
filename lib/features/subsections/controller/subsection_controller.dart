@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
+import '../../../core/utils/app_shared_pref.dart';
 import '../model/params/subsection_params.dart';
 
 class SubsectionsController extends GetxController
@@ -26,9 +27,12 @@ class SubsectionsController extends GetxController
       });
 
       String url = '${Urls.baseUrl}${Urls.sectionSubsection}/$sectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -62,9 +66,12 @@ class SubsectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.subsection}/$sectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -96,9 +103,12 @@ class SubsectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.subsection}/$subsectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -131,9 +141,12 @@ class SubsectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.subsection}/$subsectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 

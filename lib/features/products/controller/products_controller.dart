@@ -29,7 +29,6 @@ class ProductsController extends GetxController
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();
 
-
       var headers = {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token"
@@ -70,9 +69,12 @@ class ProductsController extends GetxController
       });
 
       String url = '${Urls.baseUrl}searchBySection/$sectionId/$keyword';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -108,14 +110,15 @@ class ProductsController extends GetxController
         //   change(null, status: RxStatus.loading());
         // }
       });
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       String url = '${Urls.baseUrl}search?name=$keyword';
 
       Uri uri = Uri.parse(url);
 
       var headers = {
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
+        "Authorization": "Bearer $token"
         // Add any additional headers here
       };
 
@@ -146,20 +149,23 @@ class ProductsController extends GetxController
   }
 
   Future<bool> addProduct(
-
       ProductParams params, List<ImageFileModel> images) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.products}';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'multipart/form-data',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
-
       Map<String, dynamic> body;
-      params.subSectionId == null?  body = params.toJson() :body = params.toJsonWithSubsectionId();
+      params.subSectionId == null
+          ? body = params.toJson()
+          : body = params.toJsonWithSubsectionId();
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
@@ -171,7 +177,7 @@ class ProductsController extends GetxController
             filename: images[i].fileName);
         request.files.add(multipartFile);
       }
-print("request sent as");
+      print("request sent as");
       var response = await request.send();
 
       if (response.statusCode == 201) {
@@ -214,7 +220,9 @@ print("request sent as");
         // Add any additional headers here
       };
       Map<String, dynamic> body;
-      params.subSectionId == null?  body = params.toJson() :body = params.toJsonWithSubsectionId();
+      params.subSectionId == null
+          ? body = params.toJson()
+          : body = params.toJsonWithSubsectionId();
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
@@ -226,7 +234,6 @@ print("request sent as");
             filename: images[i].fileName);
         request.files.add(multipartFile);
       }
-
 
       var response = await request.send();
 
@@ -252,9 +259,12 @@ print("request sent as");
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.products}/delete/$productId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -286,9 +296,12 @@ print("request sent as");
       });
 
       String url = '${Urls.baseUrl}searchBySection/$sectionId/$keyword';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -302,16 +315,16 @@ print("request sent as");
 
         List<ProductModel> products = [];
         products = (data['data'] as List<dynamic>)
-          .map((i) => ProductModel.fromJson(i))
-          .toList();
-      if (products.isNotEmpty) {
-        change(products, status: RxStatus.success());
+            .map((i) => ProductModel.fromJson(i))
+            .toList();
+        if (products.isNotEmpty) {
+          change(products, status: RxStatus.success());
+        } else {
+          change(products, status: RxStatus.empty());
+        }
       } else {
-        change(products, status: RxStatus.empty());
+        change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
       }
-    } else {
-    change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
-    }
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
@@ -325,11 +338,14 @@ print("request sent as");
         }
       });
 
-      String url = '${Urls.baseUrl}${Urls.products}/by-subsection/$subsectionId';
-
+      String url =
+          '${Urls.baseUrl}${Urls.products}/by-subsection/$subsectionId';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
         // Add any additional headers here
+        "Authorization": "Bearer $token"
       };
       var response = await http.get(
         Uri.parse(url),
@@ -356,8 +372,6 @@ print("request sent as");
       change(null, status: RxStatus.error(e.toString()));
     }
   }
-
-
 }
 
 jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {

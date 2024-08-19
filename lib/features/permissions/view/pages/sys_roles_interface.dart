@@ -25,7 +25,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
   @override
   void initState() {
     // TODO: implement initState
-    rolesController?.getAllPermissions(true);
+    rolesController?.getRoles(true);
     super.initState();
   }
 
@@ -37,28 +37,27 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
     globalInterfaceController.addExtraWidget(
       Center(
         child: Text(
-          'أدوار النظام' ,
+          'أدوار النظام',
           style: TextStyleFeatures.headLinesTextStyle,
         ),
       ),
     );
     globalInterfaceController.addExtraWidget(
-        Expanded(
-  child:
-          rolesController!.obx(
-              (state) => Table(
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    border: TableBorder.all(),
-                    columnWidths: const {
-                      //0: FractionColumnWidth(0.35),
-                      1: FractionColumnWidth(0.4),
-                      2: FractionColumnWidth(0.3),
-                      3: FractionColumnWidth(0.3),
-                    },
-                    children: [
-                      const TableRow(
-                        children: [
-                  /*        TableCell(
+      Expanded(
+        child: rolesController!.obx(
+            (state) => Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  border: TableBorder.all(),
+                  columnWidths: const {
+                    //0: FractionColumnWidth(0.35),
+                    1: FractionColumnWidth(0.4),
+                    2: FractionColumnWidth(0.3),
+                    3: FractionColumnWidth(0.3),
+                  },
+                  children: [
+                    const TableRow(
+                      children: [
+                        /*        TableCell(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16.0),
                               child: Center(
@@ -72,77 +71,77 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
                             ),
                           ),
                          */
-                          TableCell(
-                            child: Center(
-                              child: Text('اسم الدور',
-                                  style: TextStyle(
-                                    fontFamily: 'Arabic',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ),
+                        TableCell(
+                          child: Center(
+                            child: Text('اسم الدور',
+                                style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
-                          TableCell(
-                            child: Center(
-                              child: Text('تعديل الدور',
-                                  style: TextStyle(
-                                    fontFamily: 'Arabic',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ),
+                        ),
+                        TableCell(
+                          child: Center(
+                            child: Text('تعديل الدور',
+                                style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
-                          TableCell(
-                            child: Center(
-                              child: Text('حذف الدور',
-                                  style: TextStyle(
-                                    fontFamily: 'Arabic',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ),
+                        ),
+                        TableCell(
+                          child: Center(
+                            child: Text('حذف الدور',
+                                style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
-                        ],
-                      ),
-                      ...state!.map((item) {
-                        return _buildTableRow(
-                          item,
-                          CellButton(
-                            onTap: () {
-                              Get.to(() => ModifyRoleScreen(
-                                    role: item,
-                                  ));
-                            },
-                            icon: Icons.edit,
-                            label: "تعديل",
-                          ),
-                          CellButton(
-                            onTap: () async {
-                              bool? isRefresh =
-                                  await rolesController?.deleteRole(item.id ?? 0);
-                              if (isRefresh ?? false) {
-                                rolesController?.getAllPermissions(false);
-                              }
-                            },
-                            icon: Icons.delete,
-                            label: "حذف",
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-              onLoading: const Center(child: CircularProgressIndicator()),
-              onEmpty: Center(
-                child: RetryWidget(
-                    error: "لا يوجد نتائج",
-                    func: () => rolesController?.getAllPermissions(true)),
-              ),
-              onError: (error) => Center(
-                    child: RetryWidget(
-                        error: error!, func: () => rolesController?.getAllPermissions(true)),
-                  )),
-
-    ),
+                        ),
+                      ],
+                    ),
+                    ...state!.map((item) {
+                      return _buildTableRow(
+                        item,
+                        CellButton(
+                          onTap: () {
+                            Get.to(() => ModifyRoleScreen(
+                                  role: item,
+                                ));
+                          },
+                          icon: Icons.edit,
+                          label: "تعديل",
+                        ),
+                        CellButton(
+                          onTap: () async {
+                            bool? isRefresh =
+                                await rolesController?.deleteRole(item.id ?? 0);
+                            if (isRefresh ?? false) {
+                              rolesController?.getAllPermissions(false);
+                            }
+                          },
+                          icon: Icons.delete,
+                          label: "حذف",
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+            onLoading: const Center(child: CircularProgressIndicator()),
+            onEmpty: Center(
+              child: RetryWidget(
+                  error: "لا يوجد نتائج",
+                  func: () => rolesController?.getAllPermissions(true)),
+            ),
+            onError: (error) => Center(
+                  child: RetryWidget(
+                      error: error!,
+                      func: () => rolesController?.getAllPermissions(true)),
+                )),
+      ),
     );
 
     globalInterfaceController.addExtraWidget(
@@ -174,7 +173,7 @@ class _SysRolesInterfaceState extends State<SysRolesInterface> {
     return TableRow(
       decoration: BoxDecoration(color: Colors.grey[200]),
       children: [
-    /*    TableCell(
+        /*    TableCell(
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

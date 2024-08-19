@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
 
+import '../../../core/utils/app_shared_pref.dart';
 import '../../products/model/models/image_file_model.dart';
 import '../model/news_model.dart';
 import '../model/news_params.dart';
@@ -23,9 +24,13 @@ class NewsController extends GetxController with StateMixin<List<NewsModel>> {
       });
 
       const url = '${Urls.baseUrl}${Urls.news}/index';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -57,10 +62,13 @@ class NewsController extends GetxController with StateMixin<List<NewsModel>> {
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.news}/store';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -107,10 +115,14 @@ class NewsController extends GetxController with StateMixin<List<NewsModel>> {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.news}/update/$newsId';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -157,9 +169,12 @@ class NewsController extends GetxController with StateMixin<List<NewsModel>> {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.news}/delete/$newsId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 

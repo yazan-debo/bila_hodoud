@@ -55,8 +55,8 @@ class RolesController extends GetxController
     }
   }
 
-  Future<void> addPermissionsToRole(
-      List<PermissionParams> params, int roleId) async {
+  Future<void> addPermissionsToRole(List<PermissionParams> params,
+      int roleId) async {
     try {
       // Show a loading dialog
       DialogHelper.showLoadingDialog();
@@ -79,7 +79,7 @@ class RolesController extends GetxController
 
       // Make the POST request
       var response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      await http.post(Uri.parse(url), headers: headers, body: body);
 
       // Handle the response
       if (response.statusCode == 201) {
@@ -143,16 +143,19 @@ class RolesController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.role}/store';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
       var body = jsonEncode(params.toJson());
 
       var response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 201) {
         Get.back();
@@ -174,15 +177,19 @@ class RolesController extends GetxController
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.role}/update/$roleId';
 
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
       var body = jsonEncode(params.toJson());
 
       var response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 201) {
         Get.back();
@@ -199,15 +206,17 @@ class RolesController extends GetxController
     }
   }
 
-  Future<bool> deleteRole(
-    int roleId,
-  ) async {
+  Future<bool> deleteRole(int roleId,) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.role}/delete/$roleId';
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 

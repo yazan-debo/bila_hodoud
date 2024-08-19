@@ -57,9 +57,12 @@ class AllSectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.section}';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -87,9 +90,12 @@ class AllSectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.section}/$sectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -117,9 +123,12 @@ class AllSectionsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.section}/$sectionId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -144,5 +153,4 @@ class AllSectionsController extends GetxController
       return false;
     }
   }
-
 }

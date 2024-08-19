@@ -10,11 +10,10 @@ import '../../../core/utils/app_shared_pref.dart';
 import '../../authentication/model/models/wholesale_user_model.dart';
 import '../model/params/role_params.dart';
 
-class UsersController extends GetxController  with StateMixin<List<WholesaleUserModel>> {
-
-
-  Future<void> getSystemUsers (bool withRefresh) async{
-    try{
+class UsersController extends GetxController
+    with StateMixin<List<WholesaleUserModel>> {
+  Future<void> getSystemUsers(bool withRefresh) async {
+    try {
       await Future.delayed(Duration(milliseconds: 500)).then((g) {
         if (withRefresh) {
           change(null, status: RxStatus.loading());
@@ -36,38 +35,43 @@ class UsersController extends GetxController  with StateMixin<List<WholesaleUser
         headers: headers,
       );
 
-      if (response.statusCode == 200){
-        print ("enterd");
+      if (response.statusCode == 200) {
+        print("enterd");
         var data = jsonDecode(response.body);
 
         List<WholesaleUserModel> wholesaleUsers = [];
 
-        wholesaleUsers  =
-            (data as List<dynamic>).map((i) => WholesaleUserModel.fromJson(i)).toList();
-        if(wholesaleUsers.isNotEmpty){
+        wholesaleUsers = (data as List<dynamic>)
+            .map((i) => WholesaleUserModel.fromJson(i))
+            .toList();
+        if (wholesaleUsers.isNotEmpty) {
           change(wholesaleUsers, status: RxStatus.success());
-        }else {
+        } else {
           change(wholesaleUsers, status: RxStatus.empty());
         }
-      }else {
+      } else {
         change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
       }
-    }catch(e){
+    } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
   }
-  Future<void> getWholesaleUsers (bool withRefresh) async{
-    try{
+
+  Future<void> getWholesaleUsers(bool withRefresh) async {
+    try {
       await Future.delayed(Duration(milliseconds: 500)).then((g) {
         if (withRefresh) {
           change(null, status: RxStatus.loading());
         }
       });
       const url = '${Urls.baseUrl}wholesale';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
@@ -75,26 +79,28 @@ class UsersController extends GetxController  with StateMixin<List<WholesaleUser
         headers: headers,
       );
 
-      if (response.statusCode == 200){
-        print ("enterd");
+      if (response.statusCode == 200) {
+        print("enterd");
         var data = jsonDecode(response.body);
 
         List<WholesaleUserModel> wholesaleUsers = [];
 
-        wholesaleUsers  =
-            (data as List<dynamic>).map((i) => WholesaleUserModel.fromJson(i)).toList();
-        if(wholesaleUsers.isNotEmpty){
+        wholesaleUsers = (data as List<dynamic>)
+            .map((i) => WholesaleUserModel.fromJson(i))
+            .toList();
+        if (wholesaleUsers.isNotEmpty) {
           change(wholesaleUsers, status: RxStatus.success());
-        }else {
+        } else {
           change(wholesaleUsers, status: RxStatus.empty());
         }
-      }else {
+      } else {
         change(null, status: RxStatus.error("حدث خطأ في جلب البيانات"));
       }
-    }catch(e){
+    } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
   }
+
   Future<void> updateUser(int userId, UsersParams params) async {
     try {
       DialogHelper.showLoadingDialog();
@@ -112,8 +118,8 @@ class UsersController extends GetxController  with StateMixin<List<WholesaleUser
       var body = jsonEncode(params.toJson());
 
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
-print(response.statusCode);
+          await http.post(Uri.parse(url), headers: headers, body: body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         print('Im in');
         Get.back();
@@ -134,20 +140,20 @@ print(response.statusCode);
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.role}/update_user_role/$userId';
-print(url);
+      print(url);
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();
 
       var headers = {
         'Content-Type': 'application/json',
-       // "Authorization": "Bearer $token"
+        "Authorization": "Bearer $token"
         // Add any additional headers here
       };
 
       var body = jsonEncode(params.updateUserRoleToJson());
 
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+          await http.post(Uri.parse(url), headers: headers, body: body);
       print(response.statusCode);
       if (response.statusCode == 200) {
         Get.back();
@@ -168,22 +174,25 @@ print(url);
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}register';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
       var body;
-log(role);
+      log(role);
       if (role == "S") {
-         body = jsonEncode(params.toJson());
-      }else if(role == "W"){
-         body = jsonEncode(params.wToJson());
+        body = jsonEncode(params.toJson());
+      } else if (role == "W") {
+        body = jsonEncode(params.wToJson());
       }
       log(body);
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+          await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 200) {
         print("done");
@@ -203,11 +212,9 @@ log(role);
     }
   }
 
-
-
   Future<bool> deleteUser(
-      int userId,
-      ) async {
+    int userId,
+  ) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}dashboard/delete-user/$userId';

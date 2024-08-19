@@ -28,7 +28,7 @@ class OffersController extends GetxController
       var headers = {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token",
-      'Accept': 'application/json',
+        'Accept': 'application/json',
 
         // Add any additional headers here
       };
@@ -62,9 +62,12 @@ class OffersController extends GetxController
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.offer}/store';
 
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -92,9 +95,12 @@ class OffersController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.offer}/update/$offerId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -124,9 +130,12 @@ class OffersController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.offer}/delete/$offerId';
-
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
 
@@ -162,8 +171,12 @@ class OffersController extends GetxController
 
       String url = '${Urls.baseUrl}${Urls.offer}/search/$keyword';
 
+      AppSharedPref appSharedPref = AppSharedPref();
+      String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+
         // Add any additional headers here
       };
       var response = await http.get(
