@@ -25,8 +25,7 @@ class ModifyProductScreen extends StatefulWidget {
   final int? sectionId;
   final ProductModel? product;
 
-  ModifyProductScreen(
-      {super.key, this.product, this.sectionId});
+  ModifyProductScreen({super.key, this.product, this.sectionId});
 
   @override
   State<ModifyProductScreen> createState() => _ModifyProductScreenState();
@@ -157,10 +156,12 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
                 child: subsectionsController!.obx((state) {
                   var subsections = state ?? [];
                   var itemNames = subsections.map((item) => item.name).toList();
-                  var selectedItem = dropdownController?.selectedStringItems.value;
+                  var selectedItem =
+                      dropdownController?.selectedStringItems.value;
 
                   // Ensure selectedItem is in the list
-                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                  if (selectedItem != null &&
+                      !itemNames.contains(selectedItem)) {
                     selectedItem = null; // Reset if invalid
                   }
 
@@ -172,16 +173,19 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
                       dropdownController?.sChange(value);
 
                       // Find and update the corresponding ID
-                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
-                      dropdownController?.setSubSectionId(selectedSubSection?.id);
+                      var selectedSubSection =
+                          subsections.firstWhere((item) => item.name == value);
+                      dropdownController
+                          ?.setSubSectionId(selectedSubSection?.id);
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                          (index) {
+                      (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -194,8 +198,6 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
                   );
                 }),
               ),
-
-
 
               SizedBox(
                 height: 3.h,
@@ -300,23 +302,29 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
             _productFormKey.currentState?.save();
 
             if (widget.product != null) {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
-              }               params.sectionId = widget.sectionId.toString();
+              }
+              params.sectionId = widget.sectionId.toString();
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {
                 images.add(fileUploadController.images[i]);
               }
+              print("right");
+              print(images.length);
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
             } else {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
-              }               params.sectionId = widget.sectionId.toString();
+              }
+              params.sectionId = widget.sectionId.toString();
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {
                 images.add(fileUploadController.images[i]);

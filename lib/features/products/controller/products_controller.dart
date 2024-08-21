@@ -210,7 +210,9 @@ class ProductsController extends GetxController
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.products}/update/$productId';
-
+      print("images");
+      print(images.length);
+      print("images: ${images[1].fileName}");
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();
 

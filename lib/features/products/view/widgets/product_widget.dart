@@ -3,8 +3,8 @@ import 'package:bila_hodoud/features/products/model/models/product_model.dart';
 import 'package:bila_hodoud/features/products/view/pages/modify_product/modify_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/components/custom_button.dart';
 import '../../../../core/constants/style/color_style_features.dart';
@@ -40,48 +40,49 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: () {
-      if (widget.product.book != null) {
-        Get.to(() => DisplayBookPage(
-              productModel: widget.product,
-            ));
-      } else if (widget.product.stationery != null) {
-        Get.to(() => DisplayStationaryPage(
-              productModel: widget.product,
-            ));
-      } else if (widget.product.game != null) {
-        Get.to(() => DisplayGamePage(
-              productModel: widget.product,
-            ));
-      } else if (widget.product.quran != null) {
-        Get.to(() => DisplayQuranPage(
-              productModel: widget.product,
-            ));
-      } else {
-        Get.to(() => DisplayProductPage(
-              productModel: widget.product,
-            ));
-      }
-    }, child: LayoutBuilder(builder: (context, constraints) {
-      return Stack(
-        children: [
-          Center(
-            child: Container(
-                margin: EdgeInsets.all(10.px),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.px),
-                  color: ColorStyleFeatures.headLinesTextColor,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(30.px),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Container(
+    return GestureDetector(
+      onTap: () {
+        if (widget.product.book != null) {
+          Get.to(() => DisplayBookPage(
+                productModel: widget.product,
+              ));
+        } else if (widget.product.stationery != null) {
+          Get.to(() => DisplayStationaryPage(
+                productModel: widget.product,
+              ));
+        } else if (widget.product.game != null) {
+          Get.to(() => DisplayGamePage(
+                productModel: widget.product,
+              ));
+        } else if (widget.product.quran != null) {
+          Get.to(() => DisplayQuranPage(
+                productModel: widget.product,
+              ));
+        } else {
+          Get.to(() => DisplayProductPage(
+                productModel: widget.product,
+              ));
+        }
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              Center(
+                child: Container(
+                  margin: EdgeInsets.all(10.px),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.px),
+                    color: ColorStyleFeatures.headLinesTextColor,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(30.px),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 1.h),
+                        Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25.px),
                           ),
@@ -89,12 +90,20 @@ class _ProductWidgetState extends State<ProductWidget> {
                             height: 75,
                             width: 75,
                             child: widget.product.images != null
-                                ? Image.network(Urls.imageUrl +
-                                    widget.product.images!
-                                        .replaceAll('[', "")
-                                        .replaceAll(']', '')
-                                        .replaceAll('"', "")
-                                        .replaceAll("\\", ""))
+                                ? CachedNetworkImage(
+                                    imageUrl: Urls.imageUrl +
+                                        widget.product.images!
+                                            .replaceAll('[', "")
+                                            .replaceAll(']', '')
+                                            .replaceAll('"', "")
+                                            .replaceAll("\\", ""),
+                                    fit: BoxFit.cover,
+                                    // Ensures the image fits the container size
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  )
                                 : Container(
                                     decoration: BoxDecoration(
                                       borderRadius:
@@ -103,95 +112,94 @@ class _ProductWidgetState extends State<ProductWidget> {
                                           ColorStyleFeatures.headLinesTextColor,
                                     ),
                                   ),
-                          )
-                          // Icon(
-                          //   Icons.document_scanner_sharp,
-                          //   size: 75,
-                          //   color: Colors.white,
-                          // ),
                           ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.px),
                         ),
-                        child: Center(
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.px),
+                          ),
+                          child: Center(
                             child: Text(
-                          widget.product.name ?? "",
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 20.px),
-                        )),
-                      ),
-                    ],
+                              widget.product.name ?? "",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.px,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomButton(
-                  constraints: constraints,
-                  icon: Icons.edit,
-                  backgroundColor: Colors.grey[400]!,
-                  onTap: () {
-                    switch (widget.product.sectionId) {
-                      case 1:
-                        Get.to(() => ModifyBookScreen(
-                              product: widget.product,
-                              sectionId: widget.sectionId,
-                            ));
-                        break;
-                      case 2:
-                        Get.to(() => ModifyGameScreen(
-                              product: widget.product,
-                              sectionId: widget.sectionId,
-                            ));
-                        break;
-                      case 3:
-                        Get.to(() => ModifyStationeryScreen(
-                              product: widget.product,
-                              sectionId: widget.sectionId,
-                            ));
-                        break;
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomButton(
+                      constraints: constraints,
+                      icon: Icons.edit,
+                      backgroundColor: Colors.grey[400]!,
+                      onTap: () {
+                        switch (widget.product.sectionId) {
+                          case 1:
+                            Get.to(() => ModifyBookScreen(
+                                  product: widget.product,
+                                  sectionId: widget.sectionId,
+                                ));
+                            break;
+                          case 2:
+                            Get.to(() => ModifyGameScreen(
+                                  product: widget.product,
+                                  sectionId: widget.sectionId,
+                                ));
+                            break;
+                          case 3:
+                            Get.to(() => ModifyStationeryScreen(
+                                  product: widget.product,
+                                  sectionId: widget.sectionId,
+                                ));
+                            break;
 
-                      case 4:
-                        Get.to(() => ModifyQuranScreen(
-                              product: widget.product,
-                              sectionId: widget.sectionId,
-                            ));
-                        break;
-                      default:
-                        Get.to(() => ModifyProductScreen(
-                              product: widget.product,
-                              sectionId: widget.sectionId,
-                            ));
-                        break;
-                    }
-                  },
+                          case 4:
+                            Get.to(() => ModifyQuranScreen(
+                                  product: widget.product,
+                                  sectionId: widget.sectionId,
+                                ));
+                            break;
+                          default:
+                            Get.to(() => ModifyProductScreen(
+                                  product: widget.product,
+                                  sectionId: widget.sectionId,
+                                ));
+                            break;
+                        }
+                      },
+                    ),
+                    SizedBox(width: 1.w),
+                    CustomButton(
+                      constraints: constraints,
+                      icon: Icons.delete,
+                      backgroundColor: Colors.red[600]!,
+                      onTap: () async {
+                        bool? isSuccess = await productsController
+                            ?.deleteProduct(widget.product.id ?? 0);
+                        if (isSuccess ?? false) {
+                          widget.onDelete();
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 1.w,
-                ),
-                CustomButton(
-                  constraints: constraints,
-                  icon: Icons.delete,
-                  backgroundColor: Colors.red[600]!,
-                  onTap: () async {
-                    bool? isSuccess = await productsController
-                        ?.deleteProduct(widget.product.id ?? 0);
-                    if (isSuccess ?? false) {
-                      widget.onDelete();
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    }));
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

@@ -17,7 +17,8 @@ class DisplayProductPage extends StatefulWidget {
 }
 
 class _DisplayProductPageState extends State<DisplayProductPage> {
-  final ReceivedImagesController receivedImagesController = Get.put(ReceivedImagesController());
+  final ReceivedImagesController receivedImagesController =
+      Get.put(ReceivedImagesController());
 
   @override
   void initState() {
@@ -41,12 +42,12 @@ class _DisplayProductPageState extends State<DisplayProductPage> {
 
     globalInterfaceController.addExtraWidget(ProductDisplayWidget(
       images: receivedImagesController.imagePaths.toList(),
-      description: widget.productModel?.description??"",
-      productName: widget.productModel?.name??"",
-      barcode: widget.productModel?.barcode??"",
-      price: widget.productModel?.price??0,
-      quantity: widget.productModel?.quantity??0,
-      minimumQuantity: widget.productModel?.minimumQuantity??0,
+      description: widget.productModel?.description ?? "",
+      productName: widget.productModel?.name ?? "",
+      barcode: widget.productModel?.barcode ?? "",
+      price: widget.productModel?.price ?? 0,
+      quantity: widget.productModel?.quantity ?? 0,
+      minimumQuantity: widget.productModel?.minimumQuantity ?? 0,
     ));
 
     return const GlobalInterface();
