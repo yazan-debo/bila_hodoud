@@ -45,5 +45,6 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => ReportsController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
     Get.lazyPut(() => PermissionsController(), fenix: true);
+    Get.lazyPut(() => UserInfoController(), fenix: true);
   }
 }
