@@ -85,28 +85,28 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
     globalInterfaceController.addExtraWidget(Form(
       key: _roleFormKey,
       child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UsedFilled(
-              label: 'اسم الدور',
-              controller: name,
-              isMandatory: true,
-              onSaved: (value) {
-                params.name = value;
-              },
-            ),
-            UsedFilled(
-              label: 'وصف الدور',
-              controller: description,
-              isMandatory: true,
-              onSaved: (value) {
-                params.description = value;
-              },
-            ),
-            if (widget.role != null)
-              Expanded(
-                child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UsedFilled(
+                label: 'اسم الدور',
+                controller: name,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.name = value;
+                },
+              ),
+              UsedFilled(
+                label: 'وصف الدور',
+                controller: description,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.description = value;
+                },
+              ),
+              if (widget.role != null)
+                Column(
                   children: [
                     SizedBox(
                       height: 3.h,
@@ -217,9 +217,9 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
                       ),
                     ),
                   ],
-                ),
-              )
-          ],
+                )
+            ],
+          ),
         ),
       ),
     ));
