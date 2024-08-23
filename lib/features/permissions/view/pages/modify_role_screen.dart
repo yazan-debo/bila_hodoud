@@ -49,6 +49,8 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    permissionsParams = [];
+    roleStateController.clear();
 
     rolesController?.getRolePermissions(true, widget.role?.id ?? -1);
     permissionsController?.getAllPermissions(

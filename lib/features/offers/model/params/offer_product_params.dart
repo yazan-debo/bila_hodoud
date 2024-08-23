@@ -3,10 +3,12 @@ import 'dart:convert';
 class OfferProductParams {
   String? productId;
   int? quantity;
+  String? name;
 
   OfferProductParams({
     this.productId,
     this.quantity,
+    this.name,
   });
 
   factory OfferProductParams.fromRawJson(String str) =>
