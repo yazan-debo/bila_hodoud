@@ -23,7 +23,7 @@ class OfferProductParams {
       );
 
   Map<String, dynamic> toJson() => {
-        "product_id": productId,
+        "product_id": productId ?? 0,
         "quantity": quantity,
       };
 }

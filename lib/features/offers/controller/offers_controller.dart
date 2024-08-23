@@ -69,17 +69,17 @@ class OffersController extends GetxController
       String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'multipart/form-data',
-        "Authorization": "Bearer $token"
-
+        "Authorization": "Bearer $token",
+        'Accept': 'application/json',
         // Add any additional headers here
       };
-      print("hahah");
 
       Map<String, dynamic> body;
       body = params.toJson();
 
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
+
 
       var request = jsonToFormData(multipartRequest, body);
 
@@ -90,8 +90,12 @@ class OffersController extends GetxController
         request.files.add(multipartFile);
       }
 
-      for (int i = 0; i <= offerProducts.length - 1; i++) {
-        request.fields['items[$i]'] = offerProducts[i].toJson();
+      // for (int i = 0; i <= offerProducts.length - 1; i++) {
+      //   request.fields['items[$i]'] = offerProducts[i].toJson().toString();
+      // }
+
+      for (var element in offerProducts) {
+        request.fields.add(MapEntry("items[]", element.toJson().toString()));
       }
       print(request.fields);
 
@@ -105,6 +109,7 @@ class OffersController extends GetxController
         final result = jsonDecode(response1.body) as Map<String, dynamic>;
         debugPrint(result['message']);
         debugPrint(result['error']);
+        debugPrint(result.toString());
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
@@ -132,7 +137,7 @@ class OffersController extends GetxController
       var body = jsonEncode(params.toJson());
 
       var response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 201) {
         Get.back();
@@ -149,9 +154,7 @@ class OffersController extends GetxController
     }
   }
 
-  Future<bool> deleteOffer(
-    int offerId,
-  ) async {
+  Future<bool> deleteOffer(int offerId,) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.offer}/delete/$offerId';

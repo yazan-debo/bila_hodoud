@@ -13,4 +13,8 @@ class OfferProductsController extends GetxController {
   void addOfferProducts(OfferProductParams offerProduct) {
     offerProducts.add(offerProduct);
   }
+
+  void clear() {
+    offerProducts = [].obs;
+  }
 }
