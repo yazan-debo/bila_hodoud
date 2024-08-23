@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bila_hodoud/features/offers/view/pages/offers_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bila_hodoud/features/offers/model/params/offer_params.dart';
 import 'package:bila_hodoud/features/permissions/model/params/role_params.dart';
@@ -80,7 +81,6 @@ class OffersController extends GetxController
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
-
       var request = jsonToFormData(multipartRequest, body);
 
       for (int i = 0; i <= images.length - 1; i++) {
@@ -94,8 +94,17 @@ class OffersController extends GetxController
       //   request.fields['items[$i]'] = offerProducts[i].toJson().toString();
       // }
 
+      // for (var element in offerProducts) {
+      //   request.fields.add(MapEntry("items[]", element.toJson().toString()));
+      // }
+
       for (var element in offerProducts) {
-        request.fields.add(MapEntry("items[]", element.toJson().toString()));
+        request.fields['items[]'] = jsonEncode({
+          'product_id': element.productId,
+          'quantity': element.quantity,
+        });
+
+        element.toJson().toString();
       }
       print(request.fields);
 
@@ -104,6 +113,7 @@ class OffersController extends GetxController
       if (response.statusCode == 201) {
         Get.back();
         DialogHelper.showSuccessDialog();
+        Get.off(() => OffersScreen());
       } else {
         var response1 = await http.Response.fromStream(response);
         final result = jsonDecode(response1.body) as Map<String, dynamic>;
@@ -121,40 +131,75 @@ class OffersController extends GetxController
     }
   }
 
-  Future<void> updateOffer(int offerId, OfferParams params) async {
+  Future<void> updateOffer(
+      int offerId,
+      OfferParams params,
+      List<ImageFileModel> images,
+      List<OfferProductParams> offerProducts) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.offer}/update/$offerId';
+
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();
       var headers = {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer $token"
-
+        'Content-Type': 'multipart/form-data',
+        "Authorization": "Bearer $token",
+        'Accept': 'application/json',
         // Add any additional headers here
       };
 
-      var body = jsonEncode(params.toJson());
+      Map<String, dynamic> body;
+      body = params.toJson();
 
-      var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+      var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
+        ..headers.addAll(headers);
+
+      var request = jsonToFormData(multipartRequest, body);
+
+      for (int i = 0; i <= images.length - 1; i++) {
+        http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
+            'images[]', images[i].image!.cast(),
+            filename: images[i].fileName);
+        request.files.add(multipartFile);
+      }
+
+      for (var element in offerProducts) {
+        request.fields['items[]'] = jsonEncode({
+          'product_id': element.productId,
+          'quantity': element.quantity,
+        });
+
+        element.toJson().toString();
+      }
+      print(request.fields);
+
+      var response = await request.send();
 
       if (response.statusCode == 201) {
         Get.back();
         DialogHelper.showSuccessDialog();
-        Get.offNamed("/offer_screen");
+        Get.off(() => OffersScreen());
       } else {
+        var response1 = await http.Response.fromStream(response);
+        final result = jsonDecode(response1.body) as Map<String, dynamic>;
+        debugPrint(result['message']);
+        debugPrint(result['error']);
+        debugPrint(result.toString());
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
       }
     } catch (e) {
+      print(e);
       Get.back();
       DialogHelper.showErrorDialog(title: "خطأ", description: e.toString());
     }
   }
 
-  Future<bool> deleteOffer(int offerId,) async {
+  Future<bool> deleteOffer(
+    int offerId,
+  ) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.offer}/delete/$offerId';
