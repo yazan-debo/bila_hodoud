@@ -90,6 +90,16 @@ class _CouponsScreenState extends State<CouponsScreen> {
                               )),
                         ),
                       ),
+                      TableCell(
+                        child: Center(
+                          child: Text('عرض التفاصيل',
+                              style: TextStyle(
+                                fontFamily: 'Arabic',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
                     ],
                   ),
                   ...state!.map((item) {
