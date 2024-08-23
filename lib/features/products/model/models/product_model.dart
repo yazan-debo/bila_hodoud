@@ -12,6 +12,7 @@ class ProductModel {
   String? barcode;
   String? description;
   int? price;
+  int? traderPrice;
   int? quantity;
   int? minimumQuantity;
   String? images;
@@ -28,6 +29,7 @@ class ProductModel {
     this.barcode,
     this.description,
     this.price,
+    this.traderPrice,
     this.quantity,
     this.minimumQuantity,
     this.images,
@@ -50,6 +52,7 @@ class ProductModel {
         barcode: json["barcode"],
         description: json["description"],
         price: json["price"],
+        traderPrice: json["trader_price"],
         quantity: json["quantity"],
         minimumQuantity: json["minimumQuantity"],
         images: json["images"],
@@ -70,6 +73,7 @@ class ProductModel {
         "barcode": barcode,
         "description": description,
         "price": price,
+        "trader_price": traderPrice,
         "quantity": quantity,
         "minimumQuantity": minimumQuantity,
         "images": images,

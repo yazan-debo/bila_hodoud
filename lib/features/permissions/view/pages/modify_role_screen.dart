@@ -204,16 +204,18 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
                                   func: () =>
                                       rolesController?.getAllPermissions(true)),
                             )),
-                    Obx(
-                      () => ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: roleStateController.permissions.length,
-                        itemBuilder: (context, index) {
-                          return Text(
-                              roleStateController.permissions[index].name);
-                        },
-                      ),
-                    ),
+                    Obx(() => SingleChildScrollView(
+                          child: ListView.builder(
+                            //  physics: NeverScrollableScrollPhysics(), // Disable the inner ListView's scroll physics
+                            shrinkWrap: true,
+                            // Allow the ListView to shrink wrap its height to its content
+                            itemCount: roleStateController.permissions.length,
+                            itemBuilder: (context, index) {
+                              return Text(
+                                  roleStateController.permissions[index].name);
+                            },
+                          ),
+                        )),
                   ],
                 ),
               )

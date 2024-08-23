@@ -82,7 +82,8 @@ class RolesController extends GetxController
       // Make the POST request
       var response =
           await http.post(Uri.parse(url), headers: headers, body: body);
-
+      print(params.length);
+      print("response: $response");
       // Handle the response
       if (response.statusCode == 200) {
         Get.back();
@@ -153,12 +154,10 @@ class RolesController extends GetxController
 
         // Add any additional headers here
       };
-
       var body = jsonEncode(params.toJson());
 
       var response =
           await http.post(Uri.parse(url), headers: headers, body: body);
-
       if (response.statusCode == 201) {
         Get.back();
         DialogHelper.showSuccessDialog();
@@ -187,11 +186,13 @@ class RolesController extends GetxController
 
         // Add any additional headers here
       };
+      print("update role:");
 
       var body = jsonEncode(params.toJson());
 
       var response =
           await http.post(Uri.parse(url), headers: headers, body: body);
+      print(response.statusCode);
 
       if (response.statusCode == 201) {
         Get.back();

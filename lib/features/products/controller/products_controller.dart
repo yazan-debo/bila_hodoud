@@ -161,6 +161,7 @@ class ProductsController extends GetxController
 
         // Add any additional headers here
       };
+      print("params.traderPrice: ${params.traderPrice}");
 
       Map<String, dynamic> body;
       params.subSectionId == null

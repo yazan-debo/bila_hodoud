@@ -1,4 +1,3 @@
-
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:bila_hodoud/features/products/model/models/book_model.dart';
 import 'package:bila_hodoud/features/products/model/models/image_file_model.dart';
@@ -32,7 +31,7 @@ class ModifyBookScreen extends StatefulWidget {
 }
 
 class _ModifyBookScreenState extends State<ModifyBookScreen> {
-   int? subsectionsNumber = 0;
+  int? subsectionsNumber = 0;
 
   final ProductsController? productsController = Get.find<ProductsController>();
   final DropdownController? dropdownController = Get.find<DropdownController>();
@@ -45,6 +44,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
   TextEditingController barcode = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController traderPrice = TextEditingController();
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   TextEditingController author = TextEditingController();
@@ -54,7 +54,8 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
   TextEditingController printType = TextEditingController();
   TextEditingController targetAge = TextEditingController();
   final SubsectionsController? subsectionsController =
-  Get.find<SubsectionsController>();
+      Get.find<SubsectionsController>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -65,6 +66,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
       barcode.text = widget.product?.barcode ?? "";
       description.text = widget.product?.description ?? "";
       price.text = widget.product?.price.toString() ?? "";
+      traderPrice.text = widget.product?.traderPrice.toString() ?? "";
       quantity.text = widget.product?.quantity.toString() ?? "";
       minimumQuantity.text = widget.product?.minimumQuantity.toString() ?? "";
       author.text = widget.product?.book?.author.toString() ?? "";
@@ -144,6 +146,14 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                 },
               ),
               UsedFilled(
+                label: 'السعر للتاجر',
+                controller: traderPrice,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.traderPrice = value;
+                },
+              ),
+              UsedFilled(
                 label: 'الكمية',
                 controller: quantity,
                 isMandatory: true,
@@ -207,16 +217,17 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                   params.book?.targetAge = value;
                 },
               ),
-
               Padding(
                 padding: const EdgeInsets.all(.5),
                 child: subsectionsController!.obx((state) {
                   var subsections = state ?? [];
                   var itemNames = subsections.map((item) => item.name).toList();
-                  var selectedItem = dropdownController?.selectedStringItems.value;
+                  var selectedItem =
+                      dropdownController?.selectedStringItems.value;
 
                   // Ensure selectedItem is in the list
-                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                  if (selectedItem != null &&
+                      !itemNames.contains(selectedItem)) {
                     selectedItem = null; // Reset if invalid
                   }
 
@@ -228,17 +239,20 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                       dropdownController?.sChange(value);
 
                       // Find and update the corresponding ID
-                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
-                      dropdownController?.setSubSectionId(selectedSubSection?.id);
-                      subsectionsNumber =  subsections.length;
+                      var selectedSubSection =
+                          subsections.firstWhere((item) => item.name == value);
+                      dropdownController
+                          ?.setSubSectionId(selectedSubSection?.id);
+                      subsectionsNumber = subsections.length;
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                          (index) {
+                      (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -251,8 +265,6 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                   );
                 }),
               ),
-
-
               SizedBox(
                 height: 3.h,
               ),
@@ -359,10 +371,11 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
               fileUploadController.images.isNotEmpty) {
             _bookFormKey.currentState?.save();
 
-            if (widget.product != null ) {
-              if (subsectionsNumber!=0){
-              params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+            if (widget.product != null) {
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();
@@ -372,14 +385,14 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
               }
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
-            }
-           else
-            {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+            } else {
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
-              }                params.sectionId = widget.sectionId.toString();
+              }
+              params.sectionId = widget.sectionId.toString();
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {
                 images.add(fileUploadController.images[i]);

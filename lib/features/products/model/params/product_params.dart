@@ -10,6 +10,7 @@ class ProductParams {
   String? barcode;
   String? description;
   String? price;
+  String? traderPrice;
   String? quantity;
   String? minimumQuantity;
   String? sectionId;
@@ -25,6 +26,7 @@ class ProductParams {
     this.barcode,
     this.description,
     this.price,
+    this.traderPrice,
     this.quantity,
     this.minimumQuantity,
     this.sectionId,
@@ -45,6 +47,7 @@ class ProductParams {
         barcode: json["barcode"],
         description: json["description"],
         price: json["price"],
+        traderPrice: json["trader_price"],
         quantity: json["quantity"],
         minimumQuantity: json["minimumQuantity"],
         sectionId: json["section_id"],
@@ -60,31 +63,34 @@ class ProductParams {
 
   Map<String, dynamic> toJsonWithSubsectionId() {
     return {
+      "name": name ?? "",
+      "barcode": barcode ?? "",
+      "description": description ?? "",
+      "price": price ?? "",
+      "trader_price": traderPrice ?? "",
+      "quantity": quantity ?? "",
+      "minimumQuantity": minimumQuantity ?? "",
+      "section_id": sectionId ?? "",
+      "subSections_id": subSectionId ?? "",
+      if (book != null) "book": book?.toJson(),
+      if (game != null) "game": game?.toJson(),
+      if (quran != null) "quran": quran?.toJson(),
+      if (stationery != null) "stationery": stationery?.toJson(),
+    };
+  }
+
+  Map<String, dynamic> toJson() => {
         "name": name ?? "",
         "barcode": barcode ?? "",
         "description": description ?? "",
         "price": price ?? "",
+        "trader_price": traderPrice ?? "",
         "quantity": quantity ?? "",
         "minimumQuantity": minimumQuantity ?? "",
         "section_id": sectionId ?? "",
-        "subSections_id": subSectionId ?? "",
         if (book != null) "book": book?.toJson(),
         if (game != null) "game": game?.toJson(),
         if (quran != null) "quran": quran?.toJson(),
         if (stationery != null) "stationery": stationery?.toJson(),
       };
-  }
-  Map<String, dynamic> toJson() => {
-    "name": name ?? "",
-    "barcode": barcode ?? "",
-    "description": description ?? "",
-    "price": price ?? "",
-    "quantity": quantity ?? "",
-    "minimumQuantity": minimumQuantity ?? "",
-    "section_id": sectionId ?? "",
-    if (book != null) "book": book?.toJson(),
-    if (game != null) "game": game?.toJson(),
-    if (quran != null) "quran": quran?.toJson(),
-    if (stationery != null) "stationery": stationery?.toJson(),
-  };
 }
