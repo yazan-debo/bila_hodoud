@@ -27,7 +27,8 @@ class RolesController extends GetxController
       String token = appSharedPref.getToken();
       var headers = {
         'Content-Type': 'application/json',
-        "Authorization": "Bearer $token"
+        "Authorization": "Bearer $token",
+        'Accept': 'application/json',
         // Add any additional headers here
       };
       var response = await http.get(
@@ -55,8 +56,8 @@ class RolesController extends GetxController
     }
   }
 
-  Future<void> addPermissionsToRole(List<PermissionParams> params,
-      int roleId) async {
+  Future<void> addPermissionsToRole(
+      List<PermissionParams> params, int roleId) async {
     try {
       // Show a loading dialog
       DialogHelper.showLoadingDialog();
@@ -72,6 +73,7 @@ class RolesController extends GetxController
       var headers = {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token",
+        'Accept': 'application/json',
       };
 
       // Encode the list of PermissionParams into JSON
@@ -79,10 +81,10 @@ class RolesController extends GetxController
 
       // Make the POST request
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+          await http.post(Uri.parse(url), headers: headers, body: body);
 
       // Handle the response
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();
         Get.offNamed("/sys_roles");
@@ -155,7 +157,7 @@ class RolesController extends GetxController
       var body = jsonEncode(params.toJson());
 
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+          await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 201) {
         Get.back();
@@ -189,7 +191,7 @@ class RolesController extends GetxController
       var body = jsonEncode(params.toJson());
 
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+          await http.post(Uri.parse(url), headers: headers, body: body);
 
       if (response.statusCode == 201) {
         Get.back();
@@ -206,7 +208,9 @@ class RolesController extends GetxController
     }
   }
 
-  Future<bool> deleteRole(int roleId,) async {
+  Future<bool> deleteRole(
+    int roleId,
+  ) async {
     try {
       DialogHelper.showLoadingDialog();
       String url = '${Urls.baseUrl}${Urls.role}/delete/$roleId';

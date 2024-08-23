@@ -1,20 +1,23 @@
 import 'dart:convert';
 
+import 'offer_product_params.dart';
+
 class OfferParams {
   String? name;
   String? description;
   int? discountRate;
-
   DateTime? startDate;
   DateTime? endDate;
 
-  OfferParams({
-    this.name,
-    this.description,
-    this.discountRate,
-    this.startDate,
-    this.endDate,
-  });
+  List<OfferProductParams>? offerProducts;
+
+  OfferParams(
+      {this.name,
+      this.description,
+      this.discountRate,
+      this.startDate,
+      this.endDate,
+      this.offerProducts});
 
   factory OfferParams.fromRawJson(String str) =>
       OfferParams.fromJson(json.decode(str));

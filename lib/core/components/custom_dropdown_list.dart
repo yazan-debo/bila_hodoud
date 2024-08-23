@@ -76,7 +76,7 @@ class _CustomDropdownListState extends State<CustomDropdownList> {
                       ),
                       underline: Container(),
                       value: widget.selectedItem,
-                      onChanged: (dynamic? selectedItem) {
+                      onChanged: (dynamic selectedItem) {
                         widget.onChanged(selectedItem);
                       },
                       items: widget.dItems?.toList(),

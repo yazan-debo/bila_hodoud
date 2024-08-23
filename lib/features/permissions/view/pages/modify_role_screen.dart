@@ -21,6 +21,7 @@ import '../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
+import '../../controller/role_state_controller.dart';
 import '../../controller/roles_controller.dart';
 
 class ModifyRoleScreen extends StatefulWidget {
@@ -42,6 +43,8 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
   TextEditingController description = TextEditingController();
 
   List<PermissionParams> permissionsParams = [];
+  final RoleStateController roleStateController =
+      Get.put(RoleStateController());
 
   @override
   void initState() {
@@ -99,91 +102,121 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
                 params.description = value;
               },
             ),
-            SizedBox(
-              height: 3.h,
-            ),
-            Text(
-              "الصلاحيات الحالية للدور",
-              style: TextStyleFeatures.generalTextStyle,
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            ListView.builder(
-              itemCount: permissionsParams.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Text(
-                  permissionsParams[index].name ?? "",
-                  style: TextStyle(fontSize: 20, color: Colors.black),
-                );
-              },
-            ),
-            rolesController!.obx(
-                (state) => ListView.builder(
-                      itemCount: state?.length,
+            if (widget.role != null)
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Text(
+                      "الصلاحيات الحالية للدور",
+                      style: TextStyleFeatures.generalTextStyle,
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    ListView.builder(
+                      itemCount: permissionsParams.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Text(
-                          state?[index].name ?? "",
-                          style: TextStyle(fontSize: 20),
+                          permissionsParams[index].name ?? "",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
                         );
                       },
                     ),
-                onLoading: const Center(child: CircularProgressIndicator()),
-                onEmpty: Center(
-                  child: RetryWidget(
-                      error: "لا يوجد نتائج",
-                      func: () => rolesController?.getAllPermissions(true)),
-                ),
-                onError: (error) => Center(
-                      child: RetryWidget(
-                          error: error!,
-                          func: () => rolesController?.getAllPermissions(true)),
-                    )),
-            SizedBox(
-              height: 3.h,
-            ),
-            permissionsController!.obx(
-                (state) => CustomDropdownList(
-                      hint: "الصلاحيات",
-                      label: "إضافة صلاحيات",
-                      onChanged: (value) {
-                        setState(() {
-                          permissionsParams.add(value);
-                        });
-                      },
-                      dItems: List<DropdownMenuItem<PermissionParams>>.generate(
-                        state!.length,
-                        (index) {
-                          return DropdownMenuItem<PermissionParams>(
-                            value: PermissionParams(
-                                id: state[index].id.toString(),
-                                name: state[index].name),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                '${state[index].name}',
-                                style: TextStyle(fontSize: 18.px),
-                              ),
+                    rolesController!.obx(
+                        (state) => ListView.builder(
+                              itemCount: state?.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Text(
+                                  state?[index].name ?? "",
+                                  style: TextStyle(fontSize: 20),
+                                );
+                              },
                             ),
-                          );
+                        onLoading:
+                            const Center(child: CircularProgressIndicator()),
+                        onEmpty: Center(
+                          child: RetryWidget(
+                              error: "لا يوجد نتائج",
+                              func: () => rolesController?.getRolePermissions(
+                                  true, widget.role?.id ?? -1)),
+                        ),
+                        onError: (error) => Center(
+                              child: RetryWidget(
+                                  error: error!,
+                                  func: () =>
+                                      rolesController?.getRolePermissions(
+                                          true, widget.role?.id ?? -1)),
+                            )),
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    permissionsController!.obx(
+                        (state) => CustomDropdownList(
+                              hint: "الصلاحيات",
+                              label: "إضافة صلاحيات",
+                              onChanged: (value) {
+                                setState(() {
+                                  if (permissionsParams.indexWhere(
+                                          (x) => x.id == value.id) ==
+                                      -1) {
+                                    permissionsParams.add(value);
+                                    roleStateController.addPermission(value);
+                                  }
+                                });
+                              },
+                              dItems: List<
+                                  DropdownMenuItem<PermissionParams>>.generate(
+                                state!.length,
+                                (index) {
+                                  return DropdownMenuItem<PermissionParams>(
+                                    value: PermissionParams(
+                                        id: state[index].id.toString(),
+                                        name: state[index].name),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0),
+                                      child: Text(
+                                        '${state[index].name}',
+                                        style: TextStyle(fontSize: 18.px),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              selectedItem: null,
+                            ),
+                        onLoading:
+                            const Center(child: CircularProgressIndicator()),
+                        onEmpty: Center(
+                          child: RetryWidget(
+                              error: "لا يوجد نتائج",
+                              func: () =>
+                                  rolesController?.getAllPermissions(true)),
+                        ),
+                        onError: (error) => Center(
+                              child: RetryWidget(
+                                  error: error!,
+                                  func: () =>
+                                      rolesController?.getAllPermissions(true)),
+                            )),
+                    Obx(
+                      () => ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: roleStateController.permissions.length,
+                        itemBuilder: (context, index) {
+                          return Text(
+                              roleStateController.permissions[index].name);
                         },
                       ),
-                      selectedItem: state[0],
                     ),
-                onLoading: const Center(child: CircularProgressIndicator()),
-                onEmpty: Center(
-                  child: RetryWidget(
-                      error: "لا يوجد نتائج",
-                      func: () => rolesController?.getAllPermissions(true)),
+                  ],
                 ),
-                onError: (error) => Center(
-                      child: RetryWidget(
-                          error: error!,
-                          func: () => rolesController?.getAllPermissions(true)),
-                    )),
+              )
           ],
         ),
       ),
@@ -194,22 +227,40 @@ class _ModifyRoleScreenState extends State<ModifyRoleScreen> {
     );
 
     globalInterfaceController.addExtraWidget(
-      MostUsedButton(
-        buttonText: 'حفظ',
-        buttonIcon: Icons.save,
-        onTap: () {
-          if (_roleFormKey.currentState!.validate()) {
-            _roleFormKey.currentState?.save();
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          MostUsedButton(
+            buttonText: 'حفظ المعلومات',
+            buttonIcon: Icons.save,
+            onTap: () {
+              if (_roleFormKey.currentState!.validate()) {
+                _roleFormKey.currentState?.save();
 
-            if (widget.role != null) {
-              rolesController?.updateRole(widget.role?.id ?? 0, params);
-              rolesController?.addPermissionsToRole(
-                  permissionsParams, widget.role?.id ?? 0);
-            } else {
-              rolesController?.addRole(params);
-            }
-          }
-        },
+                if (widget.role != null) {
+                  rolesController?.updateRole(widget.role?.id ?? 0, params);
+                } else {
+                  rolesController?.addRole(params);
+                }
+              }
+            },
+          ),
+          if (widget.role != null)
+            MostUsedButton(
+              buttonText: 'حفظ الأدوار',
+              buttonIcon: Icons.save,
+              onTap: () {
+                if (_roleFormKey.currentState!.validate()) {
+                  _roleFormKey.currentState?.save();
+
+                  if (widget.role != null) {
+                    rolesController?.addPermissionsToRole(
+                        permissionsParams, widget.role?.id ?? 0);
+                  }
+                }
+              },
+            ),
+        ],
       ),
     );
     return const GlobalInterface();

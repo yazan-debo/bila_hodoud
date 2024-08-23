@@ -14,10 +14,12 @@ import "../../features/authentication/controller/authentication_controller.dart"
 import "../../features/balance/controller/balance_request_details_controller.dart";
 import "../../features/balance/controller/balance_requests_controller.dart";
 import "../../features/coupons/controller/coupons_controller.dart";
+import "../../features/offers/controller/offer_products_controller.dart";
 import "../../features/orders/controller/delivery_method_dropdown_controller.dart";
 import "../../features/orders/controller/order_details_controller.dart";
 import "../../features/orders/controller/status_dropdown_controller.dart";
 import "../../features/permissions/controller/permissions_controller.dart";
+import "../../features/permissions/controller/role_state_controller.dart";
 import "../../features/points/controller/points_controller.dart";
 import "../../features/sections/controller/all_sections_controller.dart";
 import "../../features/subsections/controller/dropdown_controller.dart";
@@ -45,5 +47,7 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => ReportsController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
     Get.lazyPut(() => PermissionsController(), fenix: true);
+    Get.lazyPut(() => RoleStateController(), fenix: true);
+    Get.lazyPut(() => OfferProductsController(), fenix: true);
   }
 }

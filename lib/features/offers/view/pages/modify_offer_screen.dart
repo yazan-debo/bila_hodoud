@@ -3,13 +3,17 @@ import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:bila_hodoud/features/libraries/model/params/library_params.dart';
 import 'package:bila_hodoud/features/offers/controller/offers_controller.dart';
 import 'package:bila_hodoud/features/offers/model/models/offer_model.dart';
+import 'package:bila_hodoud/features/offers/model/params/offer_product_params.dart';
 import 'package:bila_hodoud/features/offers/model/params/offer_params.dart';
+import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/components/custom_dropdown_list.dart';
+import '../../../../core/components/retry_widget.dart';
 import '../../../../core/components/used_filled.dart';
 import '../../../../core/constants/style/color_style_features.dart';
 import '../../../../core/constants/style/constraint_style_features.dart';
@@ -21,6 +25,7 @@ import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
 import '../../../products/controller/file_upload_controller.dart';
+import '../../controller/offer_products_controller.dart';
 
 class ModifyOfferScreen extends StatefulWidget {
   final OfferModel? offer;
@@ -33,6 +38,9 @@ class ModifyOfferScreen extends StatefulWidget {
 
 class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
   final OffersController? offersController = Get.find<OffersController>();
+  final ProductsController? productsController = Get.find<ProductsController>();
+  final OfferProductsController? offerProductController =
+      Get.find<OfferProductsController>();
   final _offerFormKey = GlobalKey<FormState>();
   OfferParams params = OfferParams();
   TextEditingController name = TextEditingController();
@@ -47,9 +55,11 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    productsController?.searchProductByName("");
     if (widget.offer != null) {
       name.text = widget.offer?.name ?? "";
     }
+    params.offerProducts = [];
     super.initState();
   }
 
@@ -205,6 +215,79 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
               SizedBox(
                 height: 3.h,
               ),
+              productsController!.obx(
+                  (state) => CustomDropdownList(
+                        hint: "المنتجات",
+                        label: "إضافة منتج",
+                        onChanged: (value) {
+                          print(params.offerProducts?.indexWhere(
+                                  (x) => x.productId == value.id) ==
+                              -1);
+                          setState(() {
+                            if (params.offerProducts?.indexWhere(
+                                    (x) => x.productId == value.id) ==
+                                -1) {
+                              params.offerProducts?.add(value);
+                              offerProductController?.addOfferProducts(value);
+                            }
+                          });
+                        },
+                        dItems:
+                            List<DropdownMenuItem<OfferProductParams>>.generate(
+                          state!.length,
+                          (index) {
+                            return DropdownMenuItem<OfferProductParams>(
+                              value: OfferProductParams(
+                                  productId: state[index].id.toString(),
+                                  quantity: 2),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Text(
+                                  '${state[index].name}',
+                                  style: TextStyle(fontSize: 18.px),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        selectedItem: null,
+                      ),
+                  onLoading: const Center(child: CircularProgressIndicator()),
+                  onEmpty: Center(
+                    child: RetryWidget(
+                        error: "لا يوجد نتائج",
+                        func: () =>
+                            productsController?.searchProductByName("")),
+                  ),
+                  onError: (error) => Center(
+                        child: RetryWidget(
+                            error: error!,
+                            func: () =>
+                                productsController?.searchProductByName("")),
+                      )),
+              Obx(
+                () => ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: offerProductController?.offerProducts.length,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Text(offerProductController
+                            ?.offerProducts[index].productId),
+                        Text(":"),
+                        Text(offerProductController
+                                ?.offerProducts[index].quantity
+                                .toString() ??
+                            ""),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 3.h,
+              ),
               Row(
                 children: [
                   Text(
@@ -280,7 +363,8 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
             if (widget.offer != null) {
               offersController?.updateOffer(widget.offer?.id ?? 0, params);
             } else {
-              offersController?.addOffer(params);
+              print(params.toJson());
+              // offersController?.addOffer(params);
             }
           }
         },

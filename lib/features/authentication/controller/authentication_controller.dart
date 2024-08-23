@@ -35,7 +35,7 @@ class AuthenticationController extends GetxController with StateMixin<bool> {
 
       if (response.statusCode == 200) {
         UserModel user = UserModel.fromJson(jsonDecode(response.body));
-        UserInfoController userInfoController =   Get.find<UserInfoController>();
+        UserInfoController userInfoController = Get.find<UserInfoController>();
         userInfoController.setUserName(user.userName);
         appSharedPref.saveToken(user);
         appSharedPref.saveUserId(user);
@@ -65,7 +65,8 @@ class AuthenticationController extends GetxController with StateMixin<bool> {
 
       var headers = {
         'Content-Type': 'application/json',
-        "Authorization": "Bearer $token"
+        "Authorization": "Bearer $token",
+        'Accept': 'application/json',
         // Add any additional headers here
       };
 
