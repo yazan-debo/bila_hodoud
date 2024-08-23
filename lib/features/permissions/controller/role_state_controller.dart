@@ -14,4 +14,8 @@ class RoleStateController extends GetxController {
   void addPermission(PermissionParams permission) {
     permissions.add(permission);
   }
+
+  void clear() {
+    permissions = [].obs;
+  }
 }

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:bila_hodoud/features/offers/model/params/offer_params.dart';
 import 'package:bila_hodoud/features/permissions/model/params/role_params.dart';
 import 'package:get/get.dart';
@@ -9,7 +9,9 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/urls.dart';
 import '../../../core/helper/dialog_helper.dart';
 import '../../../core/utils/app_shared_pref.dart';
+import '../../products/model/models/image_file_model.dart';
 import '../model/models/offer_model.dart';
+import '../model/params/offer_product_params.dart';
 
 class OffersController extends GetxController
     with StateMixin<List<OfferModel>> {
@@ -57,7 +59,8 @@ class OffersController extends GetxController
     }
   }
 
-  Future<void> addOffer(OfferParams params) async {
+  Future<void> addOffer(OfferParams params, List<ImageFileModel> images,
+      List<OfferProductParams> offerProducts) async {
     try {
       DialogHelper.showLoadingDialog();
       const url = '${Urls.baseUrl}${Urls.offer}/store';
@@ -65,22 +68,44 @@ class OffersController extends GetxController
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();
       var headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         "Authorization": "Bearer $token"
 
         // Add any additional headers here
       };
 
-      var body = jsonEncode(params.toJson());
+      Map<String, dynamic> body;
+      body = params.toJson();
 
-      var response =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
+        ..headers.addAll(headers);
+
+      var request = jsonToFormData(multipartRequest, body);
+
+      for (int i = 0; i <= images.length - 1; i++) {
+        http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
+            'images[]', images[i].image!.cast(),
+            filename: images[i].fileName);
+        request.files.add(multipartFile);
+      }
+
+      for (int i = 0; i <= offerProducts.length - 1; i++) {
+        http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
+            'images[]', images[i].image!.cast(),
+            filename: images[i].fileName);
+        request.files.add(multipartFile);
+      }
+
+      var response = await request.send();
 
       if (response.statusCode == 201) {
         Get.back();
         DialogHelper.showSuccessDialog();
-        Get.offNamed("/sys_roles");
       } else {
+        var response1 = await http.Response.fromStream(response);
+        final result = jsonDecode(response1.body) as Map<String, dynamic>;
+        debugPrint(result['message']);
+        debugPrint(result['error']);
         Get.back();
         DialogHelper.showErrorDialog(
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
@@ -202,4 +227,12 @@ class OffersController extends GetxController
       change(null, status: RxStatus.error(e.toString()));
     }
   }
+}
+
+jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
+  for (var key in data.keys) {
+    request.fields[key] = data[key].toString();
+  }
+
+  return request;
 }

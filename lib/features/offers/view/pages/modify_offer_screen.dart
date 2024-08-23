@@ -25,6 +25,7 @@ import '../../../../core/components/most_used_button.dart';
 
 import '../../../../presentation/view/global_interface.dart';
 import '../../../products/controller/file_upload_controller.dart';
+import '../../../products/model/models/image_file_model.dart';
 import '../../controller/offer_products_controller.dart';
 
 class ModifyOfferScreen extends StatefulWidget {
@@ -220,12 +221,9 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                         hint: "المنتجات",
                         label: "إضافة منتج",
                         onChanged: (value) {
-                          print(params.offerProducts?.indexWhere(
-                                  (x) => x.productId == value.id) ==
-                              -1);
                           setState(() {
                             if (params.offerProducts?.indexWhere(
-                                    (x) => x.productId == value.id) ==
+                                    (x) => x.productId == value.productId) ==
                                 -1) {
                               params.offerProducts?.add(value);
                               offerProductController?.addOfferProducts(value);
@@ -239,7 +237,8 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                             return DropdownMenuItem<OfferProductParams>(
                               value: OfferProductParams(
                                   productId: state[index].id.toString(),
-                                  quantity: 2),
+                                  quantity: 2,
+                                  name: state[index].name),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0),
@@ -266,6 +265,7 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                             func: () =>
                                 productsController?.searchProductByName("")),
                       )),
+              SizedBox(height: 2.h),
               Obx(
                 () => ListView.builder(
                   shrinkWrap: true,
@@ -273,13 +273,17 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                   itemBuilder: (context, index) {
                     return Row(
                       children: [
-                        Text(offerProductController
-                            ?.offerProducts[index].productId),
+                        Text(
+                          offerProductController?.offerProducts[index].name,
+                          style: TextStyle(fontSize: 18),
+                        ),
                         Text(":"),
-                        Text(offerProductController
-                                ?.offerProducts[index].quantity
-                                .toString() ??
-                            ""),
+                        Text(
+                          offerProductController?.offerProducts[index].quantity
+                                  .toString() ??
+                              "",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ],
                     );
                   },
@@ -363,8 +367,11 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
             if (widget.offer != null) {
               offersController?.updateOffer(widget.offer?.id ?? 0, params);
             } else {
-              print(params.toJson());
-              // offersController?.addOffer(params);
+              List<ImageFileModel> images = [];
+              for (int i = 0; i < fileUploadController.images.length; i++) {
+                images.add(fileUploadController.images[i]);
+              }
+              offersController?.addOffer(params, images, params.offerProducts!);
             }
           }
         },
