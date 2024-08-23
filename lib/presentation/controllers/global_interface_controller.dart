@@ -41,10 +41,10 @@ class GlobalInterfaceController extends GetxController {
         name: 'إدارة العروض',
         choices: ['العروض الحاليّة'],
       ),
-      DropdownListController(
+      /*  DropdownListController(
         name: 'الإدارة المالية',
         choices: ['تقارير عن المبيعات', 'سجلّ المبيعات'],
-      ),
+      ),*/
       // DropdownListController(
       //   name: 'إدارة الإشعارات',
       //   choices: ['إعدادات الاشعارات', 'إشعارات النظام', 'إشعارات المستخدمين'],
@@ -52,12 +52,7 @@ class GlobalInterfaceController extends GetxController {
 
       DropdownListController(
         name: 'إدارة الصلاحيات',
-        choices: [
-          'صلاحيّات الأدوار',
-          'أدوار المستخدمين',
-          'حسابات المستخدمين',
-          'أدوار النظام'
-        ],
+        choices: ['حسابات المستخدمين', 'أدوار النظام'],
       ),
       DropdownListController(
         name: 'إدارة الأخبار',
