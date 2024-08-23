@@ -56,15 +56,19 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
+    params.offerProducts = [];
+    offerProductController?.clear();
+
     productsController?.searchProductByName("");
     if (widget.offer != null) {
       name.text = widget.offer?.name ?? "";
     }
-    params.offerProducts = [];
+
     super.initState();
   }
 
-  DateFormat format = DateFormat("yyyy-MM-dd kk:mm");
+  DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");
 
   DateTime? selectedDateTime;
 

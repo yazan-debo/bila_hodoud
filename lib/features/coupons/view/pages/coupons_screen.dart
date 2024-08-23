@@ -1,6 +1,7 @@
 import 'dart:js_interop';
 
 import 'package:bila_hodoud/features/coupons/model/coupon_model.dart';
+import 'package:bila_hodoud/features/coupons/view/pages/coupon_details_screen.dart';
 import 'package:bila_hodoud/features/libraries/controller/libraries_controller.dart';
 import 'package:bila_hodoud/features/libraries/view/pages/modify_library_screen.dart';
 import 'package:bila_hodoud/features/sections/view/pages/modify_section_screen.dart';
@@ -14,6 +15,7 @@ import '../../../../../../core/constants/style/constraint_style_features.dart';
 import '../../../../../../core/constants/style/text_style_features.dart';
 import '../../../../../../presentation/controllers/global_interface_controller.dart';
 import '../../../../../../presentation/view/global_interface.dart';
+import '../../../../core/components/edit_button.dart';
 import '../../controller/coupons_controller.dart';
 import '../widgets/coupon_widget.dart';
 
@@ -52,20 +54,15 @@ class _CouponsScreenState extends State<CouponsScreen> {
       const SizedBox(height: ConstraintStyleFeatures.spaceBetweenElements),
     );
 
-    globalInterfaceController.addExtraWidget(
-
-
-
-
-        Expanded(
-          child: couponsController!.obx(
-                  (state) => Table(
+    globalInterfaceController.addExtraWidget(Expanded(
+      child: couponsController!.obx(
+          (state) => Table(
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 border: TableBorder.all(),
                 columnWidths: const {
-                  0: FractionColumnWidth(0.5),
-                  1: FractionColumnWidth(0.5),
-
+                  0: FractionColumnWidth(0.35),
+                  1: FractionColumnWidth(0.35),
+                  2: FractionColumnWidth(0.3),
                 },
                 children: [
                   const TableRow(
@@ -93,46 +90,52 @@ class _CouponsScreenState extends State<CouponsScreen> {
                               )),
                         ),
                       ),
-
+                      TableCell(
+                        child: Center(
+                          child: Text('عرض التفاصيل',
+                              style: TextStyle(
+                                fontFamily: 'Arabic',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
                     ],
                   ),
                   ...state!.map((item) {
                     return _buildTableRow(
                       item,
-
+                      CellButton(
+                        onTap: () {
+                          Get.to(() => CouponDetailsScreen());
+                        },
+                        icon: Icons.remove_red_eye,
+                        label: "عرض التفاصيل",
+                      ),
                     );
                   }),
                 ],
               ),
-              onLoading: const Center(child: CircularProgressIndicator()),
-              onEmpty: Center(
-                child: RetryWidget(
-                    error: "لا يوجد نتائج",
-                    func: () => couponsController?.getCoupons(true)),
-              ),
-              onError: (error) => Center(
+          onLoading: const Center(child: CircularProgressIndicator()),
+          onEmpty: Center(
+            child: RetryWidget(
+                error: "لا يوجد نتائج",
+                func: () => couponsController?.getCoupons(true)),
+          ),
+          onError: (error) => Center(
                 child: RetryWidget(
                     error: error!,
                     func: () => couponsController?.getCoupons(true)),
               )),
-        )
-
-
-
-
-
-
-
-    );
+    ));
 
     return GlobalInterface();
   }
 
   TableRow _buildTableRow(
-      CouponModel coupon,
-
-
-      ) {
+    CouponModel coupon,
+    Widget detailsButton,
+  ) {
     final textStyle = TextStyle(
       fontFamily: 'Arabic',
       fontSize: 14,
@@ -156,7 +159,7 @@ class _CouponsScreenState extends State<CouponsScreen> {
                 child: Text(coupon.receiver.toString() ?? "", style: textStyle),
               )),
         ),
-
+        TableCell(child: detailsButton),
       ],
     );
   }
