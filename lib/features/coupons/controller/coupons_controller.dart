@@ -20,7 +20,7 @@ class CouponsController extends GetxController
         }
       });
 
-      const url = '${Urls.baseUrl}${Urls.coupon}/index';
+      const url = '${Urls.baseUrl}${Urls.coupon}/all';
 
       AppSharedPref appSharedPref = AppSharedPref();
       String token = appSharedPref.getToken();

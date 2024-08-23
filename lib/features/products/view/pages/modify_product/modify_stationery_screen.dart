@@ -1,4 +1,3 @@
-
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:bila_hodoud/features/products/model/models/image_file_model.dart';
 import 'package:bila_hodoud/features/products/model/models/product_model.dart';
@@ -46,6 +45,8 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
   TextEditingController barcode = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController traderPrice = TextEditingController();
+
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   TextEditingController goals = TextEditingController();
@@ -53,7 +54,7 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
   TextEditingController manufacturer = TextEditingController();
   TextEditingController specifications = TextEditingController();
   final SubsectionsController? subsectionsController =
-  Get.find<SubsectionsController>();
+      Get.find<SubsectionsController>();
 
   @override
   void initState() {
@@ -65,6 +66,8 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
       barcode.text = widget.product?.barcode ?? "";
       description.text = widget.product?.description ?? "";
       price.text = widget.product?.price.toString() ?? "";
+      traderPrice.text = widget.product?.traderPrice.toString() ?? "";
+
       quantity.text = widget.product?.quantity.toString() ?? "";
       minimumQuantity.text = widget.product?.minimumQuantity.toString() ?? "";
       goals.text = widget.product?.stationery?.goals.toString() ?? "";
@@ -144,6 +147,14 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                 },
               ),
               UsedFilled(
+                label: 'السعر للتاجر',
+                controller: traderPrice,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.traderPrice = value;
+                },
+              ),
+              UsedFilled(
                 label: 'الكمية',
                 controller: quantity,
                 isMandatory: true,
@@ -191,16 +202,17 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                   params.stationery?.specifications = value;
                 },
               ),
-
               Padding(
                 padding: const EdgeInsets.all(.5),
                 child: subsectionsController!.obx((state) {
                   var subsections = state ?? [];
                   var itemNames = subsections.map((item) => item.name).toList();
-                  var selectedItem = dropdownController?.selectedStringItems.value;
+                  var selectedItem =
+                      dropdownController?.selectedStringItems.value;
 
                   // Ensure selectedItem is in the list
-                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                  if (selectedItem != null &&
+                      !itemNames.contains(selectedItem)) {
                     selectedItem = null; // Reset if invalid
                   }
 
@@ -212,17 +224,20 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                       dropdownController?.sChange(value);
 
                       // Find and update the corresponding ID
-                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
-                      dropdownController?.setSubSectionId(selectedSubSection?.id);
-                      subsectionsNumber =  subsections.length;
+                      var selectedSubSection =
+                          subsections.firstWhere((item) => item.name == value);
+                      dropdownController
+                          ?.setSubSectionId(selectedSubSection?.id);
+                      subsectionsNumber = subsections.length;
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                          (index) {
+                      (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -235,8 +250,6 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
                   );
                 }),
               ),
-
-
               SizedBox(
                 height: 3.h,
               ),
@@ -341,9 +354,10 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
             _stationeryFormKey.currentState?.save();
 
             if (widget.product != null) {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();
@@ -354,9 +368,10 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
             } else {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();

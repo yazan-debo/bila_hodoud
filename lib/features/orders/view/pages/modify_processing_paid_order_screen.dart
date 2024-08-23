@@ -29,20 +29,20 @@ import '../../model/params/change_status_params.dart';
 import '../../model/params/processing_order_params.dart';
 import '../widgets/label_widget.dart';
 
-class ModifyProcessingOrderScreen extends StatefulWidget {
+class ModifyProcessingPaidOrderScreen extends StatefulWidget {
   final NormalOrderModel? order;
   final int pageIndex;
 
-  const ModifyProcessingOrderScreen(
+  const ModifyProcessingPaidOrderScreen(
       {super.key, this.order, required this.pageIndex});
 
   @override
-  State<ModifyProcessingOrderScreen> createState() =>
-      _ModifyProcessingOrderScreenState();
+  State<ModifyProcessingPaidOrderScreen> createState() =>
+      _ModifyProcessingPaidOrderScreenState();
 }
 
-class _ModifyProcessingOrderScreenState
-    extends State<ModifyProcessingOrderScreen> {
+class _ModifyProcessingPaidOrderScreenState
+    extends State<ModifyProcessingPaidOrderScreen> {
   final NormalOrdersController? normalOrdersController =
   Get.find<NormalOrdersController>();
   final OrderDetailsController? orderDetailsController =
@@ -227,89 +227,6 @@ class _ModifyProcessingOrderScreenState
                               */
                               SizedBox(
                                 height: 2.h,
-                              ),
-
-
-                              Obx(() =>
-                                  Row(
-                                    children: [
-
-                                      Text(
-                                        "طريقة التوصيل",
-                                        style: TextStyleFeatures
-                                            .generalTextStyle,
-                                      ),
-                                      const SizedBox(width: 25),
-                                      Container(
-                                        height: 8.h,
-                                        width: 100.w * 100.h * 0.0004,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: ColorStyleFeatures
-                                                .headLinesTextColor,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                              8.0),
-                                        ),
-                                        child: DropdownButton<String>(
-                                          hint: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
-                                            child: Text(
-                                              "طريقة التوصيل",
-                                              style: TextStyle(fontSize: 14.px),
-                                            ),
-                                          ),
-                                          underline: Container(),
-                                          value: deliveryMethodDropdownController
-                                              ?.selectedItem.value,
-                                          onChanged: (String? selectedItem) {
-                                            deliveryMethodDropdownController
-                                                ?.change(selectedItem ?? "");
-                                          },
-                                          items: [
-                                            DropdownMenuItem<String>(
-                                              value: "شحن الى محافظة أخرى",
-                                              child: Padding(
-                                                padding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 20.0),
-                                                child: Text(
-                                                  "شحن الى محافظة أخرى",
-                                                  style: TextStyle(
-                                                      fontSize: 18.px),
-                                                ),
-                                              ),
-                                            ),
-                                            DropdownMenuItem<String>(
-                                              value: "توصيل ضمن دمشق",
-                                              child: Padding(
-                                                padding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 20.0),
-                                                child: Text(
-                                                  "توصيل ضمن دمشق",
-                                                  style: TextStyle(
-                                                      fontSize: 18.px),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              UsedFilled(
-                                label: 'كلفة التوصيل',
-                                controller: deliveryCost,
-                                isMandatory: true,
-                                onSaved: (value) {
-                                  params.deliveryCost = value;
-                                },
                               ),
 
 

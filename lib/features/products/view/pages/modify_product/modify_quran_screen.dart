@@ -1,4 +1,3 @@
-
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:bila_hodoud/features/products/model/models/image_file_model.dart';
 import 'package:bila_hodoud/features/products/model/models/product_model.dart';
@@ -46,6 +45,8 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
   TextEditingController barcode = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController traderPrice = TextEditingController();
+
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   TextEditingController publisher = TextEditingController();
@@ -54,7 +55,7 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
   TextEditingController printType = TextEditingController();
   TextEditingController specifications = TextEditingController();
   final SubsectionsController? subsectionsController =
-  Get.find<SubsectionsController>();
+      Get.find<SubsectionsController>();
 
   @override
   void initState() {
@@ -66,6 +67,8 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
       barcode.text = widget.product?.barcode ?? "";
       description.text = widget.product?.description ?? "";
       price.text = widget.product?.price.toString() ?? "";
+      traderPrice.text = widget.product?.traderPrice.toString() ?? "";
+
       quantity.text = widget.product?.quantity.toString() ?? "";
       minimumQuantity.text = widget.product?.minimumQuantity.toString() ?? "";
       publisher.text = widget.product?.quran?.publisher.toString() ?? "";
@@ -153,6 +156,14 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
                 },
               ),
               UsedFilled(
+                label: 'السعر للتاجر',
+                controller: traderPrice,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.traderPrice = value;
+                },
+              ),
+              UsedFilled(
                 label: 'الحد الأدنى للكمية',
                 controller: minimumQuantity,
                 isMandatory: true,
@@ -192,16 +203,17 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
                   params.quran?.specifications = value;
                 },
               ),
-
               Padding(
                 padding: const EdgeInsets.all(.5),
                 child: subsectionsController!.obx((state) {
                   var subsections = state ?? [];
                   var itemNames = subsections.map((item) => item.name).toList();
-                  var selectedItem = dropdownController?.selectedStringItems.value;
+                  var selectedItem =
+                      dropdownController?.selectedStringItems.value;
 
                   // Ensure selectedItem is in the list
-                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                  if (selectedItem != null &&
+                      !itemNames.contains(selectedItem)) {
                     selectedItem = null; // Reset if invalid
                   }
 
@@ -213,17 +225,20 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
                       dropdownController?.sChange(value);
 
                       // Find and update the corresponding ID
-                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
-                      dropdownController?.setSubSectionId(selectedSubSection?.id);
-                      subsectionsNumber =  subsections.length;
+                      var selectedSubSection =
+                          subsections.firstWhere((item) => item.name == value);
+                      dropdownController
+                          ?.setSubSectionId(selectedSubSection?.id);
+                      subsectionsNumber = subsections.length;
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                          (index) {
+                      (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -236,8 +251,6 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
                   );
                 }),
               ),
-
-
               SizedBox(
                 height: 3.h,
               ),
@@ -342,9 +355,10 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
             _quranFormKey.currentState?.save();
 
             if (widget.product != null) {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();
@@ -355,9 +369,10 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
             } else {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();

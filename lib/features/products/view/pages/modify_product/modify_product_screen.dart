@@ -46,6 +46,8 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
   TextEditingController barcode = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController traderPrice = TextEditingController();
+
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   final SubsectionsController? subsectionsController =
@@ -59,6 +61,8 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
       barcode.text = widget.product?.barcode ?? "";
       description.text = widget.product?.description ?? "";
       price.text = widget.product?.price.toString() ?? "";
+      traderPrice.text = widget.product?.traderPrice.toString() ?? "";
+
       quantity.text = widget.product?.quantity.toString() ?? "";
       minimumQuantity.text = widget.product?.minimumQuantity.toString() ?? "";
       super.initState();
@@ -140,6 +144,14 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
                 isMandatory: true,
                 onSaved: (value) {
                   params.quantity = value;
+                },
+              ),
+              UsedFilled(
+                label: 'السعر للتاجر',
+                controller: traderPrice,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.traderPrice = value;
                 },
               ),
               UsedFilled(

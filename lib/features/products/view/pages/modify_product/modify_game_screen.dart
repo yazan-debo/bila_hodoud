@@ -1,4 +1,3 @@
-
 import 'package:bila_hodoud/features/products/controller/products_controller.dart';
 import 'package:bila_hodoud/features/products/model/models/game_model.dart';
 import 'package:bila_hodoud/features/products/model/models/image_file_model.dart';
@@ -45,6 +44,8 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
   TextEditingController barcode = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController traderPrice = TextEditingController();
+
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   TextEditingController goals = TextEditingController();
@@ -53,7 +54,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
   TextEditingController numberOfPlayers = TextEditingController();
   TextEditingController targetAge = TextEditingController();
   final SubsectionsController? subsectionsController =
-  Get.find<SubsectionsController>();
+      Get.find<SubsectionsController>();
 
   @override
   void initState() {
@@ -65,6 +66,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
       barcode.text = widget.product?.barcode ?? "";
       description.text = widget.product?.description ?? "";
       price.text = widget.product?.price.toString() ?? "";
+      traderPrice.text = widget.product?.traderPrice.toString() ?? "";
       quantity.text = widget.product?.quantity.toString() ?? "";
       minimumQuantity.text = widget.product?.minimumQuantity.toString() ?? "";
       goals.text = widget.product?.game?.goals.toString() ?? "";
@@ -144,6 +146,14 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                 },
               ),
               UsedFilled(
+                label: 'السعر للتاجر',
+                controller: traderPrice,
+                isMandatory: true,
+                onSaved: (value) {
+                  params.traderPrice = value;
+                },
+              ),
+              UsedFilled(
                 label: 'الكمية',
                 controller: quantity,
                 isMandatory: true,
@@ -199,16 +209,17 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                   params.game?.targetAge = value;
                 },
               ),
-
               Padding(
                 padding: const EdgeInsets.all(.5),
                 child: subsectionsController!.obx((state) {
                   var subsections = state ?? [];
                   var itemNames = subsections.map((item) => item.name).toList();
-                  var selectedItem = dropdownController?.selectedStringItems.value;
+                  var selectedItem =
+                      dropdownController?.selectedStringItems.value;
 
                   // Ensure selectedItem is in the list
-                  if (selectedItem != null && !itemNames.contains(selectedItem)) {
+                  if (selectedItem != null &&
+                      !itemNames.contains(selectedItem)) {
                     selectedItem = null; // Reset if invalid
                   }
 
@@ -220,17 +231,20 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                       dropdownController?.sChange(value);
 
                       // Find and update the corresponding ID
-                      var selectedSubSection = subsections.firstWhere((item) => item.name == value);
-                      dropdownController?.setSubSectionId(selectedSubSection?.id);
-                      subsectionsNumber =  subsections.length;
+                      var selectedSubSection =
+                          subsections.firstWhere((item) => item.name == value);
+                      dropdownController
+                          ?.setSubSectionId(selectedSubSection?.id);
+                      subsectionsNumber = subsections.length;
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                          (index) {
+                      (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -243,8 +257,6 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
                   );
                 }),
               ),
-
-
               SizedBox(
                 height: 3.h,
               ),
@@ -352,9 +364,10 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
             _gameFormKey.currentState?.save();
 
             if (widget.product != null) {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();
@@ -365,9 +378,10 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
             } else {
-              if (subsectionsNumber!=0){
-                params.subSectionId = dropdownController?.selectedSubSectionId.value.toString();}
-              else{
+              if (subsectionsNumber != 0) {
+                params.subSectionId =
+                    dropdownController?.selectedSubSectionId.value.toString();
+              } else {
                 params.subSectionId = null;
               }
               params.sectionId = widget.sectionId.toString();
