@@ -63,6 +63,8 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
     productsController?.searchProductByName("");
     if (widget.offer != null) {
       name.text = widget.offer?.name ?? "";
+      description.text = widget.offer?.description ?? "";
+      discountRate.text = (widget.offer?.discountRate ?? 0).toString();
     }
 
     super.initState();
@@ -112,6 +114,41 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
       fileUploadController.addFile(
           result.files.first.bytes!, result.files.first.name);
     }
+  }
+
+  void _showDialog(BuildContext context, value) {
+    TextEditingController textController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("كمية المنتج"),
+          content: TextField(
+            controller: textController,
+            decoration: InputDecoration(
+                hintText: "أدخل الكمية", hintStyle: TextStyle(fontSize: 20)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                value.quantity = int.parse(textController.text);
+                params.offerProducts?.add(value);
+                offerProductController?.addOfferProducts(value);
+                Navigator.of(context).pop();
+              },
+              child: Text("تأكيد"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("إلغاء"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -229,8 +266,7 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                             if (params.offerProducts?.indexWhere(
                                     (x) => x.productId == value.productId) ==
                                 -1) {
-                              params.offerProducts?.add(value);
-                              offerProductController?.addOfferProducts(value);
+                              _showDialog(context, value);
                             }
                           });
                         },
@@ -241,7 +277,7 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
                             return DropdownMenuItem<OfferProductParams>(
                               value: OfferProductParams(
                                   productId: state[index].id.toString(),
-                                  quantity: 2,
+                                  quantity: state[index].quantity,
                                   name: state[index].name),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -369,7 +405,12 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
             _offerFormKey.currentState?.save();
 
             if (widget.offer != null) {
-              offersController?.updateOffer(widget.offer?.id ?? 0, params);
+              List<ImageFileModel> images = [];
+              for (int i = 0; i < fileUploadController.images.length; i++) {
+                images.add(fileUploadController.images[i]);
+              }
+              offersController?.updateOffer(
+                  widget.offer?.id ?? 0, params, images, params.offerProducts!);
             } else {
               List<ImageFileModel> images = [];
               for (int i = 0; i < fileUploadController.images.length; i++) {
