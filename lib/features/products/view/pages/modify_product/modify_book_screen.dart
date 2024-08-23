@@ -243,6 +243,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                           subsections.firstWhere((item) => item.name == value);
                       dropdownController
                           ?.setSubSectionId(selectedSubSection?.id);
+
                       subsectionsNumber = subsections.length;
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
