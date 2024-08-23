@@ -46,7 +46,6 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController traderPrice = TextEditingController();
-
   TextEditingController quantity = TextEditingController();
   TextEditingController minimumQuantity = TextEditingController();
   TextEditingController goals = TextEditingController();

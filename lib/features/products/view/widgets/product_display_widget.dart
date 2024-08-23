@@ -39,7 +39,7 @@ class ProductDisplayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Container(
-                height: 500,
+                height: 350,
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +78,7 @@ class ProductDisplayWidget extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Container(
-                height: 400,
+                height: 300,
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

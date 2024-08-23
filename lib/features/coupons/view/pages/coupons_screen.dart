@@ -17,6 +17,7 @@ import '../../../../../../presentation/controllers/global_interface_controller.d
 import '../../../../../../presentation/view/global_interface.dart';
 import '../../../../core/components/edit_button.dart';
 import '../../controller/coupons_controller.dart';
+import '../../model/coupons_model.dart';
 import '../widgets/coupon_widget.dart';
 
 class CouponsScreen extends StatefulWidget {
@@ -80,16 +81,16 @@ class _CouponsScreenState extends State<CouponsScreen> {
                           ),
                         ),
                       ),
-                      TableCell(
-                        child: Center(
-                          child: Text('اسم المستقبل',
-                              style: TextStyle(
-                                fontFamily: 'Arabic',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ),
+                      // TableCell(
+                      //   child: Center(
+                      //     child: Text('اسم المستقبل',
+                      //         style: TextStyle(
+                      //           fontFamily: 'Arabic',
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.bold,
+                      //         )),
+                      //   ),
+                      // ),
                       TableCell(
                         child: Center(
                           child: Text('عرض التفاصيل',
@@ -133,7 +134,7 @@ class _CouponsScreenState extends State<CouponsScreen> {
   }
 
   TableRow _buildTableRow(
-    CouponModel coupon,
+    CouponsModel coupon,
     Widget detailsButton,
   ) {
     final textStyle = TextStyle(
@@ -149,16 +150,16 @@ class _CouponsScreenState extends State<CouponsScreen> {
           child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Center(
-                child: Text(coupon.sender ?? "", style: textStyle),
+                child: Text(coupon.senderName ?? "", style: textStyle),
               )),
         ),
-        TableCell(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Center(
-                child: Text(coupon.receiver.toString() ?? "", style: textStyle),
-              )),
-        ),
+        // TableCell(
+        //   child: Padding(
+        //       padding: const EdgeInsets.symmetric(vertical: 16.0),
+        //       child: Center(
+        //         child: Text(coupon.receiver.toString() ?? "", style: textStyle),
+        //       )),
+        // ),
         TableCell(child: detailsButton),
       ],
     );
