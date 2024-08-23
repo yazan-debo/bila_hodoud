@@ -355,9 +355,6 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () async {
-          print("entered");
-
-          print("game: ${widget.product?.id}");
           _gameFormKey.currentState?.save();
           if (_gameFormKey.currentState!.validate() &&
               fileUploadController.images.isNotEmpty) {
@@ -397,6 +394,7 @@ class _ModifyGameScreenState extends State<ModifyGameScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

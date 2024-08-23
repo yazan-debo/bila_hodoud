@@ -388,6 +388,7 @@ class _ModifyQuranScreenState extends State<ModifyQuranScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

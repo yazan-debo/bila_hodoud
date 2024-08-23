@@ -386,6 +386,7 @@ class _ModifyStationeryScreenState extends State<ModifyStationeryScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

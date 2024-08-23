@@ -326,7 +326,6 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
               for (int i = 0; i < fileUploadController.images.length; i++) {
                 images.add(fileUploadController.images[i]);
               }
-              print("right");
               print(images.length);
               productsController?.updateProduct(widget.sectionId ?? 0,
                   widget.product?.id ?? 0, params, images);
@@ -350,6 +349,7 @@ class _ModifyProductScreenState extends State<ModifyProductScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

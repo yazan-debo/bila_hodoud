@@ -364,9 +364,6 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
         buttonText: 'حفظ',
         buttonIcon: Icons.save,
         onTap: () async {
-          print("entered");
-          print("book: ${widget.product?.id}");
-
           _bookFormKey.currentState?.save();
           if (_bookFormKey.currentState!.validate() &&
               fileUploadController.images.isNotEmpty) {
@@ -406,6 +403,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

@@ -1,14 +1,11 @@
 import 'dart:convert';
 
-import 'package:bila_hodoud/features/libraries/model/models/library_model.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/constants/urls.dart';
-import '../../../core/helper/dialog_helper.dart';
 import '../../../core/utils/app_shared_pref.dart';
-import '../model/coupon_model.dart';
 import '../model/coupons_model.dart';
 
 class CouponsController extends GetxController
@@ -37,18 +34,12 @@ class CouponsController extends GetxController
       );
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        print("1");
         List<CouponsModel> coupons = [];
-        print("2");
-
-        coupons = (data[0] as List<dynamic>)
+        coupons = (data["data"] as List<dynamic>)
             .map((i) => CouponsModel.fromJson(i))
             .toList();
-        print("3");
-
         if (coupons.isNotEmpty) {
           change(coupons, status: RxStatus.success());
-          print("I'm in: ${coupons}");
         } else {
           change(coupons, status: RxStatus.empty());
         }

@@ -219,6 +219,7 @@ class _ModifyNewsScreenState extends State<ModifyNewsScreen> {
               }
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

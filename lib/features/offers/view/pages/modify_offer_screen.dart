@@ -419,6 +419,7 @@ class _ModifyOfferScreenState extends State<ModifyOfferScreen> {
               offersController?.addOffer(params, images, params.offerProducts!);
             }
           }
+          fileUploadController.clear();
         },
       ),
     );

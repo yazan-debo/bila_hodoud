@@ -211,13 +211,11 @@ class OffersController extends GetxController
 
         // Add any additional headers here
       };
-
       var response = await http.delete(
         Uri.parse(url),
         headers: headers,
       );
-
-      if (response.statusCode == 204) {
+      if (response.statusCode == 200) {
         Get.back();
         DialogHelper.showSuccessDialog();
         return true;
