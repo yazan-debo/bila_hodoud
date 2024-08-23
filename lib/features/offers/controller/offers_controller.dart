@@ -73,6 +73,7 @@ class OffersController extends GetxController
 
         // Add any additional headers here
       };
+      print("hahah");
 
       Map<String, dynamic> body;
       body = params.toJson();
@@ -90,11 +91,9 @@ class OffersController extends GetxController
       }
 
       for (int i = 0; i <= offerProducts.length - 1; i++) {
-        http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
-            'images[]', images[i].image!.cast(),
-            filename: images[i].fileName);
-        request.files.add(multipartFile);
+        request.fields['items[$i]'] = offerProducts[i].toJson();
       }
+      print(request.fields);
 
       var response = await request.send();
 
@@ -111,6 +110,7 @@ class OffersController extends GetxController
             title: "خطأ", description: "حدث خطأ ما يرجى إعادة المحاولة");
       }
     } catch (e) {
+      print(e);
       Get.back();
       DialogHelper.showErrorDialog(title: "خطأ", description: e.toString());
     }
