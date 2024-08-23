@@ -19,6 +19,7 @@ import '../../../../../presentation/controllers/global_interface_controller.dart
 import '../../../../../presentation/view/global_interface.dart';
 import '../../../../subsections/controller/dropdown_controller.dart';
 import '../../../controller/file_upload_controller.dart';
+import '../../../controller/selected_item_dropdown_controller.dart';
 
 class ModifyBookScreen extends StatefulWidget {
   final int? sectionId;
@@ -37,7 +38,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
   final DropdownController? dropdownController = Get.find<DropdownController>();
 
   final FileUploadController fileUploadController =
-      Get.put(FileUploadController());
+  Get.put(FileUploadController());
   final _bookFormKey = GlobalKey<FormState>();
   ProductParams params = ProductParams();
   TextEditingController name = TextEditingController();
@@ -53,8 +54,11 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
   TextEditingController numberOfPages = TextEditingController();
   TextEditingController printType = TextEditingController();
   TextEditingController targetAge = TextEditingController();
+  final SelectedItemDropdownController? selectedItemDropdownController =
+  Get.find<SelectedItemDropdownController>();
+
   final SubsectionsController? subsectionsController =
-      Get.find<SubsectionsController>();
+  Get.find<SubsectionsController>();
 
   @override
   void initState() {
@@ -93,7 +97,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalInterfaceController globalInterfaceController =
-        Get.put(GlobalInterfaceController());
+    Get.put(GlobalInterfaceController());
     globalInterfaceController.removeExtraWidgets();
     globalInterfaceController.addExtraWidget(
       Center(
@@ -240,7 +244,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
 
                       // Find and update the corresponding ID
                       var selectedSubSection =
-                          subsections.firstWhere((item) => item.name == value);
+                      subsections.firstWhere((item) => item.name == value);
                       dropdownController
                           ?.setSubSectionId(selectedSubSection?.id);
 
@@ -248,12 +252,12 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                     },
                     sItems: List<DropdownMenuItem<String>>.generate(
                       subsections.length,
-                      (index) {
+                          (index) {
                         return DropdownMenuItem<String>(
                           value: subsections[index].name,
                           child: Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
                               '${subsections[index].name}',
                               style: TextStyle(fontSize: 18.px),
@@ -300,52 +304,53 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
                             ),
                           ))),
                   Obx(
-                    () => fileUploadController.images.isEmpty &&
-                            widget.product != null
+                        () =>
+                    fileUploadController.images.isEmpty &&
+                        widget.product != null
                         ? Expanded(
-                            child: ListView(
-                            shrinkWrap: true,
-                            children: [
-                              SizedBox(
-                                  child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.network(
-                                    Urls.imageUrl +
-                                        widget.product!.images!
-                                            .replaceAll('[', "")
-                                            .replaceAll(']', '')
-                                            .replaceAll('"', "")
-                                            .replaceAll("\\", ""),
-                                    height: 10.w,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text("")
-                                ],
-                              ))
-                            ],
-                          ))
-                        : Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: fileUploadController.images.length,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                    child: Column(
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            SizedBox(
+                                child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Image.memory(
-                                      fileUploadController.images[index].image,
+                                    Image.network(
+                                      Urls.imageUrl +
+                                          widget.product!.images!
+                                              .replaceAll('[', "")
+                                              .replaceAll(']', '')
+                                              .replaceAll('"', "")
+                                              .replaceAll("\\", ""),
                                       height: 10.w,
                                       fit: BoxFit.cover,
                                     ),
-                                    Text(fileUploadController
-                                        .images[index].fileName)
+                                    Text("")
                                   ],
-                                ));
-                              },
-                            ),
-                          ),
+                                ))
+                          ],
+                        ))
+                        : Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: fileUploadController.images.length,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.memory(
+                                    fileUploadController.images[index].image,
+                                    height: 10.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Text(fileUploadController
+                                      .images[index].fileName)
+                                ],
+                              ));
+                        },
+                      ),
+                    ),
                   )
                 ],
               )
@@ -397,7 +402,7 @@ class _ModifyBookScreenState extends State<ModifyBookScreen> {
               }
 
               bool? isClear =
-                  await productsController?.addProduct(params, images);
+              await productsController?.addProduct(params, images);
               if (isClear ?? false) {
                 fileUploadController.clear();
               }

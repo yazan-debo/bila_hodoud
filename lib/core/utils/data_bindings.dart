@@ -21,6 +21,7 @@ import "../../features/orders/controller/status_dropdown_controller.dart";
 import "../../features/permissions/controller/permissions_controller.dart";
 import "../../features/permissions/controller/role_state_controller.dart";
 import "../../features/points/controller/points_controller.dart";
+import "../../features/products/controller/selected_item_dropdown_controller.dart";
 import "../../features/sections/controller/all_sections_controller.dart";
 import "../../features/subsections/controller/dropdown_controller.dart";
 
@@ -50,5 +51,6 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => RoleStateController(), fenix: true);
     Get.lazyPut(() => OfferProductsController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
+    Get.lazyPut(() => SelectedItemDropdownController(), fenix: true);
   }
 }

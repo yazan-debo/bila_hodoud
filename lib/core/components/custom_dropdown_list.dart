@@ -1,12 +1,17 @@
+import 'package:bila_hodoud/features/products/controller/selected_item_dropdown_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../features/orders/controller/status_dropdown_controller.dart';
 import '../constants/style/color_style_features.dart';
 import '../constants/style/text_style_features.dart';
 
 class CustomDropdownList extends StatefulWidget {
   final String label;
   final String hint;
+
   final List<DropdownMenuItem<int>>? items;
   final List<DropdownMenuItem<String>>? sItems;
   final List<DropdownMenuItem<dynamic>>? dItems;
@@ -29,6 +34,33 @@ class CustomDropdownList extends StatefulWidget {
 }
 
 class _CustomDropdownListState extends State<CustomDropdownList> {
+  final SelectedItemDropdownController? selectedItemDropdownController =
+      Get.find<SelectedItemDropdownController>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Check if the widget.sItems list is not null and not empty
+    if (widget.sItems != null && widget.sItems!.isNotEmpty) {
+      // Check if the selectedItem is provided and exists in the list
+      final selectedItemExists =
+          widget.sItems!.any((item) => item.value == widget.selectedItem);
+
+      if (selectedItemExists) {
+        // If the selectedItem exists in the list, use it
+        selectedItemDropdownController?.change(widget.selectedItem);
+      } else {
+        // If not, use the first item in the list as the default value
+        selectedItemDropdownController
+            ?.change(widget.sItems!.first.value ?? "");
+      }
+    } else {
+      // If the list is null or empty, set a fallback value
+      selectedItemDropdownController?.change("");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -81,20 +113,25 @@ class _CustomDropdownListState extends State<CustomDropdownList> {
                       },
                       items: widget.dItems?.toList(),
                     )
-                  : DropdownButton<String>(
-                      hint: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          widget.hint,
-                          style: TextStyle(fontSize: 14.px),
+                  : Obx(
+                      () => DropdownButton<String>(
+                        hint: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            widget.hint,
+                            style: TextStyle(fontSize: 14.px),
+                          ),
                         ),
+                        underline: Container(),
+                        value:
+                            selectedItemDropdownController?.selectedItem.value,
+                        onChanged: (String? selectedItem) {
+                          selectedItemDropdownController
+                              ?.change(selectedItem ?? "");
+                          widget.onChanged(selectedItem);
+                        },
+                        items: widget.sItems?.toList(),
                       ),
-                      underline: Container(),
-                      value: widget.selectedItem as String?,
-                      onChanged: (String? selectedItem) {
-                        widget.onChanged(selectedItem);
-                      },
-                      items: widget.sItems?.toList(),
                     ),
         ),
       ],
