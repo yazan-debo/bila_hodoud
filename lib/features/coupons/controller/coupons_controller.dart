@@ -35,16 +35,20 @@ class CouponsController extends GetxController
         Uri.parse(url),
         headers: headers,
       );
-
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-
+        print("1");
         List<CouponsModel> coupons = [];
-        coupons = (data['data'] as List<dynamic>)
+        print("2");
+
+        coupons = (data[0] as List<dynamic>)
             .map((i) => CouponsModel.fromJson(i))
             .toList();
+        print("3");
+
         if (coupons.isNotEmpty) {
           change(coupons, status: RxStatus.success());
+          print("I'm in: ${coupons}");
         } else {
           change(coupons, status: RxStatus.empty());
         }
