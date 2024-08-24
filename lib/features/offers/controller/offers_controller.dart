@@ -72,44 +72,35 @@ class OffersController extends GetxController
         'Content-Type': 'multipart/form-data',
         "Authorization": "Bearer $token",
         'Accept': 'application/json',
-        // Add any additional headers here
       };
 
-      Map<String, dynamic> body;
-      body = params.toJson();
+      Map<String, dynamic> body = params.toJson();
 
       var multipartRequest = http.MultipartRequest('POST', Uri.parse(url))
         ..headers.addAll(headers);
 
+      // Convert body to FormData format
       var request = jsonToFormData(multipartRequest, body);
 
-      for (int i = 0; i <= images.length - 1; i++) {
+      // Add images to the request
+      for (int i = 0; i < images.length; i++) {
         http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
             'images[]', images[i].image!.cast(),
             filename: images[i].fileName);
         request.files.add(multipartFile);
       }
 
-      // for (int i = 0; i <= offerProducts.length - 1; i++) {
-      //   request.fields['items[$i]'] = offerProducts[i].toJson().toString();
-      // }
-
-      // for (var element in offerProducts) {
-      //   request.fields.add(MapEntry("items[]", element.toJson().toString()));
-      // }
-
-      for (var element in offerProducts) {
-        request.fields['items[]'] = jsonEncode({
-          'product_id': element.productId,
-          'quantity': element.quantity,
+      // Add offerProducts to request fields with the specified format
+      for (int i = 0; i < offerProducts.length; i++) {
+        var element = offerProducts[i];
+        request.fields['items[$i]'] = jsonEncode({
+          'product_id': element.productId.toString(),
+          'quantity': element.quantity.toString(),
         });
-
-        element.toJson().toString();
       }
-      print(request.fields);
+      print("request.fields: ${request.fields}");
 
       var response = await request.send();
-
       if (response.statusCode == 201) {
         Get.back();
         DialogHelper.showSuccessDialog();
