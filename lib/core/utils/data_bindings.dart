@@ -1,4 +1,5 @@
 import "package:bila_hodoud/features/authentication/controller/user_info_controller.dart";
+import "package:bila_hodoud/features/coupons/controller/coupon_details_controller.dart";
 import "package:bila_hodoud/features/libraries/controller/libraries_controller.dart";
 import "package:bila_hodoud/features/news/controller/news_controller.dart";
 import "package:bila_hodoud/features/offers/controller/offers_controller.dart";
@@ -52,5 +53,6 @@ class DataBindings implements Bindings {
     Get.lazyPut(() => OfferProductsController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
     Get.lazyPut(() => SelectedItemDropdownController(), fenix: true);
+    Get.lazyPut(() => CouponDetailsController(), fenix: true);
   }
 }

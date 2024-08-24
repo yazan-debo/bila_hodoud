@@ -18,7 +18,6 @@ import '../../../../../../presentation/view/global_interface.dart';
 import '../../../../core/components/edit_button.dart';
 import '../../controller/coupons_controller.dart';
 import '../../model/coupons_model.dart';
-import '../widgets/coupon_widget.dart';
 
 class CouponsScreen extends StatefulWidget {
   const CouponsScreen({super.key});
@@ -108,7 +107,7 @@ class _CouponsScreenState extends State<CouponsScreen> {
                       item,
                       CellButton(
                         onTap: () {
-                          Get.to(() => CouponDetailsScreen());
+                          Get.to(() => CouponDetailsScreen(coupon: item));
                         },
                         icon: Icons.remove_red_eye,
                         label: "عرض التفاصيل",

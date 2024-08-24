@@ -1,24 +1,20 @@
 import 'dart:convert';
 
 class CouponModel {
-  int? id;
   int? totalValue;
   int? valueLeft;
-  int? valueConsumed;
-  int? percentage;
-  String? sender;
-  String? receiver;
-  String? createdAt;
+  int? currentValue;
+  dynamic notes;
+  String? senderName;
+  String? receiverName;
 
   CouponModel({
-    this.id,
     this.totalValue,
     this.valueLeft,
-    this.valueConsumed,
-    this.percentage,
-    this.sender,
-    this.receiver,
-    this.createdAt,
+    this.currentValue,
+    this.notes,
+    this.senderName,
+    this.receiverName,
   });
 
   factory CouponModel.fromRawJson(String str) =>
@@ -27,24 +23,20 @@ class CouponModel {
   String toRawJson() => json.encode(toJson());
 
   factory CouponModel.fromJson(Map<String, dynamic> json) => CouponModel(
-        id: json["id"],
         totalValue: json["total_value"],
         valueLeft: json["value_left"],
-        valueConsumed: json["value_consumed"],
-        percentage: json["percentage"],
-        sender: json["sender"],
-        receiver: json["receiver"],
-        createdAt: json["created_at"],
+        currentValue: json["current_value"],
+        notes: json["notes"],
+        senderName: json["sender_name"],
+        receiverName: json["receiver_name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "total_value": totalValue,
         "value_left": valueLeft,
-        "value_consumed": valueConsumed,
-        "percentage": percentage,
-        "sender": sender,
-        "receiver": receiver,
-        "created_at": createdAt,
+        "current_value": currentValue,
+        "notes": notes,
+        "sender_name": senderName,
+        "receiver_name": receiverName,
       };
 }
